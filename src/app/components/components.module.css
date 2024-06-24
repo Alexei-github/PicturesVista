@@ -1,0 +1,13 @@
+.nav {
+  background-color: var(--main-navbar);
+  text-align: left;
+  border-bottom: var(--border);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+.h1 {
+  margin: 0 0.5em;
+  color: white;
+  display: inline;
+}
