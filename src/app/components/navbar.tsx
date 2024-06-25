@@ -8,8 +8,10 @@ export const metadata: Metadata = {
 
 export default function Navbar() {
   return (
-    <nav className={compStyles.nav}>
-      <h1 className={compStyles.h1}>PicturesVista</h1>
+    <nav className={compStyles.navbar}>
+      <h1 className={compStyles.h1} style={{ marginLeft: "auto" }}>
+        PicturesVista
+      </h1>
     </nav>
   );
 }

@@ -38,9 +38,10 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135; */
-
   --main-navbar: #6b8fcd;
+  --borders-rgb: rgb(234, 241, 234);
   --border: 0.1rem solid var(--borders-rgb);
+  --active-drag-line-rgb: rgb(0, 120, 212)
 }
 
 @media (prefers-color-scheme: dark) {
