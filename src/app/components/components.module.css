@@ -29,32 +29,32 @@
   top: 0.3rem;
   z-index: 1;
   cursor: pointer;
-  padding: 0 0.2rem 0.15rem 0.2rem;
-  border: 0.1rem solid rgb(99, 99, 99);
-  border-radius: 0.3rem;
+  padding: 0 0.2rem 0.15rem 0.3rem;
   background-color: transparent;
+  border-radius: 40%;
+  border: none;
   &:hover {
     border: var(--border);
   }
 }
 
 .vertical_line {
-  width: 0.2rem;
+  width: 0.25rem;
   height: 100%;
   flex-shrink: 0;
   position: absolute;
   right: 0;
   top: 0;
+  background-color: blue;
   &:hover,
   &:focus {
-    width: 0.4rem;
+    width: 0.5rem;
     background-color: var(--active-drag-line-rgb);
-    border-left-color: var(--active-drag-line-rgb);
     cursor: col-resize;
   }
 }
 
 .hover_drag_line_vertic {
-  width: 0.4rem;
+  width: 0.5rem;
   background-color: var(--active-drag-line-rgb);
 }

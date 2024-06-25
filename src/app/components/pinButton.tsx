@@ -13,11 +13,19 @@ const PinButton = ({ pinned, setPinned }: Props) => {
               color: "transparent",
               textShadow: "0 0 0 rgb(99, 99, 99)",
             }
-          : {}
+          : { color: "transparent", textShadow: "0 0 0 blue" }
       }
       onClick={() => setPinned(!pinned)}
     >
-      &#128204;
+      <h3
+        style={{
+          transition: "transform 0.75s",
+
+          transform: `${!pinned ? "rotate(45deg)" : "rotate(10deg)"}`,
+        }}
+      >
+        &#128204;
+      </h3>
     </button>
   );
 };
