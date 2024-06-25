@@ -39,6 +39,7 @@ export default function Sidebar() {
     <nav
       className={compStyles.sidebar}
       style={
+        typeof document !== "undefined" &&
         document.body.style.cursor === "col-resize"
           ? {
               flex: `0 0 max(min(${effectiveSidebarSize}px, calc(100% - ${resizeMargin}px)), ${resizeMargin}px)`,
