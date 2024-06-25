@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <nav className={compStyles.navbar}>
       <h1 className={compStyles.h1} style={{ marginLeft: "auto" }}>
-        PicturesVista
+        PicsVista
       </h1>
     </nav>
   );

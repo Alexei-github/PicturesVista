@@ -3,6 +3,14 @@ import compStyles from "@/components/components.module.css";
 
 type Props = { pinned: boolean; setPinned: (pinned: boolean) => void };
 
+/**
+ * PinButton component which pins sidebar in its position and makes it stay open
+ * when mouse leaves it. If `pinne' values if `false` then `onMouseLeave` sidebar
+ * will close.
+ * @param pinned - boolean value indicating whetehr sidebar is pinned.
+ * @param setPinned - function to toggle `pinned` value.
+ * @returns PinButton component
+ */
 const PinButton = ({ pinned, setPinned }: Props) => {
   return (
     <button
