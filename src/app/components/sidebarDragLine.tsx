@@ -5,8 +5,8 @@ type Props = {
   setSidebarSize: (size: number) => void;
   setEffectiveSidebarSize: (size: number) => void;
   resizeMargin: number;
+  className?: string;
 };
-
 /**
  * SidebarDragLine component which allows user to adjust size of sidebar (click and drag)
  * @param setSidebarSize - function to set sidebar size
@@ -17,6 +17,7 @@ export default function SidebarDragLine({
   setSidebarSize,
   setEffectiveSidebarSize,
   resizeMargin,
+  className,
 }: Props) {
   const [dragging, setDragging] = React.useState(false);
 
@@ -85,9 +86,14 @@ export default function SidebarDragLine({
 
   return (
     <hr
-      className={`${compStyles.vertical_line} ${
-        dragging ? compStyles.hover_drag_line_vertic : ""
-      }`}
+      className={
+        className
+          ? className
+          : `${compStyles.vertical_line} ${
+              dragging ? compStyles.hover_drag_line_vertic : ""
+            }`
+      }
+      // style={{ width: "4px" }}
       onMouseDown={() => {
         setDragging(true);
         setDragingCurosorOnBody();

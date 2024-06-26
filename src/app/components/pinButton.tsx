@@ -12,6 +12,7 @@ type Props = { pinned: boolean; setPinned: (pinned: boolean) => void };
  * @returns PinButton component
  */
 const PinButton = ({ pinned, setPinned }: Props) => {
+  // console.log(document.getElementById("pushpin")?.innerHTML);
   return (
     <button
       className={compStyles.pin}
@@ -25,15 +26,16 @@ const PinButton = ({ pinned, setPinned }: Props) => {
       }
       onClick={() => setPinned(!pinned)}
     >
-      <h3
+      <div
+        data-testid="pushpin"
         style={{
           transition: "transform 0.75s",
-
+          fontSize: "1rem",
           transform: `${!pinned ? "rotate(45deg)" : "rotate(10deg)"}`,
         }}
       >
         &#128204;
-      </h3>
+      </div>
     </button>
   );
 };
