@@ -24,7 +24,18 @@ const PinButton = ({ pinned, setPinned }: Props) => {
             }
           : { color: "transparent", textShadow: "0 0 0 blue" }
       }
-      onClick={() => setPinned(!pinned)}
+      onClick={(e) => {
+        console.log("click");
+        e.preventDefault;
+        setPinned(!pinned);
+      }}
+      onTouchMove={(e) => {
+        e.preventDefault;
+      }}
+      onTouchStart={(e) => {
+        e.preventDefault;
+        setPinned(!pinned);
+      }}
     >
       <div
         data-testid="pushpin"
@@ -40,4 +51,5 @@ const PinButton = ({ pinned, setPinned }: Props) => {
   );
 };
 
-export default React.memo(PinButton);
+export default PinButton;
+// export default React.memo(PinButton);

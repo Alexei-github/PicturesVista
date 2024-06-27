@@ -4,15 +4,19 @@ import compStyles from "@/components/components.module.css";
 import PinButton from "./pinButton";
 import SidebarDragLine from "@/components/sidebarDragLine";
 
+type Props = {
+  openSidebar: boolean;
+};
+
 /**
  * Sidebar component whith adjustable width.
  * It will open once user hovers over left edge of the page and close once user moves cursor away.
  * Users have an option to pin sidebar so that it does not close on moving cuosor away.
  * @returns Sidebar component
  */
-export default function Sidebar() {
+export default function Sidebar({ openSidebar }: Props) {
   const [sidebarSize, setSidebarSize] = React.useState(13 * 16);
-  const [oepningInAction, setOpeningInAction] = React.useState(true);
+  const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [pinnedOpen, setPinnedOpen] = React.useState(true);
   const [resizeMargin] = React.useState(50);
   const [effectiveSidebarSize, setEffectiveSidebarSize] = React.useState(
@@ -35,8 +39,42 @@ export default function Sidebar() {
     [setSidebarSize, setEffectiveSidebarSize]
   );
 
+  React.useEffect(() => {
+    if (openSidebar && !pinnedOpen) {
+      setEffectiveSidebarSize(sidebarSize);
+      setPreventDelayAction(true);
+    } else if (!openSidebar && !pinnedOpen) {
+      setEffectiveSidebarSize(5);
+      setPreventDelayAction(true);
+    }
+  }, [
+    openSidebar,
+    pinnedOpen,
+    setEffectiveSidebarSize,
+    setPreventDelayAction,
+    sidebarSize,
+  ]);
+  // const ref = React.useRef<HTMLElement>(null);
+
+  // React.useEffect(() => {
+  //   const main = ref.current;
+  //   if (main) {
+  //     main.addEventListener(
+  //       "touchstart",
+  //       (e) => {
+  //         e.preventDefault();
+  //       },
+  //       {
+  //         passive: false,
+  //       }
+  //     );
+  //     return main.removeEventListener("touchstart", (e) => e.preventDefault());
+  //   }
+  // }, [ref]);
+
   return (
     <nav
+      // ref={ref}
       className={compStyles.sidebar}
       style={
         typeof document !== "undefined" &&
@@ -47,20 +85,34 @@ export default function Sidebar() {
           : {
               flex: `0 0 ${effectiveSidebarSize}px`,
               transition: `${
-                oepningInAction ? "flex-basis 0.5s" : "flex-basis 0.5s 0.5s"
+                preventDelayAction ? "flex-basis 0.5s" : "flex-basis 0.5s 0.5s"
               }`,
             }
       }
+      // onTouchStart={(e) => {
+      //   if (!pinnedOpen) {
+      //     setEffectiveSidebarSize(sidebarSize);
+      //     setOpeningInAction(true);
+      //   }
+      // }}
       onMouseEnter={() => {
         if (!pinnedOpen) {
           setEffectiveSidebarSize(sidebarSize);
-          setOpeningInAction(true);
+          setPreventDelayAction(true);
+        }
+      }}
+      onBlur={() => {
+        console.log(sidebarSize);
+
+        if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
+          setEffectiveSidebarSize(5);
+          setPreventDelayAction(false);
         }
       }}
       onMouseLeave={() => {
         if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
           setEffectiveSidebarSize(5);
-          setOpeningInAction(false);
+          setPreventDelayAction(false);
         }
       }}
     >

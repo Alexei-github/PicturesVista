@@ -20,15 +20,22 @@ export default function SidebarDragLine({
   className,
 }: Props) {
   const [dragging, setDragging] = React.useState(false);
+  const [touchEvent, setTouchEvent] = React.useState(false);
 
   const recordSizeOfSideBar = React.useCallback(
     /**
      * Records size of sidebar.
      * @param e - maouse event
      */
-    (e: MouseEvent) => {
+    (e: MouseEvent | TouchEvent) => {
       e.preventDefault();
-      let size = Math.max(e.pageX, resizeMargin);
+      let x;
+      if (e instanceof TouchEvent) {
+        x = e.touches[0].clientX;
+      } else {
+        x = e.pageX;
+      }
+      let size = Math.max(x, resizeMargin);
       setEffectiveSidebarSize(size);
       setSidebarSize(size);
     },
@@ -61,6 +68,7 @@ export default function SidebarDragLine({
      */
     () => {
       setDragging(false);
+      setTouchEvent(false);
       removeDragingCurosorOnBody();
     },
     [removeDragingCurosorOnBody]
@@ -73,15 +81,22 @@ export default function SidebarDragLine({
      */
     () => {
       if (dragging) {
-        window.addEventListener("mousemove", recordSizeOfSideBar);
-        window.addEventListener("mouseup", mouseUp);
+        if (touchEvent) {
+          window.addEventListener("touchmove", recordSizeOfSideBar);
+          window.addEventListener("touchend", mouseUp);
+        } else {
+          window.addEventListener("mousemove", recordSizeOfSideBar);
+          window.addEventListener("mouseup", mouseUp);
+        }
         return () => {
           window.removeEventListener("mousemove", recordSizeOfSideBar);
-          window.addEventListener("mouseup", mouseUp);
+          window.removeEventListener("mouseup", mouseUp);
+          window.removeEventListener("touchmove", recordSizeOfSideBar);
+          window.removeEventListener("touchend", mouseUp);
         };
       }
     },
-    [dragging, recordSizeOfSideBar, mouseUp]
+    [dragging, touchEvent, recordSizeOfSideBar, mouseUp]
   );
 
   return (
@@ -94,7 +109,14 @@ export default function SidebarDragLine({
             }`
       }
       // style={{ width: "4px" }}
-      onMouseDown={() => {
+      onMouseDown={(e) => {
+        e.preventDefault;
+        setDragging(true);
+        setDragingCurosorOnBody();
+      }}
+      onTouchStart={(e) => {
+        e.preventDefault;
+        setTouchEvent(true);
         setDragging(true);
         setDragingCurosorOnBody();
       }}
