@@ -9,7 +9,7 @@ const MainWithTouches = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const [openSidebar, setOpenSidebar] = React.useState(false);
+  const [openSidebar, setOpenSidebar] = React.useState(true);
   const [touchStartClientX, setTouchStartClientX] = React.useState(0);
   const ref = React.useRef<HTMLElement>(null);
 

@@ -35,7 +35,11 @@ export default function SidebarDragLine({
       } else {
         x = e.pageX;
       }
-      let size = Math.max(x, resizeMargin);
+      let size = Math.min(
+        Math.max(x, resizeMargin),
+        window.innerWidth - resizeMargin
+      );
+      console.log(size);
       setEffectiveSidebarSize(size);
       setSidebarSize(size);
     },

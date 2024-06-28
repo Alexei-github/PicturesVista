@@ -19,6 +19,7 @@ export default function Sidebar({ openSidebar }: Props) {
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [pinnedOpen, setPinnedOpen] = React.useState(true);
   const [resizeMargin] = React.useState(50);
+  const [closedSize] = React.useState(1);
   const [effectiveSidebarSize, setEffectiveSidebarSize] = React.useState(
     13 * 16
   );
@@ -44,7 +45,8 @@ export default function Sidebar({ openSidebar }: Props) {
       setEffectiveSidebarSize(sidebarSize);
       setPreventDelayAction(true);
     } else if (!openSidebar && !pinnedOpen) {
-      setEffectiveSidebarSize(5);
+      console.log(sidebarSize);
+      setEffectiveSidebarSize(closedSize);
       setPreventDelayAction(true);
     }
   }, [
@@ -53,6 +55,7 @@ export default function Sidebar({ openSidebar }: Props) {
     setEffectiveSidebarSize,
     setPreventDelayAction,
     sidebarSize,
+    closedSize,
   ]);
   // const ref = React.useRef<HTMLElement>(null);
 
@@ -101,26 +104,28 @@ export default function Sidebar({ openSidebar }: Props) {
           setPreventDelayAction(true);
         }
       }}
-      onBlur={() => {
-        console.log(sidebarSize);
+      // onBlur={() => {
+      //   console.log(sidebarSize);
 
-        if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
-          setEffectiveSidebarSize(5);
-          setPreventDelayAction(false);
-        }
-      }}
+      //   if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
+      //     setEffectiveSidebarSize(5);
+      //     setPreventDelayAction(false);
+      //   }
+      // }}
       onMouseLeave={() => {
         if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
-          setEffectiveSidebarSize(5);
+          setEffectiveSidebarSize(closedSize);
           setPreventDelayAction(false);
         }
       }}
     >
-      <SidebarDragLine
-        setSidebarSize={setSidebarSize}
-        setEffectiveSidebarSize={setEffectiveSidebarSize}
-        resizeMargin={resizeMargin}
-      />
+      {openSidebar && (
+        <SidebarDragLine
+          setSidebarSize={setSidebarSize}
+          setEffectiveSidebarSize={setEffectiveSidebarSize}
+          resizeMargin={resizeMargin}
+        />
+      )}
       <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
     </nav>
   );
