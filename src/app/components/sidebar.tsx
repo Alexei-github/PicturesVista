@@ -6,6 +6,8 @@ import SidebarDragLine from "@/components/sidebarDragLine";
 
 type Props = {
   openSidebar: boolean;
+  pinnedOpen: boolean;
+  setPinnedOpen: (pinned: boolean) => void;
 };
 
 /**
@@ -14,30 +16,34 @@ type Props = {
  * Users have an option to pin sidebar so that it does not close on moving cuosor away.
  * @returns Sidebar component
  */
-export default function Sidebar({ openSidebar }: Props) {
-  const [sidebarSize, setSidebarSize] = React.useState(13 * 16);
+export default function Sidebar({
+  openSidebar,
+  pinnedOpen,
+  setPinnedOpen,
+}: Props) {
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
-  const [pinnedOpen, setPinnedOpen] = React.useState(true);
   const [resizeMargin] = React.useState(50);
   const [closedSize] = React.useState(1);
-  const [effectiveSidebarSize, setEffectiveSidebarSize] = React.useState(
-    13 * 16
-  );
   const [remSize, setRemSize] = React.useState(16);
+  const [effectiveSidebarSize, setEffectiveSidebarSize] = React.useState(
+    remSize * 13
+  );
+  const [sidebarSize, setSidebarSize] = React.useState(remSize * 16);
 
   React.useEffect(
     /**
      * Setting size of the sidebar upon the opening page.
      */
     () => {
-      const remSize: string = getComputedStyle(
-        document.documentElement
-      ).fontSize.replace("px", "");
-      setRemSize(parseInt(remSize, 10));
-      setSidebarSize(parseInt(remSize, 10) * 13);
-      setEffectiveSidebarSize(parseInt(remSize, 10) * 13);
+      const remSize: number = parseInt(
+        getComputedStyle(document.documentElement).fontSize.replace("px", ""),
+        10
+      );
+      setRemSize(remSize);
+      setSidebarSize(remSize * 13);
+      setEffectiveSidebarSize(remSize * 13);
     },
-    [setSidebarSize, setEffectiveSidebarSize]
+    []
   );
 
   React.useEffect(() => {
@@ -45,7 +51,6 @@ export default function Sidebar({ openSidebar }: Props) {
       setEffectiveSidebarSize(sidebarSize);
       setPreventDelayAction(true);
     } else if (!openSidebar && !pinnedOpen) {
-      console.log(sidebarSize);
       setEffectiveSidebarSize(closedSize);
       setPreventDelayAction(true);
     }
@@ -57,27 +62,9 @@ export default function Sidebar({ openSidebar }: Props) {
     sidebarSize,
     closedSize,
   ]);
-  // const ref = React.useRef<HTMLElement>(null);
-
-  // React.useEffect(() => {
-  //   const main = ref.current;
-  //   if (main) {
-  //     main.addEventListener(
-  //       "touchstart",
-  //       (e) => {
-  //         e.preventDefault();
-  //       },
-  //       {
-  //         passive: false,
-  //       }
-  //     );
-  //     return main.removeEventListener("touchstart", (e) => e.preventDefault());
-  //   }
-  // }, [ref]);
 
   return (
     <nav
-      // ref={ref}
       className={compStyles.sidebar}
       style={
         typeof document !== "undefined" &&
@@ -92,26 +79,12 @@ export default function Sidebar({ openSidebar }: Props) {
               }`,
             }
       }
-      // onTouchStart={(e) => {
-      //   if (!pinnedOpen) {
-      //     setEffectiveSidebarSize(sidebarSize);
-      //     setOpeningInAction(true);
-      //   }
-      // }}
       onMouseEnter={() => {
         if (!pinnedOpen) {
           setEffectiveSidebarSize(sidebarSize);
           setPreventDelayAction(true);
         }
       }}
-      // onBlur={() => {
-      //   console.log(sidebarSize);
-
-      //   if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
-      //     setEffectiveSidebarSize(5);
-      //     setPreventDelayAction(false);
-      //   }
-      // }}
       onMouseLeave={() => {
         if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
           setEffectiveSidebarSize(closedSize);

@@ -2,7 +2,7 @@
 import React from "react";
 import Sidebar from "@/components/sidebar";
 
-import styles from "@/page.module.css";
+import styles from "@/components/components.module.css";
 
 const MainWithTouches = ({
   children,
@@ -10,6 +10,7 @@ const MainWithTouches = ({
   children: React.ReactNode;
 }>) => {
   const [openSidebar, setOpenSidebar] = React.useState(true);
+  const [pinnedOpen, setPinnedOpen] = React.useState(true);
   const [touchStartClientX, setTouchStartClientX] = React.useState(0);
   const ref = React.useRef<HTMLElement>(null);
 
@@ -39,8 +40,7 @@ const MainWithTouches = ({
       }}
       onTouchMove={(e) => {
         e.preventDefault;
-        // console.log(touchStartClientX, e.touches[0].clientX);
-        if (document.body.style.cursor !== "col-resize") {
+        if (document.body.style.cursor !== "col-resize" && !pinnedOpen) {
           if (
             touchStartClientX < 64 &&
             e.touches[0].clientX - touchStartClientX > 50
@@ -52,7 +52,11 @@ const MainWithTouches = ({
         }
       }}
     >
-      <Sidebar openSidebar={openSidebar} />
+      <Sidebar
+        openSidebar={openSidebar}
+        pinnedOpen={pinnedOpen}
+        setPinnedOpen={setPinnedOpen}
+      />
       {children}
     </main>
   );

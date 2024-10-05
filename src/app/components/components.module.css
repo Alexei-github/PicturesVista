@@ -1,3 +1,15 @@
+.main {
+  display: flex;
+  flex-grow: 1;
+  overflow: "hidden";
+
+  /* flex-direction: column; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  /* padding: 6rem; */
+  /* min-height: 100vh; */
+}
+
 .navbar {
   background-color: var(--main-navbar);
   text-align: right;
@@ -59,3 +71,5 @@
   width: 0.5rem;
   background-color: var(--active-drag-line-rgb);
 }
+
+

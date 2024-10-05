@@ -39,7 +39,7 @@ export default function SidebarDragLine({
         Math.max(x, resizeMargin),
         window.innerWidth - resizeMargin
       );
-      console.log(size);
+      // console.log(size);
       setEffectiveSidebarSize(size);
       setSidebarSize(size);
     },
