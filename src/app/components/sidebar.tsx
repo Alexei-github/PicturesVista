@@ -3,6 +3,7 @@ import React from "react";
 import compStyles from "@/components/components.module.css";
 import PinButton from "./pinButton";
 import SidebarDragLine from "@/components/sidebarDragLine";
+import FileUploader from "@/components/fileUploader";
 
 type Props = {
   openSidebar: boolean;
@@ -99,6 +100,7 @@ export default function Sidebar({
           resizeMargin={resizeMargin}
         />
       )}
+      <FileUploader />
       <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
     </nav>
   );
