@@ -30,7 +30,7 @@ const FileUploader = () => {
     [loadedImgs]
   );
 
-  const onDirClickLoadDir = React.useCallback(
+  const onClickLoadDir = React.useCallback(
     /**
      * Loads images from click of a button event.
      * Directory picker will open and user will be able to select one directory.
@@ -43,17 +43,25 @@ const FileUploader = () => {
       // e.preventDefault();
       console.log("hello");
       // const dirHandle = await window.showDirectoryPicker();
+      // const imgs = directoryOpen();
+      // const imgs = fileOpen({
+      //   description: "Image files",
+      //   mimeTypes: ACCEPTED_IMGS_TYPES,
+      // });
       const imgs = await directoryOpen();
       // const imgs = await directoryOpen({
       //   recursive: true,
       // });
       console.log("ings", imgs);
+      console.log("showPicker" in HTMLInputElement.prototype);
+      const imgs_awaiten = await imgs;
+      console.log("ings", imgs_awaiten);
 
-      let { processedFiles, dirsHandles } = processFilesOldFS(
-        imgs as FileWithDirectoryAndFileHandle[]
-      );
+      // let { processedFiles, dirsHandles } = processFilesOldFS(
+      //   imgs as FileWithDirectoryAndFileHandle[]
+      // );
 
-      await storeFiles(processedFiles, dirsHandles);
+      // await storeFiles(processedFiles, dirsHandles);
     },
     [storeFiles]
   );
@@ -74,7 +82,7 @@ const FileUploader = () => {
       const updatedImgs = {
         ...loadedImgs["/"],
         ...Object.fromEntries(
-          imgs
+          (Array.isArray(imgs) ? imgs : [imgs])
             .filter((img) => !loadedImgs["/"][img.name])
             .map((img) => [img.name, img])
         ),
@@ -86,9 +94,18 @@ const FileUploader = () => {
 
   return (
     <>
-      {console.log(FSASupported)}
+      {/* {console.log(
+        FSASupported,
+        "webkitdirectory" in document.createElement("input")
+      )} */}
+      {console.log(FSASupported, window.navigator.userAgent.toLowerCase())}
+      {/* {console.log(
+        FSASupported,
+        window.navigator.userAgent.toLowerCase().includes("mobi")
+      )} */}
+      {/* {console.log(window.screenX)} */}
       <div className={`${compStyles.img_drop_area}`}>
-        {/* <button
+        <button
           className={compStyles.btn_opn_files}
           // onMouseDown={onClickLoadImgs}
           onClick={onClickLoadImgs}
@@ -99,11 +116,11 @@ const FileUploader = () => {
         <button
           className={compStyles.btn_opn_files}
           // onMouseDown={onClickLoadImgs}
-          onClick={onDirClickLoadDir}
-          onTouchEnd={onDirClickLoadDir}
+          onClick={onClickLoadDir}
+          onTouchEnd={onClickLoadDir}
         >
           Load Folder
-        </button> */}
+        </button>
         <input
           type="file"
           id="filepicker"

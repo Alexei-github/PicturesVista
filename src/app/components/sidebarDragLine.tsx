@@ -28,7 +28,8 @@ export default function SidebarDragLine({
      * @param e - maouse event
      */
     (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
+      // e.preventDefault(); !!!!!!!!!!!!!
+      // https://stackoverflow.com/questions/37721782/what-are-passive-event-listeners
       let x;
       if (e instanceof TouchEvent) {
         x = e.touches[0].clientX;
