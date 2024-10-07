@@ -95,13 +95,7 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // https://www.youtube.com/watch?v=gSdd_97t48s -some info here but it did not make difference in current case
-  // moduleNameMapper: {
-  //   "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-  // },
-  // moduleNameMapper: {
-  //   "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules",
-  // },
+  // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -187,24 +181,6 @@ const config: Config = {
 
   // A map from regular expressions to paths to transformers
   // transform: undefined,
-  // `jest-transform-css` tried and did not allow testing css properties from css module
-  // transform: {
-  //   // "^.+\\.ts$": "'swc-jest'",
-  //   // "^.+\\.ts$": "next-jest",
-  //   // "^.+\\.ts$": "babel-jest",
-  //   "\\.[jt]sx?$": "babel-jest",
-  //   "^.+\\.css$": [
-  //     "jest-transform-css",
-  //     { modules: true, generateScopedName: "[path]_[name]_[local]" },
-  //   ],
-  // },
-  // transform: {
-  //   ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform",
-  // },
-  // transform: {
-  //   "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-  //   ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform",
-  // },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
