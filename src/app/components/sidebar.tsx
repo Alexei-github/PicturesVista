@@ -3,7 +3,7 @@ import React from "react";
 import compStyles from "@/components/components.module.css";
 import PinButton from "./pinButton";
 import SidebarDragLine from "@/components/sidebarDragLine";
-import FileUploader from "@/components/fileUploader";
+import FileUploader from "@/components/filesLoad/filesUploader";
 
 type Props = {
   openSidebar: boolean;

@@ -11,7 +11,6 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "browser-fs-access": "^0.35.0",
     "bowser": "^2.11.0",
     "browser-fs-access": "^0.35.0",
     "next": "^14.2.14",
