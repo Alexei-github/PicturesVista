@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar";
+import MainWithTouches from "@/components/mainWithTouches";
+import Sidebar from "./components/sidebar";
 
+import styles from "./page.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +20,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} ${styles.body}`}>
+        <Navbar />
+        <MainWithTouches>{children}</MainWithTouches>
+        {/* <main
+          className={styles.main}
+          onTouchMove={(e) => {
+            if (
+              e.touches[0].clientX < 16 &&
+              e.touches[e.touches.length - 1].clientX - e.touches[0].clientX >
+                50
+            ) {
+            }
+          }}
+        >
+          <Sidebar openSidebar={false} />
+          {children}
+        </main> */}
+      </body>
     </html>
   );
 }
