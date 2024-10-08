@@ -95,6 +95,7 @@
 .btn_opn_files {
   height: fit-content;
   padding: 0.5em;
+  flex: auto;
   /* margin: 0.5rem; */
   background-color: rgb(from var(--main-navbar-hex) r g b / 0);
   border: 0.1rem solid rgb(109, 109, 148);
