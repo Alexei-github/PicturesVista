@@ -29,7 +29,7 @@ type Props = {};
  */
 const FileUploader = () => {
   const { loadedImgs, storeFiles, setLoadedImgs } = useStoreFiles();
-  const { canAccessDirectory, setBrowserCanUse } = useBrowserCanUse();
+  const { canAccessDirectory } = useBrowserCanUse();
   const [supportsDirLoad, setSupportsDirLoad] = React.useState(false);
 
   React.useEffect(
@@ -41,9 +41,6 @@ const FileUploader = () => {
     },
     [loadedImgs]
   );
-  React.useEffect(() => {
-    setBrowserCanUse();
-  }, [setBrowserCanUse]);
 
   return (
     <>

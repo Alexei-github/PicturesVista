@@ -9,6 +9,7 @@ type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
   setPinnedOpen: (pinned: boolean) => void;
+  setOpenSidebar: (open: boolean) => void;
 };
 
 /**
@@ -21,6 +22,7 @@ export default function Sidebar({
   openSidebar,
   pinnedOpen,
   setPinnedOpen,
+  setOpenSidebar,
 }: Props) {
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [resizeMargin] = React.useState(50);
@@ -106,7 +108,7 @@ export default function Sidebar({
           : {
               flex: `0 0 ${effectiveSidebarSize}px`,
               transition: `${
-                preventDelayAction ? "flex-basis 0.3s" : "flex-basis 0.2s 0.2s"
+                preventDelayAction ? "flex-basis 0.3s" : "flex-basis 0.2s 0.5s"
               }`,
             }
       }
@@ -114,12 +116,14 @@ export default function Sidebar({
         if (!pinnedOpen) {
           setEffectiveSidebarSize(sidebarSize);
           setPreventDelayAction(true);
+          setOpenSidebar(true);
         }
       }}
       onMouseLeave={() => {
         if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
           setEffectiveSidebarSize(closedSize);
           setPreventDelayAction(false);
+          setOpenSidebar(false);
         }
       }}
     >

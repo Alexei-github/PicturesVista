@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Sidebar from "@/components/layout/sidebar";
-import SidebarDragLine from "@/components/layout/sidebarDragLine";
+import { useBrowserCanUse } from "@/stores/browserDetect";
 
 import styles from "@/components/components.module.css";
 
@@ -14,6 +14,11 @@ const MainWithTouches = ({
   const [pinnedOpen, setPinnedOpen] = React.useState(true);
   const [touchStartClientX, setTouchStartClientX] = React.useState(0);
   const ref = React.useRef<HTMLElement>(null);
+  const { setBrowserCanUse } = useBrowserCanUse();
+
+  React.useEffect(() => {
+    setBrowserCanUse();
+  }, [setBrowserCanUse]);
 
   React.useEffect(() => {
     const main = ref.current;
@@ -57,6 +62,7 @@ const MainWithTouches = ({
         openSidebar={openSidebar}
         pinnedOpen={pinnedOpen}
         setPinnedOpen={setPinnedOpen}
+        setOpenSidebar={setOpenSidebar}
       />
       {/* {openSidebar && (
         <SidebarDragLine

@@ -29,8 +29,8 @@
   text-align: center;
   display: flex;
   /* flex: 0 0 100; */
-  flex-direction: column;
   overflow-y: auto;
+  flex-direction: column;
   /* overflow-x: visible; */
   overflow-x: hidden;
   scrollbar-width: thin;
