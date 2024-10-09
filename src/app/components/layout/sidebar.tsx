@@ -2,7 +2,7 @@
 import React from "react";
 import compStyles from "@/components/components.module.css";
 import PinButton from "./pinButton";
-import SidebarDragLine from "@/components/sidebarDragLine";
+import SidebarDragLine from "@/components/layout/sidebarDragLine";
 import FileUploader from "@/components/filesLoad/filesUploader";
 
 type Props = {
@@ -30,6 +30,7 @@ export default function Sidebar({
     remSize * 13
   );
   const [sidebarSize, setSidebarSize] = React.useState(remSize * 16);
+  const refSideBarNav = React.useRef<HTMLElement>(null);
 
   React.useEffect(
     /**
@@ -64,9 +65,38 @@ export default function Sidebar({
     closedSize,
   ]);
 
+  React.useEffect(() => {
+    const sideBarNav = refSideBarNav.current;
+    if (sideBarNav) {
+      console.log(refSideBarNav, effectiveSidebarSize);
+      // const sidebarOpenFn = (e: any) => {
+      //   e.stopPropagation();
+      // };
+      sideBarNav.addEventListener(
+        "touchstart",
+        (e: any) => {
+          e.stopPropagation();
+        },
+        {
+          passive: true,
+          capture: true,
+        }
+      );
+      return sideBarNav.removeEventListener(
+        "touchstart",
+        (e: any) => {
+          e.stopPropagation();
+        },
+        {
+          capture: true,
+        }
+      );
+    }
+  }, [refSideBarNav, openSidebar]);
+
   return (
     <nav
-      className={compStyles.sidebar}
+      className={compStyles.sidebar_div}
       style={
         typeof document !== "undefined" &&
         document.body.style.cursor === "col-resize"
@@ -76,7 +106,7 @@ export default function Sidebar({
           : {
               flex: `0 0 ${effectiveSidebarSize}px`,
               transition: `${
-                preventDelayAction ? "flex-basis 0.5s" : "flex-basis 0.5s 0.5s"
+                preventDelayAction ? "flex-basis 0.3s" : "flex-basis 0.2s 0.2s"
               }`,
             }
       }
@@ -94,14 +124,18 @@ export default function Sidebar({
       }}
     >
       {openSidebar && (
-        <SidebarDragLine
-          setSidebarSize={setSidebarSize}
-          setEffectiveSidebarSize={setEffectiveSidebarSize}
-          resizeMargin={resizeMargin}
-        />
+        <>
+          <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
+          <nav ref={refSideBarNav} className={compStyles.sidebar}>
+            <FileUploader />
+          </nav>
+          <SidebarDragLine
+            setSidebarSize={setSidebarSize}
+            setEffectiveSidebarSize={setEffectiveSidebarSize}
+            resizeMargin={resizeMargin}
+          />
+        </>
       )}
-      <FileUploader />
-      <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
     </nav>
   );
 }

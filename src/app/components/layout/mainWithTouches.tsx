@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/components/layout/sidebar";
+import SidebarDragLine from "@/components/layout/sidebarDragLine";
 
 import styles from "@/components/components.module.css";
 
@@ -57,7 +58,14 @@ const MainWithTouches = ({
         pinnedOpen={pinnedOpen}
         setPinnedOpen={setPinnedOpen}
       />
-      {children}
+      {/* {openSidebar && (
+        <SidebarDragLine
+          setSidebarSize={setSidebarSize}
+          setEffectiveSidebarSize={setEffectiveSidebarSize}
+          resizeMargin={resizeMargin}
+        />
+      )} */}
+      <div>{children}</div>
     </main>
   );
 };

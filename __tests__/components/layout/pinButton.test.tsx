@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import PinButton from "@/components/pinButton";
+import PinButton from "@/components/layout/pinButton";
 
 describe("PinButton", () => {
   const onClick = jest.fn();

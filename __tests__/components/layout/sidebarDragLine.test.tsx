@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import * as React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import SidebarDragLine from "@/components/sidebarDragLine";
+import SidebarDragLine from "@/components/layout/sidebarDragLine";
 
 describe("SidebarDragLine", () => {
   const onClickAndDrag = jest.fn();

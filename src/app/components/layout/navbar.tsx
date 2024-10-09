@@ -12,7 +12,7 @@ export default function Navbar() {
       <h1 className={compStyles.h1} style={{ marginLeft: "auto" }}>
         PicsVista
       </h1>
-      <input
+      {/* <input
         type="file"
         id="filepicker"
         name="fileList"
@@ -20,7 +20,7 @@ export default function Navbar() {
         multiple
         style={{ zIndex: "100 !important" }}
         // onTouchEnd={()=>{console.log}}
-      />
+      /> */}
     </nav>
   );
 }

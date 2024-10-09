@@ -40,7 +40,7 @@ const PinButton = ({ pinned, setPinned }: Props) => {
       <div
         data-testid="pushpin"
         style={{
-          transition: "transform 0.75s",
+          transition: "transform 0.25s",
           fontSize: "1rem",
           transform: `${!pinned ? "rotate(45deg)" : "rotate(10deg)"}`,
         }}
