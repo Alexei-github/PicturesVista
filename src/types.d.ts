@@ -6,13 +6,10 @@ import {
 declare global {
   type FileWithHandle = FileWithHandle;
   type FileWithDirectoryAndFileHandle = FileWithDirectoryAndFileHandle;
-  type LoadedImgsDirs = {
+  type LoadedFilesDirs = {
     [dir: string]: {
       [file: string]: FileWithHandle | FileWithDirectoryAndFileHandle;
     };
-  };
-  type LoadedDirsHandles = {
-    [file: string]: FileSystemDirectoryHandle;
   };
 }
 

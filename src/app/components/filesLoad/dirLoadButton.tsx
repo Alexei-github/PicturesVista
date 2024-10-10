@@ -1,10 +1,11 @@
 import React from "react";
 import { directoryOpen } from "browser-fs-access";
-import useStoreFiles from "@/customHooks/useStoreFiles";
+import useStoreFilesCustomHook from "@/customHooks/useStoreFiles";
 import compStyles from "@/components/components.module.css";
+import { processFilesOldFS } from "@/components/filesLoad/processFilesOldFS";
 
 const DirLoadButton = () => {
-  const { loadedImgs, storeFiles, setLoadedImgs } = useStoreFiles();
+  const storeFiles = useStoreFilesCustomHook();
 
   const onClickLoadDir = React.useCallback(
     /**
@@ -16,38 +17,27 @@ const DirLoadButton = () => {
         | React.MouseEvent<HTMLButtonElement, MouseEvent>
         | React.TouchEvent<HTMLButtonElement>
     ) => {
-      // e.preventDefault();
-      console.log("hello");
-      // const dirHandle = await window.showDirectoryPicker();
-      // const imgs = directoryOpen();
-      // const imgs = fileOpen({
-      //   description: "Image files",
-      //   mimeTypes: ACCEPTED_IMGS_TYPES,
-      // });
-      const imgs = await directoryOpen();
-      // const imgs = await directoryOpen({
-      //   recursive: true,
-      // });
-      console.log("ings", imgs);
-      console.log("showPicker" in HTMLInputElement.prototype);
-      const imgs_awaiten = await imgs;
-      console.log("ings", imgs_awaiten);
+      try {
+        const imgs = await directoryOpen({
+          recursive: true,
+        });
+        let { processedFiles } = processFilesOldFS(
+          imgs as FileWithDirectoryAndFileHandle[]
+        );
 
-      // let { processedFiles, dirsHandles } = processFilesOldFS(
-      //   imgs as FileWithDirectoryAndFileHandle[]
-      // );
-
-      // await storeFiles(processedFiles, dirsHandles);
+        await storeFiles(processedFiles);
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          throw error;
+        } else {
+          console.log("Directory picker was closed");
+        }
+      }
     },
     [storeFiles]
   );
   return (
-    <button
-      className={compStyles.btn_opn_files}
-      // onMouseDown={onClickLoadImgs}
-      onClick={onClickLoadDir}
-      onTouchEnd={onClickLoadDir}
-    >
+    <button className={compStyles.btn_opn_files} onClick={onClickLoadDir}>
       Load Folder
     </button>
   );

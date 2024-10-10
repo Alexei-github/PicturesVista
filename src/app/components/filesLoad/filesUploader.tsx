@@ -10,6 +10,8 @@ import React from "react";
 import compStyles from "@/components/components.module.css";
 import dynamic from "next/dynamic";
 import FilesLoadButton from "@/components/filesLoad/filesLoadButton";
+import { useStoredFiles } from "@/stores/storedFiles";
+
 const LoadDirButton = dynamic(
   () => import("@/components/filesLoad/dirLoadButton"),
   {
@@ -21,25 +23,24 @@ import { useBrowserCanUse } from "@/stores/browserDetect";
 
 import useStoreFiles from "@/customHooks/useStoreFiles";
 
-import { ACCEPTED_IMGS_TYPES } from "@/lib/acceptedImgsTypes";
-import { processFilesOldFS } from "@/components/filesLoad/processFilesOldFS";
 type Props = {};
 /**
  * Component which allows users to upload images into browser.
  */
 const FileUploader = () => {
-  const { loadedImgs, storeFiles, setLoadedImgs } = useStoreFiles();
+  const { loadedFilesDirs } = useStoredFiles();
+
+  // const { loadedImgs, storeFiles, setLoadedImgs } = useStoreFiles();
   const { canAccessDirectory } = useBrowserCanUse();
-  const [supportsDirLoad, setSupportsDirLoad] = React.useState(false);
 
   React.useEffect(
     /**
      * for debuggin only
      */
     () => {
-      console.log(loadedImgs);
+      console.log(loadedFilesDirs);
     },
-    [loadedImgs]
+    [loadedFilesDirs]
   );
 
   return (

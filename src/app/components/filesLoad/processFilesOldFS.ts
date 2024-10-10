@@ -1,8 +1,7 @@
 import { ACCEPTED_IMGS_TYPES } from "@/lib/acceptedImgsTypes";
 
 export function processFilesOldFS(imgs: FileWithDirectoryAndFileHandle[]) {
-  const processedFiles: LoadedImgsDirs = {};
-  const dirsHandles: LoadedDirsHandles = {};
+  const processedFiles: LoadedFilesDirs = {};
 
   for (const img of imgs) {
     if (img.hasOwnProperty("webkitRelativePath")) {
@@ -21,5 +20,5 @@ export function processFilesOldFS(imgs: FileWithDirectoryAndFileHandle[]) {
       }
     }
   }
-  return { processedFiles, dirsHandles };
+  return { processedFiles };
 }
