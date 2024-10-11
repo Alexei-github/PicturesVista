@@ -1,5 +1,5 @@
 import React from "react";
-import compStyles from "@/components/components.module.css";
+import sidebarStyles from "@/components/sidebar/sidebar.module.css";
 
 type Props = { pinned: boolean; setPinned: (pinned: boolean) => void };
 
@@ -12,10 +12,9 @@ type Props = { pinned: boolean; setPinned: (pinned: boolean) => void };
  * @returns PinButton component
  */
 const PinButton = ({ pinned, setPinned }: Props) => {
-  // console.log(document.getElementById("pushpin")?.innerHTML);
   return (
     <button
-      className={compStyles.pin}
+      className={sidebarStyles.pin}
       style={
         !pinned
           ? {
@@ -25,7 +24,6 @@ const PinButton = ({ pinned, setPinned }: Props) => {
           : { color: "transparent", textShadow: "0 0 0 blue" }
       }
       onClick={(e) => {
-        console.log("click");
         e.preventDefault;
         setPinned(!pinned);
       }}
@@ -51,5 +49,4 @@ const PinButton = ({ pinned, setPinned }: Props) => {
   );
 };
 
-export default PinButton;
-// export default React.memo(PinButton);
+export default React.memo(PinButton);

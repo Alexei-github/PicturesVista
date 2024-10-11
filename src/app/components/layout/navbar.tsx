@@ -10,17 +10,9 @@ export default function Navbar() {
   return (
     <nav className={compStyles.navbar}>
       <h1 className={compStyles.h1} style={{ marginLeft: "auto" }}>
-        PicsVista
+        PicsVista PicsVista PicsVista PicsVista PicsVista PicsVista PicsVista
+        PicsVista PicsVista PicsVista
       </h1>
-      {/* <input
-        type="file"
-        id="filepicker"
-        name="fileList"
-        webkitdirectory="true"
-        multiple
-        style={{ zIndex: "100 !important" }}
-        // onTouchEnd={()=>{console.log}}
-      /> */}
     </nav>
   );
 }

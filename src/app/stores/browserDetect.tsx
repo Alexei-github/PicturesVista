@@ -12,8 +12,6 @@ export const useBrowserCanUse = create<UseBrowserCanUse>((set) => ({
   setBrowserCanUse: () =>
     set((state: UseBrowserCanUse) => {
       let browser = Bowser.getParser(window.navigator.userAgent);
-      // console.log(browser.getBrowser());
-      // console.log(browser.getPlatform());
       const supportsDirLoad = browser.satisfies({
         // mobile: {
         //   chrome: ">120",

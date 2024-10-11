@@ -1,21 +1,18 @@
 import React from "react";
-import compStyles from "@/components/components.module.css";
+import sidebarStyles from "@/components/sidebar/sidebar.module.css";
 
 type Props = {
   setSidebarSize: (size: number) => void;
-  setEffectiveSidebarSize: (size: number) => void;
   resizeMargin: number;
   className?: string;
 };
 /**
  * SidebarDragLine component which allows user to adjust size of sidebar (click and drag)
  * @param setSidebarSize - function to set sidebar size
- * @param setEffectiveSidebarSize - function to set effective sidebar size
  * @returns SidebarDragLine component
  */
 export default function SidebarDragLine({
   setSidebarSize,
-  setEffectiveSidebarSize,
   resizeMargin,
   className,
 }: Props) {
@@ -40,11 +37,9 @@ export default function SidebarDragLine({
         Math.max(x, resizeMargin),
         window.innerWidth - resizeMargin
       );
-      // console.log(size);
-      setEffectiveSidebarSize(size);
       setSidebarSize(size);
     },
-    [setSidebarSize, setEffectiveSidebarSize, resizeMargin]
+    [setSidebarSize, resizeMargin]
   );
 
   const setDragingCurosorOnBody = React.useCallback(
@@ -109,11 +104,10 @@ export default function SidebarDragLine({
       className={
         className
           ? className
-          : `${compStyles.vertical_line} ${
-              dragging ? compStyles.hover_drag_line_vertic : ""
+          : `${sidebarStyles.vertical_line} ${
+              dragging ? sidebarStyles.hover_drag_line_vertic : ""
             }`
       }
-      // style={{ width: "4px" }}
       onMouseDown={(e) => {
         e.preventDefault;
         setDragging(true);

@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import React from "react";
-import Bowser from "bowser";
-import SortFnAscend from "@/lib/sortFn";
 
 type UseStoredFiles = {
   loadedFilesDirs: LoadedFilesDirs;
@@ -14,7 +11,37 @@ export const useStoredFiles = create<UseStoredFiles>((set) => ({
 
   storeLoadedFiles: async (newFilesDirs: LoadedFilesDirs) =>
     set((state) => {
-      // console.log("newFilesDirs", newFilesDirs);
       return { ...state, loadedFilesDirs: newFilesDirs };
     }),
+}));
+
+type OpenDir = {
+  openDirs: { [dirName: string]: boolean };
+  setOpenDir: (dirName: string, setValue: boolean) => void;
+};
+export const useOpenDir = create<OpenDir>((set) => ({
+  openDirs: {},
+  setOpenDir: (dirName: string, setValue: boolean) => {
+    set((state) => {
+      const updatedOpenDirs = { ...state.openDirs };
+      updatedOpenDirs[dirName] = setValue;
+
+      return { ...state, openDirs: updatedOpenDirs };
+    });
+  },
+}));
+
+type LastClickedFileName = {
+  clickedImg: { dir: string; name: string };
+  setClickedImgName: (imgDir: string, imgName: string) => void;
+};
+
+export const useClickedFileName = create<LastClickedFileName>((set) => ({
+  clickedImg: { dir: "", name: "" },
+
+  setClickedImgName: (imgDir: string, imgName: string) => {
+    set((state) => {
+      return { ...state, clickedImg: { name: imgName, dir: imgDir } };
+    });
+  },
 }));

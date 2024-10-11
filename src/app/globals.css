@@ -9,6 +9,10 @@
   /* --foreground-rgb: rgb(255, 255, 255); */
   --background-start-rgb: rgb(216, 248, 253);
   --background-end-rgb: rgb(255, 255, 255);
+  --dir-btn-color-rgb: rgb(187, 214, 217);
+  --borders-sidebar_items-rgb: rgb(166, 200, 215);
+
+  --border-sidebar-itms: 0.06rem solid var(--borders-sidebar_items-rgb);
 
   /* --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -50,6 +54,18 @@
   --borders-rgb: rgb(234, 241, 234);
   --border: 0.1rem solid var(--borders-rgb);
   --active-drag-line-rgb: rgb(0, 120, 212);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+  button {
+    cursor: pointer;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

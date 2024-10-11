@@ -23,25 +23,13 @@ import { useBrowserCanUse } from "@/stores/browserDetect";
 
 import useStoreFiles from "@/customHooks/useStoreFiles";
 
-type Props = {};
 /**
  * Component which allows users to upload images into browser.
  */
 const FileUploader = () => {
   const { loadedFilesDirs } = useStoredFiles();
 
-  // const { loadedImgs, storeFiles, setLoadedImgs } = useStoreFiles();
   const { canAccessDirectory } = useBrowserCanUse();
-
-  React.useEffect(
-    /**
-     * for debuggin only
-     */
-    () => {
-      console.log(loadedFilesDirs);
-    },
-    [loadedFilesDirs]
-  );
 
   return (
     <>

@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
-import compStyles from "@/components/components.module.css";
-import PinButton from "./pinButton";
-import SidebarDragLine from "@/components/layout/sidebarDragLine";
+import sidebarStyles from "@/components/sidebar/sidebar.module.css";
+import PinButton from "@/components/sidebar/pinButton";
+import SidebarDragLine from "@/components/sidebar/sidebarDragLine";
 import FileUploader from "@/components/filesLoad/filesUploader";
+import SidebarDir from "@/components/sidebar/sidebarOneDir";
+import { useStoredFiles } from "@/stores/storedFiles";
+import SortFnAscend from "@/lib/sortFn";
 
 type Props = {
   openSidebar: boolean;
@@ -27,12 +30,26 @@ export default function Sidebar({
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [resizeMargin] = React.useState(50);
   const [closedSize] = React.useState(1);
-  const [remSize, setRemSize] = React.useState(16);
-  const [effectiveSidebarSize, setEffectiveSidebarSize] = React.useState(
-    remSize * 13
-  );
-  const [sidebarSize, setSidebarSize] = React.useState(remSize * 16);
+  const [sidebarSize, setSidebarSize] = React.useState(0);
   const refSideBarNav = React.useRef<HTMLElement>(null);
+  const { loadedFilesDirs } = useStoredFiles();
+
+  const [openCloseTime] = React.useState(0.3);
+  const [closeDelayTime] = React.useState(0.7);
+  const [completelyClosed, setCompletelyClosed] = React.useState(openSidebar);
+
+  React.useEffect(() => {
+    if (!openSidebar) {
+      const timeoutClose = setTimeout(() => {
+        setCompletelyClosed(!openSidebar);
+      }, (closeDelayTime + openCloseTime) * 1000);
+      return () => {
+        clearTimeout(timeoutClose);
+      };
+    } else {
+      setCompletelyClosed(false);
+    }
+  }, [openSidebar]);
 
   React.useEffect(
     /**
@@ -43,37 +60,22 @@ export default function Sidebar({
         getComputedStyle(document.documentElement).fontSize.replace("px", ""),
         10
       );
-      setRemSize(remSize);
       setSidebarSize(remSize * 13);
-      setEffectiveSidebarSize(remSize * 13);
     },
     []
   );
 
   React.useEffect(() => {
     if (openSidebar && !pinnedOpen) {
-      setEffectiveSidebarSize(sidebarSize);
       setPreventDelayAction(true);
     } else if (!openSidebar && !pinnedOpen) {
-      setEffectiveSidebarSize(closedSize);
       setPreventDelayAction(true);
     }
-  }, [
-    openSidebar,
-    pinnedOpen,
-    setEffectiveSidebarSize,
-    setPreventDelayAction,
-    sidebarSize,
-    closedSize,
-  ]);
+  }, [openSidebar, pinnedOpen, setPreventDelayAction]);
 
   React.useEffect(() => {
     const sideBarNav = refSideBarNav.current;
     if (sideBarNav) {
-      console.log(refSideBarNav, effectiveSidebarSize);
-      // const sidebarOpenFn = (e: any) => {
-      //   e.stopPropagation();
-      // };
       sideBarNav.addEventListener(
         "touchstart",
         (e: any) => {
@@ -94,48 +96,63 @@ export default function Sidebar({
         }
       );
     }
-  }, [refSideBarNav, openSidebar]);
+  }, [refSideBarNav]);
+  // }, [refSideBarNav, openSidebar]);
 
   return (
     <nav
-      className={compStyles.sidebar_div}
+      className={sidebarStyles.sidebar_div}
       style={
         typeof document !== "undefined" &&
         document.body.style.cursor === "col-resize"
           ? {
-              flex: `0 0 max(min(${effectiveSidebarSize}px, calc(100% - ${resizeMargin}px)), ${resizeMargin}px)`,
+              flex: `0 0 max(min(${
+                openSidebar ? sidebarSize : closedSize
+              }px, calc(100% - ${resizeMargin}px)), ${resizeMargin}px)`,
             }
           : {
-              flex: `0 0 ${effectiveSidebarSize}px`,
+              flex: `0 0 ${openSidebar ? sidebarSize : closedSize}px`,
               transition: `${
-                preventDelayAction ? "flex-basis 0.3s" : "flex-basis 0.2s 0.5s"
+                preventDelayAction
+                  ? `flex-basis ${openCloseTime}s`
+                  : `flex-basis ${openCloseTime}s ${closeDelayTime}s`
               }`,
             }
       }
       onMouseEnter={() => {
         if (!pinnedOpen) {
-          setEffectiveSidebarSize(sidebarSize);
           setPreventDelayAction(true);
           setOpenSidebar(true);
         }
       }}
       onMouseLeave={() => {
         if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
-          setEffectiveSidebarSize(closedSize);
           setPreventDelayAction(false);
           setOpenSidebar(false);
         }
       }}
     >
-      {openSidebar && (
+      {(openSidebar || !completelyClosed) && (
         <>
           <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
-          <nav ref={refSideBarNav} className={compStyles.sidebar}>
+          <nav ref={refSideBarNav} className={sidebarStyles.sidebar}>
+            {Object.keys(loadedFilesDirs)
+              .sort(SortFnAscend)
+              .map((dir, idx_dir) => {
+                const indent = Math.floor((dir.split("/").length - 1) / 2);
+                return (
+                  <SidebarDir
+                    key={`${dir}_${idx_dir}`}
+                    dirName={dir}
+                    indent={indent}
+                    sidebarSize={sidebarSize}
+                  />
+                );
+              })}
             <FileUploader />
           </nav>
           <SidebarDragLine
             setSidebarSize={setSidebarSize}
-            setEffectiveSidebarSize={setEffectiveSidebarSize}
             resizeMargin={resizeMargin}
           />
         </>
