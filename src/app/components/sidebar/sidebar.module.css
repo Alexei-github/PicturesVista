@@ -25,10 +25,10 @@
 }
 
 .pin {
-  position: absolute;
-  right: 0.6rem;
-  top: 0.2rem;
-  z-index: 1;
+  /* position: absolute; */
+  /* right: 0.6rem; */
+  /* top: 0.2rem; */
+  /* z-index: 1; */
   cursor: pointer;
   padding: 0 0.2rem 0.15rem 0.3rem;
   background-color: transparent;
@@ -89,4 +89,14 @@
     border-right: var(--border);
     cursor: pointer;
   }
+}
+
+.manage_bar {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  background-color: var(--main-navbar);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.1rem;
 }

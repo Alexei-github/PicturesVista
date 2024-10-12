@@ -2,7 +2,7 @@
 import React from "react";
 import Sidebar from "@/components/sidebar/sidebar";
 import { useBrowserCanUse } from "@/stores/browserDetect";
-
+import ImgsPane from "@/components/imgsDisplay/imgsPane";
 import styles from "@/components/components.module.css";
 
 const MainWithTouches = ({
@@ -70,8 +70,8 @@ const MainWithTouches = ({
           setPinnedOpen={setPinnedOpen}
           setOpenSidebar={setOpenSidebar}
         />
-
-        <div>{children}</div>
+        <ImgsPane />
+        {/* <div>{children}</div> */}
       </main>
     </>
   );

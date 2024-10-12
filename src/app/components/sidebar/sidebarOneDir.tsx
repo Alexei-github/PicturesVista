@@ -3,6 +3,7 @@ import React from "react";
 import SidebarItem from "@/components/sidebar/sidebarOneItem";
 import sidebarStyles from "@/components/sidebar/sidebar.module.css";
 import styled from "styled-components";
+import isShowDirFn from "@/lib/isShowDir";
 
 import { useStoredFiles, useOpenDir } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
@@ -28,21 +29,11 @@ function SidebarDir({
   }, [effectiveSidebarSize, gridColGap, itemWidth]);
 
   const isShowDir = React.useMemo(() => {
-    let checkDir = "";
-    for (const item of dirName.split("/")) {
-      checkDir = checkDir ? checkDir + "/" + item : item;
-      if (
-        !(openDirs[checkDir] === undefined || openDirs[checkDir]) &&
-        checkDir !== dirName
-      ) {
-        return false;
-      }
-    }
-    return true;
+    return isShowDirFn(dirName, openDirs);
   }, [dirName, openDirs]);
 
   return (
-    <div style={{ margin: `0.3rem 0.3rem 0.3rem ${indent + 0.3}rem` }}>
+    <div style={{ margin: `0.3rem 0.3rem 0.3rem ${indent / 2 + 0.3}rem` }}>
       {isShowDir && <OpenDirBtn dirName={dirName} />}
       <GridUl $colnumb={numberOfColumns}>
         {(openDirs[dirName] === undefined || openDirs[dirName]) &&

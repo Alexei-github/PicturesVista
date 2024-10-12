@@ -63,7 +63,7 @@ const useStoreFilesCustomHook = () => {
           // check if directory has already been opened
           sameDirExistingEntry
         ) {
-          if (sameDirExistingEntry.length < newDir.length) {
+          if (sameDirExistingEntry.length !== newDir.length) {
             delete imgsToStore[sameDirExistingEntry];
             imgsToStore[newDir] = newImgsDirs[newDir];
           }

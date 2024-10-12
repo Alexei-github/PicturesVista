@@ -1,13 +1,12 @@
 "use client";
 import React from "react";
 import sidebarStyles from "@/components/sidebar/sidebar.module.css";
-import PinButton from "@/components/sidebar/pinButton";
 import SidebarDragLine from "@/components/sidebar/sidebarDragLine";
 import FileUploader from "@/components/filesLoad/filesUploader";
 import SidebarDir from "@/components/sidebar/sidebarOneDir";
 import { useStoredFiles } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
-
+import ManageBar from "@/components/sidebar/manageBar";
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -96,8 +95,7 @@ export default function Sidebar({
         }
       );
     }
-  }, [refSideBarNav]);
-  // }, [refSideBarNav, openSidebar]);
+  }, [refSideBarNav, openSidebar]);
 
   return (
     <nav
@@ -134,12 +132,13 @@ export default function Sidebar({
     >
       {(openSidebar || !completelyClosed) && (
         <>
-          <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
+          <ManageBar pinnedOpen={pinnedOpen} setPinnedOpen={setPinnedOpen} />
           <nav ref={refSideBarNav} className={sidebarStyles.sidebar}>
             {Object.keys(loadedFilesDirs)
               .sort(SortFnAscend)
               .map((dir, idx_dir) => {
-                const indent = Math.floor((dir.split("/").length - 1) / 2);
+                const indent = dir.replace(/^\//, "").split("/").length - 1;
+                // const indent = Math.floor((dir.split("/").length - 1) / 2);
                 return (
                   <SidebarDir
                     key={`${dir}_${idx_dir}`}

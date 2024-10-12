@@ -21,13 +21,11 @@ const LoadDirButton = dynamic(
 
 import { useBrowserCanUse } from "@/stores/browserDetect";
 
-import useStoreFiles from "@/customHooks/useStoreFiles";
-
 /**
  * Component which allows users to upload images into browser.
  */
 const FileUploader = () => {
-  const { loadedFilesDirs } = useStoredFiles();
+  // const { loadedFilesDirs } = useStoredFiles();
 
   const { canAccessDirectory } = useBrowserCanUse();
 

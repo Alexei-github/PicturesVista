@@ -5,8 +5,11 @@ import { useOpenDir } from "@/stores/storedFiles";
 
 type Props = { dirName: string };
 
-export default function OpenFolderBtn({ dirName }: Props) {
+export default function OpenDirBtn({ dirName }: Props) {
   const { setOpenDir, openDirs } = useOpenDir();
+  const [dirNameToShow] = React.useState(
+    dirName.split("/").pop() ? dirName.split("/").pop() : "w/o folder"
+  );
 
   const closeOpenDir = () => {
     if (openDirs[dirName] !== undefined && openDirs[dirName] === false) {
@@ -18,12 +21,12 @@ export default function OpenFolderBtn({ dirName }: Props) {
 
   return openDirs[dirName] === undefined || openDirs[dirName] ? (
     <button style={styleBtn} onClick={closeOpenDir}>
-      &#11167;&nbsp;{dirName.split("/").pop() ?? ""}
+      &#11167;&nbsp;{dirNameToShow}
     </button>
   ) : (
     <button style={styleBtn} onClick={closeOpenDir}>
       {" "}
-      &#11166;&nbsp;{dirName.split("/").pop() ?? ""}
+      &#11166;&nbsp;{dirNameToShow}
     </button>
   );
 }

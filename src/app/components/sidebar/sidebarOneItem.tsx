@@ -24,8 +24,8 @@ function SidebarItem({ imgName, dirName, className }: Props) {
     <li
       tabIndex={0}
       className={className}
-      onClick={onItemClick}
-      onBlur={onBlur}
+      onFocus={onItemClick}
+      // onBlur={onBlur}
     >
       {imgName}
     </li>

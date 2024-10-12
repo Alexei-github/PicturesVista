@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import React from "react";
 import Bowser from "bowser";
 
 type UseBrowserCanUse = {
