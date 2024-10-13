@@ -2,21 +2,26 @@
   position: relative;
   height: fit-content;
   width: fit-content;
+  padding: 0;
+  margin: 0;
 }
 
 .one_img {
   border: var(--border-sidebar-itms);
   border-radius: 0.75rem;
+  display: block;
   width: auto;
   height: auto;
   margin: auto;
   min-width: 0;
   min-height: 0;
+  margin: 0;
+  padding: 0;
   /* position: relative; */
   &:hover {
     background-color: blue;
     border: var(--border);
-    cursor: pointer;
+    /* cursor: pointer; */
   }
 }
 
@@ -24,27 +29,22 @@
   position: absolute;
   z-index: 1;
   cursor: pointer;
-  border: 2px dotted;
-  /* border: 2px dashed; */
   box-sizing: border-box;
-
-  &:focus {
-    z-index: auto;
-    border: 4px solid;
-  }
 }
 
 .imgs_pane {
   flex-grow: 1;
   max-height: 100%;
   max-width: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   /* justify-content: flex-start; */
   align-content: flex-start;
   /* position: relative; */
+  scrollbar-width: thin;
 }
 
 .imgs_list_dir {
@@ -64,12 +64,32 @@
   width: fit-content;
   text-align: center;
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
   position: absolute;
-  top: 1%;
-  right: 1%;
-  /* border-radius: 0.3rem; */
+  top: 0.3rem;
+  right: 0.8rem;
+  z-index: 2;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  transform: scale(1.1);
+  background-color: var(--elements-in-main);
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -0.1rem;
+    left: 100%;
+    text-align: center;
+    transform: translate(-100%, 100%);
+    white-space: nowrap;
+    background-color: var(--imgs-bcgnd);
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    line-height: 1;
+    z-index: 2;
+    border: 2px solid black;
+  }
 }
 
 .half_buton_scale_size {
@@ -77,12 +97,34 @@
   margin: 0;
   min-width: 1.5rem;
   background-color: transparent;
-  border: 1px solid blue;
-
   border-radius: 0.3rem;
-  /* color: blue; */
+  font-size: 1.3rem;
   &:hover {
-    background-color: var(--main-navbar-hex);
-    border: var(--border);
+    border: 2px solid blue;
+    /* background-color: var(--main-navbar-hex); */
+  }
+}
+
+.focused_img {
+  transform: scale(1);
+  z-index: 1;
+  border: 0.3rem solid rgb(99, 99, 255);
+  border-radius: 0.75rem;
+
+  animation: pulsate 3s 0.5s 1;
+}
+@keyframes pulsate {
+  0% {
+    opacity: 1;
+    border: 0.3rem solid rgb(99, 99, 255);
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+    border: 0.1rem solid rgb(99, 99, 255);
+  }
+  100% {
+    opacity: 1;
+    border: 0.3rem solid rgb(99, 99, 255);
   }
 }

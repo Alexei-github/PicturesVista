@@ -23,6 +23,7 @@ const BBox = ({
 }: Props) => {
   return (
     <StyledBtn
+      tabIndex={0}
       className={imgsDisplayStyle.bbox}
       $c={`${color}`}
       style={{
@@ -65,7 +66,13 @@ const StyledBtn = styled.button<{ $c: string }>`
   background-origin: border-box;
   background-size: 10% 10%;
 
-  &::before {
+  &:focus {
+    z-index: auto;
+    border: 4px solid ${(p) => p.$c};
+  }
+
+  &:hover::before,
+  &:focus::before {
     content: attr(data-tooltip);
     position: absolute;
     top: 0px;
@@ -73,13 +80,13 @@ const StyledBtn = styled.button<{ $c: string }>`
     text-align: center;
     transform: translate(-50%, -90%);
     white-space: nowrap;
-    background-color: var(--imgs-bcgnd-rgb);
+    background-color: var(--imgs-bcgnd);
     padding: 0.3rem;
     border-radius: 0.5rem;
-    line-height: 1.3;
-    z-index: 2;
+    line-height: 1;
+    font-size: 1rem;
+    z-index: 1;
     border: 2px solid ${(p) => p.$c};
-    background-color: white;
   }
 `;
 

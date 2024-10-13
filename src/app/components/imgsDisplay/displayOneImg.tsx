@@ -14,6 +14,7 @@ type Props = {
     imgHeight: number
   ) => { width: number; height: number };
   className: string;
+  id: string;
 };
 
 //transparent one pixel to prevent next.js throwing error that src does not exist taken from here: https://css-tricks.com/snippets/html/base64-encode-of-1x1px-transparent-gif/
@@ -61,6 +62,7 @@ function DisplayOneImg({
   imgName,
   calculateImgSize,
   className,
+  id,
 }: Props) {
   const { mobileNetModel, cocoSsd, computerVisionOn } = useVision();
   // const { imgsPaneSize, imgsPaneScaleFactor } = useLayout();
@@ -84,25 +86,23 @@ function DisplayOneImg({
     width: number;
     height: number;
   } | null>(null);
+  const [latestImgFile, setLatestImgFile] = React.useState<Blob | null>(null);
 
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
   React.useEffect(() => {
-    const tempImgURL = URL.createObjectURL(imgFile);
-    setImgURL(tempImgURL);
-    setDetectedObjects(null);
-    setImgLoaded(false);
-
-    (async () => {
-      setImgNaturalSize(await getImgNaturalSizeFn(tempImgURL));
-    })();
-
-    return () => {
-      URL.revokeObjectURL(tempImgURL);
-      setImgURL(imgPlaceHolder);
-      setImgNaturalSize(null);
-      setImgCalculatedSize(null);
-    };
+    requestIdleCallback(async () => {
+      if (imgFile !== latestImgFile) {
+        setLatestImgFile(imgFile);
+        const tempImgURL = URL.createObjectURL(imgFile);
+        setImgURL(tempImgURL);
+        setDetectedObjects(null);
+        setImgLoaded(false);
+        setImgNaturalSize(null);
+        const imgSize = await getImgNaturalSizeFn(tempImgURL);
+        setImgNaturalSize(imgSize);
+      }
+    });
   }, [imgFile]);
 
   React.useEffect(() => {
@@ -117,15 +117,18 @@ function DisplayOneImg({
     if (
       mobileNetModel &&
       computerVisionOn &&
-      imgRef.current?.src !== imgPlaceHolder &&
+      imgRef.current &&
+      imgRef.current.src !== imgPlaceHolder &&
       imgVisible &&
       imgLoaded &&
       !predictedTags
     ) {
-      (async () => {
-        const predictions = await mobileNetModel.classify(imgRef.current);
-        setPredictedTags(predictions);
-      })();
+      requestIdleCallback(async () => {
+        if (imgRef.current) {
+          const predictions = await mobileNetModel.classify(imgRef.current);
+          setPredictedTags(predictions);
+        }
+      });
     }
   }, [mobileNetModel, imgVisible, imgLoaded, predictedTags, computerVisionOn]);
 
@@ -133,40 +136,43 @@ function DisplayOneImg({
     if (
       cocoSsd &&
       computerVisionOn &&
-      imgRef.current?.src !== imgPlaceHolder &&
+      imgRef.current &&
+      imgRef.current.src !== imgPlaceHolder &&
       imgVisible &&
       imgLoaded &&
       !detectedObjects
     ) {
-      (async () => {
-        let predictions = await cocoSsd.detect(imgRef.current);
-        predictions = predictions.map(
-          ({
-            bbox,
-            class: objClass,
-            score,
-          }: {
-            bbox: number[];
-            class: string;
-            score: number;
-          }) => {
-            let newBBox;
-            if (imgRef.current?.width && imgRef.current?.height) {
-              newBBox = [
-                bbox[0] / imgRef.current?.width,
-                bbox[1] / imgRef.current?.height,
-                bbox[2] / imgRef.current?.width,
-                bbox[3] / imgRef.current?.height,
-              ];
-            } else {
-              newBBox = [0, 0, 0, 0];
+      requestIdleCallback(async () => {
+        if (imgRef.current) {
+          let predictions = await cocoSsd.detect(imgRef.current);
+          predictions = predictions.map(
+            ({
+              bbox,
+              class: objClass,
+              score,
+            }: {
+              bbox: number[];
+              class: string;
+              score: number;
+            }) => {
+              let newBBox;
+              if (imgRef.current?.width && imgRef.current?.height) {
+                newBBox = [
+                  bbox[0] / imgRef.current?.width,
+                  bbox[1] / imgRef.current?.height,
+                  bbox[2] / imgRef.current?.width,
+                  bbox[3] / imgRef.current?.height,
+                ];
+              } else {
+                newBBox = [0, 0, 0, 0];
+              }
+              return { bbox: newBBox, objClass, score };
             }
-            return { bbox: newBBox, objClass, score };
-          }
-        );
+          );
 
-        setDetectedObjects(predictions);
-      })();
+          setDetectedObjects(predictions);
+        }
+      });
     }
   }, [cocoSsd, imgVisible, imgLoaded, detectedObjects, computerVisionOn]);
 
@@ -191,7 +197,7 @@ function DisplayOneImg({
   return (
     <>
       {imgCalculatedSize && (
-        <figure className={imgsDisplayStyle.one_fig}>
+        <figure id={id} className={imgsDisplayStyle.one_fig}>
           <Image
             ref={imgRef}
             src={imgURL}
@@ -210,26 +216,27 @@ function DisplayOneImg({
             height={0}
             // https://www.youtube.com/watch?v=2U7yZ3wvFBM 11:30
           />
-          {detectedObjects?.map(({ bbox, objClass, score }, idx) => {
-            return (
-              <BBox
-                key={`${objClass}_${idx}`}
-                x={bbox[0]}
-                y={bbox[1]}
-                width={bbox[2]}
-                height={bbox[3]}
-                objectName={objClass}
-                confidence={(score * 100).toFixed(1)}
-                color={
-                  distinctColors[
-                    objClass.split("").reduce((total, cur) => {
-                      return total + cur.charCodeAt(0);
-                    }, 0) % distinctColorsLen
-                  ]
-                }
-              />
-            );
-          })}
+          {computerVisionOn &&
+            detectedObjects?.map(({ bbox, objClass, score }, idx) => {
+              return (
+                <BBox
+                  key={`${objClass}_${idx}`}
+                  x={bbox[0]}
+                  y={bbox[1]}
+                  width={bbox[2]}
+                  height={bbox[3]}
+                  objectName={objClass}
+                  confidence={(score * 100).toFixed(1)}
+                  color={
+                    distinctColors[
+                      objClass.split("").reduce((total, cur) => {
+                        return total + cur.charCodeAt(0);
+                      }, 0) % distinctColorsLen
+                    ]
+                  }
+                />
+              );
+            })}
         </figure>
       )}
     </>

@@ -49,6 +49,7 @@ export default function ImagesOneDir({ dir, dirImgs, indent }: Props) {
 
           return (
             <DisplayOneImg
+              id={`${dir}/${imgName}`}
               key={`image_${idx}`}
               imgFile={loadedFilesDirs[dir][imgName]}
               imgName={imgName}

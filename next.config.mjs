@@ -7,7 +7,9 @@ import { LicenseWebpackPlugin } from "license-webpack-plugin";
 // const __dirname = path.resolve();
 
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
+  reactStrictMode: true,
   webpack: (config, { dev, isServer }) => {
     if (!isServer && !dev) {
       config.plugins.push(
@@ -20,6 +22,7 @@ const nextConfig = {
           },
           modulesDirectories: ["node_modules"],
           // modulesDirectories: [path.resolve(__dirname, "node_modules")],
+          // reactStrictMode: false,
         })
       );
     }

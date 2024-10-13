@@ -11,6 +11,8 @@
   --background-end-rgb: rgb(255, 255, 255);
   --dir-btn-color-rgb: rgb(187, 214, 217);
   --borders-sidebar_items-rgb: rgb(166, 200, 215);
+  --elements-in-main: #6b8fcd;
+  --imgs-bcgnd: rgb(208, 225, 255);
 
   --border-sidebar-itms: 0.06rem solid var(--borders-sidebar_items-rgb);
 

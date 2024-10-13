@@ -4,15 +4,19 @@ export function getImgNaturalSizeFn(imgURL: string) {
     height: number;
   }>((resolve, reject) => {
     const img = new Image();
+    // const imgURL = URL.createObjectURL(imgBlob);
     img.src = imgURL;
+    // console.log("hello resolve");
     img.onload = () => {
       resolve({
         width: img.naturalWidth,
         height: img.naturalHeight,
       });
+      // URL.revokeObjectURL(imgURL);
     };
     img.onerror = () => {
-      reject();
+      reject(new Error("Failed to load image from Blob"));
+      // URL.revokeObjectURL(imgURL);
     };
   });
 }

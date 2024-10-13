@@ -32,7 +32,8 @@ export default function Sidebar({
   const [sidebarSize, setSidebarSize] = React.useState(0);
   const refSideBarNav = React.useRef<HTMLElement>(null);
   const { loadedFilesDirs } = useStoredFiles();
-
+  const [openManageBar, setOpenManageBar] = React.useState(true);
+  const [lastScrollPosition, setLastScrollPosition] = React.useState(0);
   const [openCloseTime] = React.useState(0.3);
   const [closeDelayTime] = React.useState(0.7);
   const [completelyClosed, setCompletelyClosed] = React.useState(openSidebar);
@@ -97,6 +98,13 @@ export default function Sidebar({
     }
   }, [refSideBarNav, openSidebar]);
 
+  const updateManagerBarOnChange = React.useCallback(
+    (updateManagerBarValue: boolean) => {
+      setOpenManageBar(updateManagerBarValue);
+    },
+    [openSidebar, setPreventDelayAction]
+  );
+
   return (
     <nav
       className={sidebarStyles.sidebar_div}
@@ -132,13 +140,28 @@ export default function Sidebar({
     >
       {(openSidebar || !completelyClosed) && (
         <>
-          <ManageBar pinnedOpen={pinnedOpen} setPinnedOpen={setPinnedOpen} />
-          <nav ref={refSideBarNav} className={sidebarStyles.sidebar}>
+          <ManageBar
+            pinnedOpen={pinnedOpen}
+            setPinnedOpen={setPinnedOpen}
+            openManageBar={openManageBar}
+            onChange={updateManagerBarOnChange}
+          />
+          <nav
+            ref={refSideBarNav}
+            className={sidebarStyles.sidebar}
+            onScroll={(e) => {
+              if (e.currentTarget.scrollTop > lastScrollPosition) {
+                setOpenManageBar(false);
+              } else {
+                setOpenManageBar(true);
+              }
+              setLastScrollPosition(e.currentTarget.scrollTop);
+            }}
+          >
             {Object.keys(loadedFilesDirs)
               .sort(SortFnAscend)
               .map((dir, idx_dir) => {
                 const indent = dir.replace(/^\//, "").split("/").length - 1;
-                // const indent = Math.floor((dir.split("/").length - 1) / 2);
                 return (
                   <SidebarDir
                     key={`${dir}_${idx_dir}`}

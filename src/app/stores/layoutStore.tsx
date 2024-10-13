@@ -11,7 +11,7 @@ type UseLayout = {
     height: number;
   }) => void;
 
-  setImgsPaneScaleFactor: (scaleFactor: number) => void;
+  setImgsPaneScaleFactor: (adjustment: number, minScaleFactor: number) => void;
 };
 
 export const useLayout = create<UseLayout>((set) => ({
@@ -22,10 +22,24 @@ export const useLayout = create<UseLayout>((set) => ({
       return { ...state, imgsPaneSize: { width, height } };
     });
   },
-  setImgsPaneScaleFactor: (scaleFactor: number) => {
+  setImgsPaneScaleFactor: (adjustment: number, minScaleFactor: number) => {
     set((state: UseLayout) => {
-      console.log("scaleFactor", scaleFactor);
-      return { ...state, imgsPaneScaleFactor: scaleFactor };
+      console.log("scaleFactor", adjustment);
+      if (adjustment < 1) {
+        if (state.imgsPaneScaleFactor > 1) {
+          const updatedValue = state.imgsPaneScaleFactor / 1.1;
+          return { ...state, imgsPaneScaleFactor: updatedValue };
+        }
+      } else {
+        const updatedValue =
+          (minScaleFactor > state.imgsPaneScaleFactor
+            ? minScaleFactor
+            : state.imgsPaneScaleFactor) * 1.1;
+        if (updatedValue < 500) {
+          return { ...state, imgsPaneScaleFactor: updatedValue };
+        }
+      }
+      return state;
     });
   },
 }));

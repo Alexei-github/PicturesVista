@@ -5,41 +5,31 @@ import imgsDisplayStyles from "@/components/imgsDisplay/imgsDisplay.module.css";
 type Props = { minScale: number };
 
 export default function ScaleBtn({ minScale }: Props) {
-  const { imgsPaneScaleFactor, setImgsPaneScaleFactor } = useLayout();
+  const { setImgsPaneScaleFactor } = useLayout();
 
-  const adjustSizeOfPopup = React.useCallback(
-    (adjustment: number, minPopupFactor: number) => {
-      if (adjustment < 1) {
-        if (imgsPaneScaleFactor > 1) {
-          const updatedValue = imgsPaneScaleFactor / 1.1;
-          setImgsPaneScaleFactor(updatedValue);
-        }
-      } else {
-        const updatedValue =
-          (minPopupFactor > imgsPaneScaleFactor
-            ? minPopupFactor
-            : imgsPaneScaleFactor) * 1.1;
-        if (updatedValue < 500) {
-          setImgsPaneScaleFactor(updatedValue);
-        }
-      }
-    },
-    [imgsPaneScaleFactor, setImgsPaneScaleFactor]
-  );
+  const incrementScaleFactor = React.useCallback(() => {
+    setImgsPaneScaleFactor(+1, minScale);
+  }, []);
+  const decrementScaleFactor = React.useCallback(() => {
+    setImgsPaneScaleFactor(-1, minScale);
+  }, []);
 
   return (
-    <div className={imgsDisplayStyles.buton_scale_size}>
+    <div
+      className={imgsDisplayStyles.buton_scale_size}
+      data-tooltip="Ctrl+Scroll"
+    >
       <button
         className={imgsDisplayStyles.half_buton_scale_size}
-        onClick={() => adjustSizeOfPopup(+1, minScale)}
+        onClick={decrementScaleFactor}
       >
-        -
+        +
       </button>
       <button
         className={imgsDisplayStyles.half_buton_scale_size}
-        onClick={() => adjustSizeOfPopup(-1, minScale)}
+        onClick={incrementScaleFactor}
       >
-        +
+        -
       </button>
     </div>
   );

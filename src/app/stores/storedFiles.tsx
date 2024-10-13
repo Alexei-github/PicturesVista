@@ -41,6 +41,7 @@ export const useClickedFileName = create<LastClickedFileName>((set) => ({
 
   setClickedImgName: (imgDir: string, imgName: string) => {
     set((state) => {
+      // console.log(imgDir, imgName);
       return { ...state, clickedImg: { name: imgName, dir: imgDir } };
     });
   },

@@ -2,6 +2,8 @@ import React from "react";
 
 import { useVision } from "@/stores/computerVisionStore";
 
+import cvStyle from "@/components/computerVision/cv.module.css";
+
 function ComputerVision() {
   const {
     mobileNetModel,
@@ -44,25 +46,21 @@ function ComputerVision() {
   }, [computerVisionOn]);
 
   return (
-    <>
-      <span
-        style={{ ...iconStyle, color: `${computerVisionOn ? "red" : "grey"}` }}
-        onClick={() => {
-          setComputerVisionOn(!computerVisionOn);
-        }}
-        onTouchEnd={() => {
-          setComputerVisionOn(!computerVisionOn);
-        }}
-      >
+    <span
+      className={cvStyle.cv_icon}
+      style={{ color: `${computerVisionOn ? "red" : "grey"}` }}
+      onClick={() => {
+        setComputerVisionOn(!computerVisionOn);
+      }}
+      onTouchEnd={() => {
+        setComputerVisionOn(!computerVisionOn);
+      }}
+    >
+      <div style={{ transform: "translate(0%, -8%)", margin: "-0.5rem 0" }}>
         &#128065;
-      </span>
-    </>
+      </div>
+    </span>
   );
 }
-
-const iconStyle = {
-  fontSize: "2rem",
-  margin: "-0.7rem 0",
-};
 
 export default React.memo(ComputerVision);

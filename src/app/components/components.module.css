@@ -14,14 +14,25 @@
   text-align: right;
   border-bottom: var(--border);
   display: flex;
-  justify-content: space-between;
-  padding: 0 1rem;
+  flex-direction: row;
+  justify-content: space-around;
+  /* align-items: space-between; */
+  padding: 0;
+}
+
+.navbar_links {
+  color: white;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  line-height: 1.8;
 }
 
 .h1 {
   margin: 0 0.5em;
   color: white;
   display: inline;
+  width: fit-content;
 }
 
 .img_drop_area {
