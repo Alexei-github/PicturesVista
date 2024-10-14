@@ -19,14 +19,14 @@ function ComputerVision() {
       if (computerVisionOn) {
         // check for internet connection
         if (navigator.onLine && (!mobileNetModel || !cocoSsd)) {
-          if (!mobileNetModel) {
-            const loadMobileNetFn = (
-              await import("@/components/computerVision/loadCVModels")
-            ).loadMobileNetFn;
-            loadMobileNet(
-              await loadMobileNetFn(computerVisionOn && !mobileNetModel)
-            );
-          }
+          // if (!mobileNetModel) {
+          //   const loadMobileNetFn = (
+          //     await import("@/components/computerVision/loadCVModels")
+          //   ).loadMobileNetFn;
+          //   loadMobileNet(
+          //     await loadMobileNetFn(computerVisionOn && !mobileNetModel)
+          //   );
+          // }
           if (!cocoSsd) {
             const loadCoocSSDFn = (
               await import("@/components/computerVision/loadCVModels")
@@ -42,11 +42,11 @@ function ComputerVision() {
         }
       }
     })();
-    // import
   }, [computerVisionOn]);
 
   return (
     <span
+      data-tooltip="Objects Detection"
       className={cvStyle.cv_icon}
       style={{ color: `${computerVisionOn ? "red" : "grey"}` }}
       onClick={() => {

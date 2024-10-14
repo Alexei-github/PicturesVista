@@ -22,9 +22,9 @@ export const useLayout = create<UseLayout>((set) => ({
       return { ...state, imgsPaneSize: { width, height } };
     });
   },
-  setImgsPaneScaleFactor: (adjustment: number, minScaleFactor: number) => {
+  setImgsPaneScaleFactor: (adjust: number, minScaleFactor: number) => {
     set((state: UseLayout) => {
-      console.log("scaleFactor", adjustment);
+      const adjustment: number = 2 * adjust;
       if (adjustment < 1) {
         if (state.imgsPaneScaleFactor > 1) {
           const updatedValue = state.imgsPaneScaleFactor / 1.1;

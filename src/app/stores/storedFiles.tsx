@@ -7,7 +7,7 @@ type UseStoredFiles = {
 };
 
 export const useStoredFiles = create<UseStoredFiles>((set) => ({
-  loadedFilesDirs: { "/": {} },
+  loadedFilesDirs: {},
 
   storeLoadedFiles: async (newFilesDirs: LoadedFilesDirs) =>
     set((state) => {

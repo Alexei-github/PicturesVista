@@ -21,19 +21,6 @@ function ImgsPane() {
   const { imgsPaneSize, imgsPaneScaleFactor, setImgsPaneScaleFactor } =
     useLayout();
 
-  const calculateImgSize = React.useCallback(
-    (imgWidth: number, imgHeight: number) => {
-      return calculateImgSides(
-        imgWidth,
-        imgHeight,
-        imgsPaneScaleFactor,
-        3000,
-        3000
-      );
-    },
-    [imgsPaneScaleFactor, imgsPaneSize]
-  );
-
   React.useEffect(() => {
     if (sizeObserverRef.current) {
       const zoomFn = (e: WheelEvent) => {
@@ -63,32 +50,36 @@ function ImgsPane() {
     <>
       <ScaleBtn minScale={2} />
       <ul ref={sizeObserverRef} className={imgsDisplayStyle.imgs_pane}>
-        {Object.keys(loadedFilesDirs)
-          .sort(SortFnAscend)
-          .map((dir, idx_dir) => {
-            const indent = dir.replace(/^\//, "").split("/").length - 1;
-            return (
-              <ImagesOneDir
-                key={`${dir}_${idx_dir}`}
-                dir={dir}
-                dirImgs={Object.keys(loadedFilesDirs[dir])}
-                indent={indent}
-              />
-            );
-          })}
+        {Object.keys(loadedFilesDirs).length ? (
+          Object.keys(loadedFilesDirs)
+            .sort(SortFnAscend)
+            .map((dir, idx_dir) => {
+              const indent = dir.replace(/^\//, "").split("/").length - 1;
+              return (
+                <ImagesOneDir
+                  key={`${dir}_${idx_dir}`}
+                  dir={dir}
+                  dirImgs={Object.keys(loadedFilesDirs[dir])}
+                  indent={indent}
+                />
+              );
+            })
+        ) : (
+          <p
+            style={{
+              margin: "auto",
+              padding: "0.3rem",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            Upload images / folders to see them here.
+          </p>
+        )}
       </ul>
     </>
-    // <>
-    //   {clickedImg.dir && (
-    //     <DisplayOneImg
-    //       // key={`image_${idx}`}
-    //       imgFile={loadedFilesDirs[clickedImg.dir][clickedImg.name]}
-    //       imgName={clickedImg.name}
-    //       calculateImgSize={calculateImgSize}
-    //       className={imgsDisplayStyle.one_img}
-    //     />
-    //   )}
-    // </>
   );
 }
 

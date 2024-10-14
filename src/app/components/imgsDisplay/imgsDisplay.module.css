@@ -89,6 +89,7 @@
     line-height: 1;
     z-index: 2;
     border: 2px solid black;
+    color: black;
   }
 }
 
@@ -111,7 +112,7 @@
   border: 0.3rem solid rgb(99, 99, 255);
   border-radius: 0.75rem;
 
-  animation: pulsate 3s 0.5s 1;
+  animation: pulsate 2s 0.5s 1;
 }
 @keyframes pulsate {
   0% {

@@ -10,6 +10,7 @@ import { LicenseWebpackPlugin } from "license-webpack-plugin";
 
 const nextConfig = {
   reactStrictMode: true,
+  optimizeFonts: false,
   webpack: (config, { dev, isServer }) => {
     if (!isServer && !dev) {
       config.plugins.push(

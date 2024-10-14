@@ -40,7 +40,7 @@ const FilesLoadButton = () => {
 
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadImgs}>
-      Load Images
+      Load Image(s)
     </button>
   );
 };

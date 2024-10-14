@@ -10,13 +10,14 @@ import SortFnAscend from "@/lib/sortFn";
 
 import OpenDirBtn from "@/components/sidebar/openDirBtn";
 
-type Props = { dirName: string; indent: number; sidebarSize: number };
+type Props = {
+  dirName: string;
+  indent: number;
+  sidebarSize: number;
+  manageBarOpen: boolean;
+};
 
-function SidebarDir({
-  dirName,
-  indent,
-  sidebarSize: effectiveSidebarSize,
-}: Props) {
+function SidebarDir({ dirName, indent, sidebarSize, manageBarOpen }: Props) {
   const { openDirs } = useOpenDir();
   const { loadedFilesDirs } = useStoredFiles();
   const [itemWidth] = React.useState(170);
@@ -24,9 +25,9 @@ function SidebarDir({
 
   const numberOfColumns = React.useMemo(() => {
     return Math.floor(
-      (effectiveSidebarSize - gridColGap * 2) / (itemWidth + gridColGap)
+      (sidebarSize - gridColGap * 2) / (itemWidth + gridColGap)
     );
-  }, [effectiveSidebarSize, gridColGap, itemWidth]);
+  }, [sidebarSize, gridColGap, itemWidth]);
 
   const isShowDir = React.useMemo(() => {
     return isShowDirFn(dirName, openDirs);
@@ -34,7 +35,16 @@ function SidebarDir({
 
   return (
     <div style={{ margin: `0.3rem 0.3rem 0.3rem ${indent / 2 + 0.3}rem` }}>
-      {isShowDir && <OpenDirBtn dirName={dirName} />}
+      {isShowDir && (
+        <OpenDirBtn
+          dirName={dirName}
+          style={
+            !manageBarOpen
+              ? { top: "-1.8rem", transition: "top 0.5s ease" }
+              : { top: "0", transition: "top 0.2s ease" }
+          }
+        />
+      )}
       <GridUl $colnumb={numberOfColumns}>
         {(openDirs[dirName] === undefined || openDirs[dirName]) &&
           isShowDir &&

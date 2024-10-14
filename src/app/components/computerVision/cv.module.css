@@ -8,4 +8,24 @@
     border: 0.1rem solid rgb(255, 255, 255);
     border-radius: 0.8rem;
   }
+  &:hover::after {
+    /* position: absolute; */
+    content: attr(data-tooltip);
+    font-size: 1.1rem;
+    position: absolute;
+    bottom: -0.1rem;
+    /* center: 0%; */
+    text-align: center;
+    transform: translate(0%, 100%);
+    white-space: nowrap;
+    background-color: var(--imgs-bcgnd);
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    line-height: 1;
+    z-index: 2;
+    border: 2px solid black;
+    color: black;
+
+    /* z-index: 30; */
+  }
 }

@@ -7,12 +7,9 @@ import { useVision } from "@/stores/computerVisionStore";
 import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";
 
 type Props = {
-  imgFile: Blob;
+  imgURL: string;
   imgName: string;
-  calculateImgSize: (
-    imgWidth: number,
-    imgHeight: number
-  ) => { width: number; height: number };
+  imgCalculatedSize: { width: number; height: number };
   className: string;
   id: string;
 };
@@ -58,15 +55,13 @@ const distinctColors = [
 const distinctColorsLen = distinctColors.length;
 
 function DisplayOneImg({
-  imgFile,
+  imgURL: imgURL,
   imgName,
-  calculateImgSize,
+  imgCalculatedSize,
   className,
   id,
 }: Props) {
   const { mobileNetModel, cocoSsd, computerVisionOn } = useVision();
-  // const { imgsPaneSize, imgsPaneScaleFactor } = useLayout();
-  const [imgURL, setImgURL] = React.useState(imgPlaceHolder);
   const [imgLoaded, setImgLoaded] = React.useState(false);
   const [imgVisible, setImgVisible] = React.useState(false);
   const [predictedTags, setPredictedTags] = React.useState(null);
@@ -78,59 +73,37 @@ function DisplayOneImg({
       }[]
     | null
   >(null);
-  const [imgCalculatedSize, setImgCalculatedSize] = React.useState<{
-    width: number;
-    height: number;
-  } | null>(null);
-  const [imgNaturalSize, setImgNaturalSize] = React.useState<{
-    width: number;
-    height: number;
-  } | null>(null);
-  const [latestImgFile, setLatestImgFile] = React.useState<Blob | null>(null);
+
+  const [latestImgURL, setLatestImgURL] = React.useState<string | null>(null);
 
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
   React.useEffect(() => {
-    requestIdleCallback(async () => {
-      if (imgFile !== latestImgFile) {
-        setLatestImgFile(imgFile);
-        const tempImgURL = URL.createObjectURL(imgFile);
-        setImgURL(tempImgURL);
-        setDetectedObjects(null);
-        setImgLoaded(false);
-        setImgNaturalSize(null);
-        const imgSize = await getImgNaturalSizeFn(tempImgURL);
-        setImgNaturalSize(imgSize);
-      }
-    });
-  }, [imgFile]);
-
-  React.useEffect(() => {
-    if (imgNaturalSize) {
-      setImgCalculatedSize(
-        calculateImgSize(imgNaturalSize.width, imgNaturalSize.height)
-      );
+    if (imgURL !== latestImgURL) {
+      setLatestImgURL(imgURL);
+      setDetectedObjects(null);
+      setImgLoaded(false);
     }
-  }, [imgNaturalSize, calculateImgSize]);
+  }, [imgURL]);
 
-  React.useEffect(() => {
-    if (
-      mobileNetModel &&
-      computerVisionOn &&
-      imgRef.current &&
-      imgRef.current.src !== imgPlaceHolder &&
-      imgVisible &&
-      imgLoaded &&
-      !predictedTags
-    ) {
-      requestIdleCallback(async () => {
-        if (imgRef.current) {
-          const predictions = await mobileNetModel.classify(imgRef.current);
-          setPredictedTags(predictions);
-        }
-      });
-    }
-  }, [mobileNetModel, imgVisible, imgLoaded, predictedTags, computerVisionOn]);
+  // React.useEffect(() => {
+  //   if (
+  //     mobileNetModel &&
+  //     computerVisionOn &&
+  //     imgRef.current &&
+  //     imgRef.current.src !== imgPlaceHolder &&
+  //     imgVisible &&
+  //     imgLoaded &&
+  //     !predictedTags
+  //   ) {
+  //     requestIdleCallback(async () => {
+  //       if (imgRef.current) {
+  //         const predictions = await mobileNetModel.classify(imgRef.current);
+  //         setPredictedTags(predictions);
+  //       }
+  //     });
+  //   }
+  // }, [mobileNetModel, imgVisible, imgLoaded, predictedTags, computerVisionOn]);
 
   React.useEffect(() => {
     if (

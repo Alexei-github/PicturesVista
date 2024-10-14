@@ -28,7 +28,7 @@ export default function Sidebar({
 }: Props) {
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [resizeMargin] = React.useState(50);
-  const [closedSize] = React.useState(1);
+  const [closedSize] = React.useState(3);
   const [sidebarSize, setSidebarSize] = React.useState(0);
   const refSideBarNav = React.useRef<HTMLElement>(null);
   const { loadedFilesDirs } = useStoredFiles();
@@ -158,19 +158,32 @@ export default function Sidebar({
               setLastScrollPosition(e.currentTarget.scrollTop);
             }}
           >
-            {Object.keys(loadedFilesDirs)
-              .sort(SortFnAscend)
-              .map((dir, idx_dir) => {
-                const indent = dir.replace(/^\//, "").split("/").length - 1;
-                return (
-                  <SidebarDir
-                    key={`${dir}_${idx_dir}`}
-                    dirName={dir}
-                    indent={indent}
-                    sidebarSize={sidebarSize}
-                  />
-                );
-              })}
+            {Object.keys(loadedFilesDirs).length ? (
+              Object.keys(loadedFilesDirs)
+                .sort(SortFnAscend)
+                .map((dir, idx_dir) => {
+                  const indent = dir.replace(/^\//, "").split("/").length - 1;
+                  return (
+                    <SidebarDir
+                      key={`${dir}_${idx_dir}`}
+                      dirName={dir}
+                      indent={indent}
+                      sidebarSize={sidebarSize}
+                      manageBarOpen={openManageBar}
+                    />
+                  );
+                })
+            ) : (
+              <p
+                style={{
+                  color: "white",
+                  margin: "auto auto",
+                  padding: "0.3rem",
+                }}
+              >
+                Upload images / folders via the buttons below.
+              </p>
+            )}
             <FileUploader />
           </nav>
           <SidebarDragLine
