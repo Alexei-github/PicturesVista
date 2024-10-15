@@ -12,7 +12,7 @@ import isShowDirFn from "@/lib/isShowDir";
 
 import DisplayOneImg from "@/components/imgsDisplay/displayOneImg";
 
-type Props = { dir: string; dirImgs: string[]; indent: number };
+type Props = { dir: string; indent: number };
 
 type ImgsData = {
   [imgName: string]: {
@@ -21,7 +21,7 @@ type ImgsData = {
   };
 };
 
-export default function ImagesOneDir({ dir, dirImgs, indent }: Props) {
+export default function ImagesOneDir({ dir, indent }: Props) {
   const { loadedFilesDirs } = useStoredFiles();
   const { openDirs } = useOpenDir();
   const { imgsPaneSize, imgsPaneScaleFactor } = useLayout();
@@ -34,13 +34,14 @@ export default function ImagesOneDir({ dir, dirImgs, indent }: Props) {
     setLoadingImgsNames(
       Object.keys(loadedFilesDirs[dir]).sort(SortFnAscend).reverse()
     );
-  }, [loadedFilesDirs[dir]]);
+  }, [loadedFilesDirs, dir]);
 
   React.useEffect(() => {
-    const remainedToLoad = loadingImgsNames;
-    if (remainedToLoad.length === 0) {
+    if (loadingImgsNames.length === 0) {
       return;
     }
+    // const remainedToLoad = loadingImgsNames;
+    const remainedToLoad = [...loadingImgsNames];
 
     const nextLoad: string[] = [];
     for (let i: number = 0; i < batchSize; i++) {
@@ -57,29 +58,14 @@ export default function ImagesOneDir({ dir, dirImgs, indent }: Props) {
         const imgURL = URL.createObjectURL(imgFile);
         const imgNaturalSize = await getImgNaturalSizeFn(imgURL);
         return [imgName, { imgURL, imgNaturalSize }];
-        // setImgsData({ ...imgsData, imgName: { imgURL, imgNaturalSize } });
       });
       setImgsData({
         ...imgsData,
         ...Object.fromEntries(await Promise.all(imgsDataPromises)),
       });
+      setLoadingImgsNames(remainedToLoad);
     });
-  }, [imgsData]);
-
-  // React.useEffect(() => {
-  //   requestIdleCallback(async () => {
-  //     const imgsDataPromises = Object.keys(loadedFilesDirs[dir])
-  //       .sort(SortFnAscend)
-  //       .map(async (imgName) => {
-  //         const imgFile = loadedFilesDirs[dir][imgName];
-  //         const imgURL = URL.createObjectURL(imgFile);
-  //         const imgNaturalSize = await getImgNaturalSizeFn(imgURL);
-  //         return [imgName, { imgURL, imgNaturalSize }];
-  //         // setImgsData({ ...imgsData, imgName: { imgURL, imgNaturalSize } });
-  //       });
-  //     setImgsData(Object.fromEntries(await Promise.all(imgsDataPromises)));
-  //   });
-  // }, [imgsData]);
+  }, [imgsData, batchSize, dir, loadedFilesDirs, loadingImgsNames]);
 
   const showDirResult = React.useMemo(() => {
     return isShowDirFn(dir, openDirs);
@@ -95,7 +81,7 @@ export default function ImagesOneDir({ dir, dirImgs, indent }: Props) {
         imgsPaneSize.width
       );
     },
-    [imgsPaneScaleFactor, imgsPaneSize, calculateImgSides]
+    [imgsPaneScaleFactor, imgsPaneSize]
   );
 
   return (
@@ -111,8 +97,6 @@ export default function ImagesOneDir({ dir, dirImgs, indent }: Props) {
         Object.keys(imgsData)
           .sort(SortFnAscend)
           .map((imgName: string, idx) => {
-            // const imageHandle = getImgsInfo[dir][imgName].handle;
-
             return (
               <DisplayOneImg
                 id={`${dir}/${imgName}`}

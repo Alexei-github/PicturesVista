@@ -9,10 +9,11 @@ export default function ScaleBtn({ minScale }: Props) {
 
   const incrementScaleFactor = React.useCallback(() => {
     setImgsPaneScaleFactor(+1, minScale);
-  }, []);
+  }, [minScale, setImgsPaneScaleFactor]);
+
   const decrementScaleFactor = React.useCallback(() => {
     setImgsPaneScaleFactor(-1, minScale);
-  }, []);
+  }, [minScale, setImgsPaneScaleFactor]);
 
   return (
     <div

@@ -1,7 +1,5 @@
 import React from "react";
-
 import { useVision } from "@/stores/computerVisionStore";
-
 import cvStyle from "@/components/computerVision/cv.module.css";
 
 function ComputerVision() {
@@ -35,14 +33,21 @@ function ComputerVision() {
           }
         } else {
           if (!mobileNetModel || !cocoSsd) {
-            alert("Please connect to internet.");
+            alert("Please connect to the internet.");
             setComputerVisionOn(false);
             return;
           }
         }
       }
     })();
-  }, [computerVisionOn]);
+  }, [
+    mobileNetModel,
+    cocoSsd,
+    computerVisionOn,
+    loadMobileNet,
+    loadCocoSsd,
+    setComputerVisionOn,
+  ]);
 
   return (
     <span

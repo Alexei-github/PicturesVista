@@ -64,7 +64,6 @@ function DisplayOneImg({
   const { mobileNetModel, cocoSsd, computerVisionOn } = useVision();
   const [imgLoaded, setImgLoaded] = React.useState(false);
   const [imgVisible, setImgVisible] = React.useState(false);
-  const [predictedTags, setPredictedTags] = React.useState(null);
   const [detectedObjects, setDetectedObjects] = React.useState<
     | {
         bbox: number[];
@@ -84,7 +83,7 @@ function DisplayOneImg({
       setDetectedObjects(null);
       setImgLoaded(false);
     }
-  }, [imgURL]);
+  }, [imgURL, latestImgURL]);
 
   // React.useEffect(() => {
   //   if (

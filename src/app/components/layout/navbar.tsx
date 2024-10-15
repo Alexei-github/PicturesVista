@@ -15,14 +15,14 @@ export default function Navbar() {
         href="https://github.com/Alexei-github/PicturesVista"
         target="_blank"
       >
-        Web Site's Github
+        Website&apos;s Github
       </a>
       <a
         className={compStyles.navbar_links}
         href="https://www.linkedin.com/in/aliakseiberaziuk/"
         target="_blank"
       >
-        Author's LinkedIn
+        Author&apos;s LinkedIn
       </a>
     </nav>
   );

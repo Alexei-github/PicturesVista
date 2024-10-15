@@ -9,12 +9,10 @@
     border-radius: 0.8rem;
   }
   &:hover::after {
-    /* position: absolute; */
     content: attr(data-tooltip);
     font-size: 1.1rem;
     position: absolute;
     bottom: -0.1rem;
-    /* center: 0%; */
     text-align: center;
     transform: translate(0%, 100%);
     white-space: nowrap;
@@ -25,7 +23,5 @@
     z-index: 2;
     border: 2px solid black;
     color: black;
-
-    /* z-index: 30; */
   }
 }

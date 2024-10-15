@@ -49,7 +49,7 @@ export default function Sidebar({
     } else {
       setCompletelyClosed(false);
     }
-  }, [openSidebar]);
+  }, [closeDelayTime, openCloseTime, openSidebar]);
 
   React.useEffect(
     /**
@@ -62,7 +62,7 @@ export default function Sidebar({
       );
       setSidebarSize(remSize * 13);
     },
-    []
+    [closeDelayTime, openCloseTime]
   );
 
   React.useEffect(() => {
@@ -75,7 +75,8 @@ export default function Sidebar({
 
   React.useEffect(() => {
     const sideBarNav = refSideBarNav.current;
-    if (sideBarNav) {
+    if (sideBarNav && openSidebar) {
+      //?? check out later
       sideBarNav.addEventListener(
         "touchstart",
         (e: any) => {
@@ -102,7 +103,7 @@ export default function Sidebar({
     (updateManagerBarValue: boolean) => {
       setOpenManageBar(updateManagerBarValue);
     },
-    [openSidebar, setPreventDelayAction]
+    []
   );
 
   return (

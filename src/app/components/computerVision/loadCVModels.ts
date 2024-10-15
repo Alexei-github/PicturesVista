@@ -5,16 +5,16 @@
 // import { useVision } from "@/stores/computerVision";
 // const { loadMobileNet, loadCocoSsd } = useVision();
 
-export async function loadMobileNetFn(load: boolean) {
-  if (load) {
-    await import("@tensorflow/tfjs-backend-webgl");
-    const mobileNet = await (
-      await import("@tensorflow-models/mobilenet")
-    ).load({ version: 2, alpha: 1.0 });
-    console.log("mobileNetLoaded");
-    return mobileNet;
-  }
-}
+// export async function loadMobileNetFn(load: boolean) {
+//   if (load) {
+//     await import("@tensorflow/tfjs-backend-webgl");
+//     const mobileNet = await (
+//       await import("@tensorflow-models/mobilenet")
+//     ).load({ version: 2, alpha: 1.0 });
+//     console.log("mobileNetLoaded");
+//     return mobileNet;
+//   }
+// }
 
 export async function loadCoocSSDFn(load: boolean) {
   if (load) {

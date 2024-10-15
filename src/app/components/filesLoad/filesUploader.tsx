@@ -25,8 +25,6 @@ import { useBrowserCanUse } from "@/stores/browserDetect";
  * Component which allows users to upload images into browser.
  */
 const FileUploader = () => {
-  // const { loadedFilesDirs } = useStoredFiles();
-
   const { canAccessDirectory } = useBrowserCanUse();
 
   return (

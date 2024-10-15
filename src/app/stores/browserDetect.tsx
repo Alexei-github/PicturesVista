@@ -12,11 +12,13 @@ export const useBrowserCanUse = create<UseBrowserCanUse>((set) => ({
     set((state: UseBrowserCanUse) => {
       let browser = Bowser.getParser(window.navigator.userAgent);
       const supportsDirLoad = browser.satisfies({
-        // mobile: {
-        //   chrome: ">120",
-        // },
+        // https://caniuse.com/input-file-directory
         desktop: {
-          chrome: ">120",
+          chrome: ">30",
+          edge: ">14",
+          safari: ">11.1",
+          firefox: ">50",
+          opera: ">17",
         },
       });
 

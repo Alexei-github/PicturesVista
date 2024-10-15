@@ -23,7 +23,7 @@ function SidebarItem({ imgName, dirName, className }: Props) {
       });
       element.classList.add(imgsDisplayStyle.focused_img);
     }
-  }, [setClickedImgName]);
+  }, [setClickedImgName, imgName, dirName]);
 
   const onBlur = React.useCallback(() => {
     // setClickedImgName("", "");
@@ -31,7 +31,7 @@ function SidebarItem({ imgName, dirName, className }: Props) {
     if (element) {
       element.classList.remove(imgsDisplayStyle.focused_img);
     }
-  }, [setClickedImgName]);
+  }, [imgName, dirName]);
 
   return (
     <li

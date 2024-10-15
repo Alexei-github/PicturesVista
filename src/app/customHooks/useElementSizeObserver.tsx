@@ -32,7 +32,7 @@ function useElementSizeObserver<T extends HTMLElement>(
     return () => {
       resizeObserver.unobserve(element);
     };
-  }, []);
+  }, [setSizeInStore]);
 
   // Return both the ref and the size object
   return [elementRef];

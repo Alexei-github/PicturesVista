@@ -22,7 +22,8 @@ function ImgsPane() {
     useLayout();
 
   React.useEffect(() => {
-    if (sizeObserverRef.current) {
+    const paneElement = sizeObserverRef.current;
+    if (paneElement) {
       const zoomFn = (e: WheelEvent) => {
         if (e.ctrlKey) {
           e.preventDefault();
@@ -34,17 +35,17 @@ function ImgsPane() {
         }
       };
 
-      sizeObserverRef.current.addEventListener("wheel", zoomFn, {
+      paneElement.addEventListener("wheel", zoomFn, {
         passive: false,
       });
 
       return () => {
-        if (sizeObserverRef.current) {
-          sizeObserverRef.current.removeEventListener("wheel", zoomFn);
+        if (paneElement) {
+          paneElement.removeEventListener("wheel", zoomFn);
         }
       };
     }
-  }, [setImgsPaneScaleFactor]);
+  }, [setImgsPaneScaleFactor, sizeObserverRef]);
 
   return (
     <>
@@ -59,7 +60,6 @@ function ImgsPane() {
                 <ImagesOneDir
                   key={`${dir}_${idx_dir}`}
                   dir={dir}
-                  dirImgs={Object.keys(loadedFilesDirs[dir])}
                   indent={indent}
                 />
               );
