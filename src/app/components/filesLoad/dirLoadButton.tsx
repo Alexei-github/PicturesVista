@@ -38,7 +38,7 @@ const DirLoadButton = () => {
   );
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadDir}>
-      Load Folder
+      Load Folder(s)
     </button>
   );
 };

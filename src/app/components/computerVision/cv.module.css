@@ -1,0 +1,27 @@
+.cv_icon {
+  font-size: 2rem;
+  display: block;
+  padding: -1.7rem 0;
+  cursor: pointer;
+  &:hover {
+    font-size: 2.2rem;
+    border: 0.1rem solid rgb(255, 255, 255);
+    border-radius: 0.8rem;
+  }
+  &:hover::after {
+    content: attr(data-tooltip);
+    font-size: 1.1rem;
+    position: absolute;
+    bottom: -0.1rem;
+    text-align: center;
+    transform: translate(0%, 100%);
+    white-space: nowrap;
+    background-color: var(--imgs-bcgnd);
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    line-height: 1;
+    z-index: 2;
+    border: 2px solid black;
+    color: black;
+  }
+}

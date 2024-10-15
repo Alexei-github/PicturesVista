@@ -9,10 +9,21 @@ export const metadata: Metadata = {
 export default function Navbar() {
   return (
     <nav className={compStyles.navbar}>
-      <h1 className={compStyles.h1} style={{ marginLeft: "auto" }}>
-        PicsVista PicsVista PicsVista PicsVista PicsVista PicsVista PicsVista
-        PicsVista PicsVista PicsVista
-      </h1>
+      <h1 className={compStyles.h1}>PicsVista</h1>
+      <a
+        className={compStyles.navbar_links}
+        href="https://github.com/Alexei-github/PicturesVista"
+        target="_blank"
+      >
+        Website&apos;s Github
+      </a>
+      <a
+        className={compStyles.navbar_links}
+        href="https://www.linkedin.com/in/aliakseiberaziuk/"
+        target="_blank"
+      >
+        Author&apos;s LinkedIn
+      </a>
     </nav>
   );
 }

@@ -9,7 +9,7 @@
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
   padding-right: 0.8rem;
 }
 
@@ -25,11 +25,8 @@
 }
 
 .pin {
-  position: absolute;
-  right: 0.6rem;
-  top: 0.2rem;
-  z-index: 1;
   cursor: pointer;
+  display: block;
   padding: 0 0.2rem 0.15rem 0.3rem;
   background-color: transparent;
   border-radius: 40%;
@@ -88,5 +85,20 @@
     border-left: var(--border);
     border-right: var(--border);
     cursor: pointer;
+  }
+}
+
+.manage_bar {
+  width: calc(100% - 1rem);
+  position: absolute;
+  overflow: hidden;
+  z-index: 2;
+  background-color: var(--main-navbar);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.1rem;
+  border-bottom: 1px solid white;
+  &:hover {
+    overflow: visible;
   }
 }

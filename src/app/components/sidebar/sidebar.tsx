@@ -1,13 +1,12 @@
 "use client";
 import React from "react";
 import sidebarStyles from "@/components/sidebar/sidebar.module.css";
-import PinButton from "@/components/sidebar/pinButton";
 import SidebarDragLine from "@/components/sidebar/sidebarDragLine";
 import FileUploader from "@/components/filesLoad/filesUploader";
 import SidebarDir from "@/components/sidebar/sidebarOneDir";
 import { useStoredFiles } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
-
+import ManageBar from "@/components/sidebar/manageBar";
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -29,11 +28,12 @@ export default function Sidebar({
 }: Props) {
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [resizeMargin] = React.useState(50);
-  const [closedSize] = React.useState(1);
+  const [closedSize] = React.useState(3);
   const [sidebarSize, setSidebarSize] = React.useState(0);
   const refSideBarNav = React.useRef<HTMLElement>(null);
   const { loadedFilesDirs } = useStoredFiles();
-
+  const [openManageBar, setOpenManageBar] = React.useState(true);
+  const [lastScrollPosition, setLastScrollPosition] = React.useState(0);
   const [openCloseTime] = React.useState(0.3);
   const [closeDelayTime] = React.useState(0.7);
   const [completelyClosed, setCompletelyClosed] = React.useState(openSidebar);
@@ -49,7 +49,7 @@ export default function Sidebar({
     } else {
       setCompletelyClosed(false);
     }
-  }, [openSidebar]);
+  }, [closeDelayTime, openCloseTime, openSidebar]);
 
   React.useEffect(
     /**
@@ -62,7 +62,7 @@ export default function Sidebar({
       );
       setSidebarSize(remSize * 13);
     },
-    []
+    [closeDelayTime, openCloseTime]
   );
 
   React.useEffect(() => {
@@ -75,7 +75,8 @@ export default function Sidebar({
 
   React.useEffect(() => {
     const sideBarNav = refSideBarNav.current;
-    if (sideBarNav) {
+    if (sideBarNav && openSidebar) {
+      //?? check out later
       sideBarNav.addEventListener(
         "touchstart",
         (e: any) => {
@@ -96,8 +97,14 @@ export default function Sidebar({
         }
       );
     }
-  }, [refSideBarNav]);
-  // }, [refSideBarNav, openSidebar]);
+  }, [refSideBarNav, openSidebar]);
+
+  const updateManagerBarOnChange = React.useCallback(
+    (updateManagerBarValue: boolean) => {
+      setOpenManageBar(updateManagerBarValue);
+    },
+    []
+  );
 
   return (
     <nav
@@ -134,21 +141,50 @@ export default function Sidebar({
     >
       {(openSidebar || !completelyClosed) && (
         <>
-          <PinButton pinned={pinnedOpen} setPinned={setPinnedOpen} />
-          <nav ref={refSideBarNav} className={sidebarStyles.sidebar}>
-            {Object.keys(loadedFilesDirs)
-              .sort(SortFnAscend)
-              .map((dir, idx_dir) => {
-                const indent = Math.floor((dir.split("/").length - 1) / 2);
-                return (
-                  <SidebarDir
-                    key={`${dir}_${idx_dir}`}
-                    dirName={dir}
-                    indent={indent}
-                    sidebarSize={sidebarSize}
-                  />
-                );
-              })}
+          <ManageBar
+            pinnedOpen={pinnedOpen}
+            setPinnedOpen={setPinnedOpen}
+            openManageBar={openManageBar}
+            onChange={updateManagerBarOnChange}
+          />
+          <nav
+            ref={refSideBarNav}
+            className={sidebarStyles.sidebar}
+            onScroll={(e) => {
+              if (e.currentTarget.scrollTop > lastScrollPosition) {
+                setOpenManageBar(false);
+              } else {
+                setOpenManageBar(true);
+              }
+              setLastScrollPosition(e.currentTarget.scrollTop);
+            }}
+          >
+            {Object.keys(loadedFilesDirs).length ? (
+              Object.keys(loadedFilesDirs)
+                .sort(SortFnAscend)
+                .map((dir, idx_dir) => {
+                  const indent = dir.replace(/^\//, "").split("/").length - 1;
+                  return (
+                    <SidebarDir
+                      key={`${dir}_${idx_dir}`}
+                      dirName={dir}
+                      indent={indent}
+                      sidebarSize={sidebarSize}
+                      manageBarOpen={openManageBar}
+                    />
+                  );
+                })
+            ) : (
+              <p
+                style={{
+                  color: "white",
+                  margin: "auto auto",
+                  padding: "0.3rem",
+                }}
+              >
+                Upload images / folders via the buttons below.
+              </p>
+            )}
             <FileUploader />
           </nav>
           <SidebarDragLine

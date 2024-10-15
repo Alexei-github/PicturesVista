@@ -6,6 +6,7 @@
   touch-action: pan-x;
   touch-action: cross-slide-y;
   touch-action: cross-slide-x;
+  position: relative;
 }
 
 .navbar {
@@ -13,14 +14,25 @@
   text-align: right;
   border-bottom: var(--border);
   display: flex;
-  justify-content: space-between;
-  padding: 0 1rem;
+  flex-direction: row;
+  justify-content: space-around;
+  /* align-items: space-between; */
+  padding: 0;
+}
+
+.navbar_links {
+  color: white;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  line-height: 1.8;
 }
 
 .h1 {
   margin: 0 0.5em;
   color: white;
   display: inline;
+  width: fit-content;
 }
 
 .img_drop_area {
@@ -52,4 +64,21 @@
     font-size: 1.1rem;
     border: 0.1rem solid rgb(255, 255, 255);
   }
+}
+
+.open_dir_btn {
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  border: var(--border-sidebar-itms);
+  border-radius: 0.3rem;
+  background-color: var(--dir-btn-color-rgb);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  font-size: 1.1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }

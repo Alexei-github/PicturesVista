@@ -7,7 +7,7 @@ type UseStoredFiles = {
 };
 
 export const useStoredFiles = create<UseStoredFiles>((set) => ({
-  loadedFilesDirs: { "/": {} },
+  loadedFilesDirs: {},
 
   storeLoadedFiles: async (newFilesDirs: LoadedFilesDirs) =>
     set((state) => {
@@ -41,6 +41,7 @@ export const useClickedFileName = create<LastClickedFileName>((set) => ({
 
   setClickedImgName: (imgDir: string, imgName: string) => {
     set((state) => {
+      // console.log(imgDir, imgName);
       return { ...state, clickedImg: { name: imgName, dir: imgDir } };
     });
   },

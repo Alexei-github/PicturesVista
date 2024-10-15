@@ -3,19 +3,21 @@ import React from "react";
 import SidebarItem from "@/components/sidebar/sidebarOneItem";
 import sidebarStyles from "@/components/sidebar/sidebar.module.css";
 import styled from "styled-components";
+import isShowDirFn from "@/lib/isShowDir";
 
 import { useStoredFiles, useOpenDir } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
 
 import OpenDirBtn from "@/components/sidebar/openDirBtn";
 
-type Props = { dirName: string; indent: number; sidebarSize: number };
+type Props = {
+  dirName: string;
+  indent: number;
+  sidebarSize: number;
+  manageBarOpen: boolean;
+};
 
-function SidebarDir({
-  dirName,
-  indent,
-  sidebarSize: effectiveSidebarSize,
-}: Props) {
+function SidebarDir({ dirName, indent, sidebarSize, manageBarOpen }: Props) {
   const { openDirs } = useOpenDir();
   const { loadedFilesDirs } = useStoredFiles();
   const [itemWidth] = React.useState(170);
@@ -23,27 +25,26 @@ function SidebarDir({
 
   const numberOfColumns = React.useMemo(() => {
     return Math.floor(
-      (effectiveSidebarSize - gridColGap * 2) / (itemWidth + gridColGap)
+      (sidebarSize - gridColGap * 2) / (itemWidth + gridColGap)
     );
-  }, [effectiveSidebarSize, gridColGap, itemWidth]);
+  }, [sidebarSize, gridColGap, itemWidth]);
 
   const isShowDir = React.useMemo(() => {
-    let checkDir = "";
-    for (const item of dirName.split("/")) {
-      checkDir = checkDir ? checkDir + "/" + item : item;
-      if (
-        !(openDirs[checkDir] === undefined || openDirs[checkDir]) &&
-        checkDir !== dirName
-      ) {
-        return false;
-      }
-    }
-    return true;
+    return isShowDirFn(dirName, openDirs);
   }, [dirName, openDirs]);
 
   return (
-    <div style={{ margin: `0.3rem 0.3rem 0.3rem ${indent + 0.3}rem` }}>
-      {isShowDir && <OpenDirBtn dirName={dirName} />}
+    <div style={{ margin: `0.3rem 0.3rem 0.3rem ${indent / 2 + 0.3}rem` }}>
+      {isShowDir && (
+        <OpenDirBtn
+          dirName={dirName}
+          style={
+            !manageBarOpen
+              ? { top: "-1.8rem", transition: "top 0.5s ease" }
+              : { top: "0", transition: "top 0.2s ease" }
+          }
+        />
+      )}
       <GridUl $colnumb={numberOfColumns}>
         {(openDirs[dirName] === undefined || openDirs[dirName]) &&
           isShowDir &&

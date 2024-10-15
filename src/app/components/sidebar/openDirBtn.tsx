@@ -1,12 +1,15 @@
 "use client";
 import React from "react";
-import { Property } from "csstype";
 import { useOpenDir } from "@/stores/storedFiles";
+import compStyle from "@/components/components.module.css";
 
-type Props = { dirName: string };
+type Props = { dirName: string; style?: React.CSSProperties };
 
-export default function OpenFolderBtn({ dirName }: Props) {
+export default function OpenDirBtn({ dirName, style }: Props) {
   const { setOpenDir, openDirs } = useOpenDir();
+  const [dirNameToShow] = React.useState(
+    dirName.split("/").pop() ? dirName.split("/").pop() : "w/o folder"
+  );
 
   const closeOpenDir = () => {
     if (openDirs[dirName] !== undefined && openDirs[dirName] === false) {
@@ -17,27 +20,21 @@ export default function OpenFolderBtn({ dirName }: Props) {
   };
 
   return openDirs[dirName] === undefined || openDirs[dirName] ? (
-    <button style={styleBtn} onClick={closeOpenDir}>
-      &#11167;&nbsp;{dirName.split("/").pop() ?? ""}
+    <button
+      className={compStyle.open_dir_btn}
+      onClick={closeOpenDir}
+      style={style}
+    >
+      &#11167;&nbsp;{dirNameToShow}
     </button>
   ) : (
-    <button style={styleBtn} onClick={closeOpenDir}>
+    <button
+      className={compStyle.open_dir_btn}
+      onClick={closeOpenDir}
+      style={style}
+    >
       {" "}
-      &#11166;&nbsp;{dirName.split("/").pop() ?? ""}
+      &#11166;&nbsp;{dirNameToShow}
     </button>
   );
 }
-
-const styleBtn = {
-  padding: "0rem 0rem",
-  width: "100%",
-  textAlign: "left" as Property.TextAlign,
-  border: "var(--border-sidebar-itms)",
-  borderRadius: "0.3rem",
-  backgroundColor: "var(--dir-btn-color-rgb)",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  minWidth: "0",
-  fontSize: "1.1rem",
-};
