@@ -7,6 +7,7 @@ import SidebarDir from "@/components/sidebar/sidebarOneDir";
 import { useStoredFiles } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
 import ManageBar from "@/components/sidebar/manageBar";
+import TextDisplay from "@/components/textDisplay/textDisplay";
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -180,9 +181,10 @@ export default function Sidebar({
                   color: "white",
                   margin: "auto auto",
                   padding: "0.3rem",
+                  // height: "100%",
                 }}
               >
-                Upload images / folders via the buttons below.
+                <TextDisplay elementType="textArea" elementNumber="3" />
               </p>
             )}
             <FileUploader />

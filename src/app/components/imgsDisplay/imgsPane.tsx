@@ -11,6 +11,7 @@ import DisplayOneImg from "@/components/imgsDisplay/displayOneImg";
 import { calculateImgSides } from "@/components/imgsDisplay/getImgSize";
 
 import { useClickedFileName } from "@/stores/storedFiles";
+import TextDisplay from "@/components/textDisplay/textDisplay";
 
 function ImgsPane() {
   const { loadedFilesDirs } = useStoredFiles();
@@ -65,18 +66,20 @@ function ImgsPane() {
               );
             })
         ) : (
-          <p
+          <div
             style={{
-              margin: "auto",
-              padding: "0.3rem",
               height: "100%",
+              margin: "auto auto",
+              padding: "0.3rem",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            Upload images / folders to see them here.
-          </p>
+            <p>
+              <TextDisplay elementType="textArea" elementNumber="4" />
+            </p>
+          </div>
         )}
       </ul>
     </>
