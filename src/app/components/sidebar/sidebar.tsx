@@ -7,7 +7,7 @@ import SidebarDir from "@/components/sidebar/sidebarOneDir";
 import { useStoredFiles } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
 import ManageBar from "@/components/sidebar/manageBar";
-import TextDisplay from "@/components/textDisplay/textDisplay";
+import TextDisplay from "@/components/language/textDisplay";
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -180,7 +180,7 @@ export default function Sidebar({
                 style={{
                   color: "white",
                   margin: "auto auto",
-                  padding: "0.3rem",
+                  // padding: "s0.3rem",
                   // height: "100%",
                 }}
               >

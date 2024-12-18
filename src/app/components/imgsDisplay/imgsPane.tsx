@@ -11,7 +11,7 @@ import DisplayOneImg from "@/components/imgsDisplay/displayOneImg";
 import { calculateImgSides } from "@/components/imgsDisplay/getImgSize";
 
 import { useClickedFileName } from "@/stores/storedFiles";
-import TextDisplay from "@/components/textDisplay/textDisplay";
+import TextDisplay from "@/components/language/textDisplay";
 
 function ImgsPane() {
   const { loadedFilesDirs } = useStoredFiles();

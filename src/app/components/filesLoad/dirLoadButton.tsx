@@ -3,7 +3,7 @@ import { directoryOpen } from "browser-fs-access";
 import useStoreFilesCustomHook from "@/customHooks/useStoreFiles";
 import compStyles from "@/components/components.module.css";
 import { processFilesOldFS } from "@/components/filesLoad/processFilesOldFS";
-import TextDisplay from "@/components/textDisplay/textDisplay";
+import TextDisplay from "@/components/language/textDisplay";
 
 const DirLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();

@@ -1,8 +1,10 @@
 import { create } from "zustand";
+import languages from "@/lib/text/languagesRegistry.json";
 
 type UseLanguageText = {
   text: { [element: string]: string } | undefined;
-  language: string;
+  availableLanguages: { [language: string]: string };
+  selectedLanguage: string;
   editMode: boolean;
   setLanguage: (setLanguage: string) => void;
   getText: (getElementNumber: string) => string | undefined;
@@ -10,15 +12,34 @@ type UseLanguageText = {
 
 export const useLanguageText = create<UseLanguageText>((set, get) => ({
   text: undefined,
-  language: "english",
+  availableLanguages: languages,
+  selectedLanguage: "1",
   editMode: true,
   setLanguage: async (newLanguage: string) => {
-    const newLanguageText = await import(`@/lib/text/${newLanguage}.json`, {
-      assert: { type: "json" },
-    });
-    if (newLanguageText) {
+    try {
+      const newLanguageText = await import(
+        `@/lib/text/${get().availableLanguages[newLanguage]}`,
+        {
+          assert: { type: "json" },
+        }
+      );
+      if (newLanguageText) {
+        set((state) => {
+          return {
+            ...state,
+            selectedLanguage: newLanguage,
+            text: newLanguageText,
+          };
+        });
+      }
+    } catch {
       set((state) => {
-        return { ...state, language: newLanguage, text: newLanguageText };
+        const newAvailableLanguages = state.availableLanguages;
+        delete newAvailableLanguages[newLanguage];
+        return {
+          ...state,
+          availableLanguages: newAvailableLanguages,
+        };
       });
     }
   },

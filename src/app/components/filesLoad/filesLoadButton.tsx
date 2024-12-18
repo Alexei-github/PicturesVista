@@ -4,7 +4,7 @@ import useStoreFilesCustomHook from "@/customHooks/useStoreFiles";
 
 import compStyles from "@/components/components.module.css";
 import { ACCEPTED_IMGS_TYPES } from "@/lib/acceptedImgsTypes";
-import TextDisplay from "@/components/textDisplay/textDisplay";
+import TextDisplay from "@/components/language/textDisplay";
 
 const FilesLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
