@@ -28,7 +28,7 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
           return {
             ...state,
             selectedLanguage: newLanguage,
-            text: newLanguageText,
+            text: newLanguageText.default,
           };
         });
       }

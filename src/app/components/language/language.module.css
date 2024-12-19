@@ -5,3 +5,46 @@
 .select_option {
   background-color: white;
 }
+.table {
+  width: 97%;
+  margin-top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid white;
+  text-align: center;
+  table-layout: fixed;
+  max-width: 100%;
+  font-weight: lighter;
+
+  & th,
+  & td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid white;
+    /* max-width: 60%; */
+  }
+}
+
+.textarea {
+  max-width: 100%;
+  background: linear-gradient(to bottom, transparent, rgb(13, 17, 33))
+    var(--background-start-rgb);
+  /* resize: vertical; */
+  width: 100%;
+  font-size: 1.3rem;
+  border: 1px solid white;
+  color: inherit;
+  pointer-events: auto;
+}
+
+.first_column {
+  overflow: hidden;
+  width: 10%;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.other_column {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
