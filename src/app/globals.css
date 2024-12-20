@@ -7,6 +7,7 @@
 
   --foreground-rgb: rgb(255, 255, 255);
   --background-start-rgb: rgb(0, 0, 0);
+  --background-mid-rgb: rgb(13, 17, 33);
   --background-end-rgb: rgb(26, 34, 66);
 
   --dir-btn-color-rgb: rgb(187, 214, 217);
@@ -19,6 +20,16 @@
   --borders-rgb: rgb(234, 241, 234);
   --border: 0.1rem solid var(--borders-rgb);
   --active-drag-line-rgb: rgb(0, 120, 212);
+
+  --btn_border: 0.1rem solid rgb(109, 109, 148);
+  --btn_hover_border: 0.1rem solid rgb(255, 255, 255);
+  --btn_font_size: 1rem;
+  --btn_main_background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(13, 17, 33)
+    )
+    var(--background-start-rgb);
 }
 
 *,

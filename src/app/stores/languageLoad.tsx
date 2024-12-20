@@ -2,20 +2,27 @@ import { create } from "zustand";
 import languages from "@/lib/text/languagesRegistry.json";
 
 type UseLanguageText = {
-  text: { [element: string]: string } | undefined;
+  currLangText: { [element: string]: string } | undefined;
+  allLoadedLanguages: { [lang: string]: { [element: string]: string } };
   availableLanguages: { [language: string]: string };
   selectedLanguage: string;
   editMode: boolean;
   setLanguage: (setLanguage: string) => void;
+  getLanguage: (setLanguage: string) => {} | undefined;
   getText: (getElementNumber: string) => string | undefined;
 };
 
 export const useLanguageText = create<UseLanguageText>((set, get) => ({
-  text: undefined,
+  currLangText: undefined,
   availableLanguages: languages,
   selectedLanguage: "1",
   editMode: true,
-  setLanguage: async (newLanguage: string) => {
+  allLoadedLanguages: {},
+  getLanguage: async (newLanguage: string) => {
+    if (get().allLoadedLanguages?.[newLanguage]) {
+      return get().allLoadedLanguages?.[newLanguage];
+    }
+
     try {
       const newLanguageText = await import(
         `@/lib/text/${get().availableLanguages[newLanguage]}`,
@@ -24,30 +31,42 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
         }
       );
       if (newLanguageText) {
+        const newLanguageTextDefault = newLanguageText.default;
+        delete newLanguageTextDefault["0"];
         set((state) => {
+          const newAllLoadedLanguages = state.allLoadedLanguages;
+          newAllLoadedLanguages[newLanguage] = newLanguageTextDefault;
           return {
             ...state,
-            selectedLanguage: newLanguage,
-            text: newLanguageText.default,
+            allLoadedLanguages: newAllLoadedLanguages,
           };
         });
+
+        return newLanguageTextDefault;
       }
-    } catch {
+    } catch {} //do nothing and remove language from list of available
+    set((state) => {
+      const newAvailableLanguages = state.availableLanguages;
+      delete newAvailableLanguages[newLanguage];
+      return {
+        ...state,
+        availableLanguages: newAvailableLanguages,
+      };
+    });
+  },
+  setLanguage: async (newLanguage: string) => {
+    const newLang = await get().getLanguage(newLanguage);
+    if (newLang) {
       set((state) => {
-        const newAvailableLanguages = state.availableLanguages;
-        delete newAvailableLanguages[newLanguage];
         return {
           ...state,
-          availableLanguages: newAvailableLanguages,
+          selectedLanguage: newLanguage,
+          currLangText: newLang,
         };
       });
     }
   },
   getText: (getElementNumber: string) => {
-    // const text = get().text;
-    // if (text) {
-    //   return text[getElement];
-    // }
-    return get().text?.[getElementNumber];
+    return get().currLangText?.[getElementNumber];
   },
 }));

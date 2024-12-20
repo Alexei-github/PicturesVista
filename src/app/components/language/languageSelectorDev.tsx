@@ -2,15 +2,19 @@ import React from "react";
 import { useLanguageText } from "@/stores/languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
-import SidebarDragLine from "../sidebar/sidebarDragLine";
-import { transcode } from "buffer";
+import LanguageDevModal from "@/components/language/languageDevModal";
 
 const defaultLanguage = "Español";
 const select = "Language:";
 
 const LanguageSelector = () => {
-  const { getText, availableLanguages, setLanguage, selectedLanguage, text } =
-    useLanguageText();
+  const {
+    getText,
+    availableLanguages,
+    setLanguage,
+    selectedLanguage,
+    currLangText: text,
+  } = useLanguageText();
 
   const [editTranslate, setEditTranslate] = React.useState(false);
   const [selectLanguageToEditTranslate, setSelectLanguageToEditTranslate] =
@@ -21,8 +25,6 @@ const LanguageSelector = () => {
   const [newTranslation, setNewTranslation] = React.useState<{
     [key: string]: string;
   }>({});
-
-  console.log(newTranslation);
 
   const onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -92,56 +94,7 @@ const LanguageSelector = () => {
         <option value="add_new"> + New</option>
       </select>
       <button onClick={switchLanugageEdit}>✏️</button>
-      {editTranslate && (
-        <Modal sizeScale={0.8}>
-          <table className={languageStyles.table}>
-            {/* <colgroup>
-              <col className={languageStyles.first_column} />
-              <col className={languageStyles.other_column} />
-              <col className={languageStyles.other_column} />
-            </colgroup> */}
-            <thead>
-              <th className={languageStyles.first_column}>
-                <p>Id</p>
-              </th>
-              <th className={languageStyles.other_column}>
-                <p>{selectedLanguage}</p>
-              </th>
-              <th className={languageStyles.other_column}>
-                <textarea className={languageStyles.textarea}></textarea>
-              </th>
-            </thead>
-            {text &&
-              Object.entries(text).map(([key, value], idx) => {
-                return (
-                  <tr key={"translation " + idx}>
-                    <td className={languageStyles.first_column}>
-                      <p>{key}</p>
-                    </td>
-                    <td className={languageStyles.other_column}>
-                      <p>{value}</p>
-                    </td>
-                    <td className={languageStyles.other_column}>
-                      <textarea
-                        className={languageStyles.textarea}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLTextAreaElement>
-                        ) => {
-                          setNewTranslation({
-                            ...newTranslation,
-                            [key]: e.target.value,
-                          });
-                        }}
-                      >
-                        {newTranslation[key]}
-                      </textarea>
-                    </td>
-                  </tr>
-                );
-              })}
-          </table>
-        </Modal>
-      )}
+      {editTranslate && <LanguageDevModal />}
     </div>
   );
 };

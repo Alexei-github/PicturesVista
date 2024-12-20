@@ -55,15 +55,15 @@
   height: fit-content;
   padding: 0.5em;
   flex: auto;
-  background-color: rgb(from var(--main-navbar-hex) r g b / 0);
-  border: 0.1rem solid rgb(109, 109, 148);
+  background-color: var(--main-navbar);
+  border: var(--btn_border);
   border-radius: 0.5rem;
   color: white;
-  font-size: 1rem;
+  font-size: var(--btn_font_size);
   cursor: pointer;
   &:hover {
-    font-size: 1.1rem;
-    border: 0.1rem solid rgb(255, 255, 255);
+    transform: scale(1.05);
+    border: var(--btn_hover_border);
   }
 }
 

@@ -2,7 +2,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import compStyles from "@/components/components.module.css";
-import LanguageSelector from "@/components/language/languageSelector";
+import LanguageSelectorUser from "@/components/language/languageSelectorUser";
+import languageStyles from "@/components/language/language.module.css";
+import LanguageEditTransalte from "@/components/language/languageEditTranslate";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,7 +14,13 @@ export default function Navbar() {
   return (
     <nav className={compStyles.navbar}>
       <h1 className={compStyles.h1}>PicsVista</h1>
-      <LanguageSelector />
+      <div style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}>
+        <LanguageSelectorUser
+          selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
+        />
+        <LanguageEditTransalte />
+      </div>
+
       <a
         className={compStyles.navbar_links}
         href="https://github.com/Alexei-github/PicturesVista"

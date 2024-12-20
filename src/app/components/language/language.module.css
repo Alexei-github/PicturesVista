@@ -2,12 +2,46 @@
   white-space: pre-line;
 }
 
-.select_option {
-  background-color: white;
+.language_selector {
+  --selector_font_size: 1.2rem;
+  --background_color: var(--background-mid-rgb);
+  --separator_color: var(--background-end-rgb);
+  border-radius: 0.3rem;
+  font-size: var(--selector_font_size);
+  background-color: var(--background_color);
+  color: inherit;
+  padding: 0.1rem 0.4rem;
+  margin-bottom: 0.3rem;
+  border: var(--btn_border);
+  line-height: 300;
+  text-align: left;
+
+  &:hover {
+    border: var(--btn_hover_border);
+    cursor: pointer;
+  }
 }
+
+.language_selector_navbar {
+  --background_color: var(--main-navbar);
+}
+
+.language_selector optgroup {
+  background-color: var(--separator_color);
+  opacity: 0.5;
+  font-size: 0px;
+}
+
+.language_selector option {
+  background-color: var(--background_color);
+  margin: 0.5rem 0.2rem;
+  line-height: 15px;
+  font-size: var(--selector_font_size);
+}
+
 .table {
   width: 97%;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid white;
@@ -15,26 +49,38 @@
   table-layout: fixed;
   max-width: 100%;
   font-weight: lighter;
-
-  & th,
+  border-collapse: collapse;
   & td {
-    padding: 8px;
+    padding: 0.5rem;
     text-align: center;
     border: 1px solid white;
-    /* max-width: 60%; */
+    height: 0.1rem;
+  }
+  & th {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid white;
   }
 }
 
 .textarea {
   max-width: 100%;
-  background: linear-gradient(to bottom, transparent, rgb(13, 17, 33))
-    var(--background-start-rgb);
-  /* resize: vertical; */
+  background-color: transparent;
   width: 100%;
+  height: 100%;
+  overflow: auto;
   font-size: 1.3rem;
   border: 1px solid white;
   color: inherit;
   pointer-events: auto;
+  padding: 0.3rem;
+  margin-top: 0.3rem;
+  &:focus {
+    outline: none;
+    border: 2px solid var(--active-drag-line-rgb);
+    border-radius: 0.3rem;
+    vertical-align: top;
+  }
 }
 
 .first_column {
@@ -44,7 +90,13 @@
   max-width: 100%;
 }
 
-.other_column {
+.second_column {
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 45%;
+}
+.third_column {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 55%;
 }
