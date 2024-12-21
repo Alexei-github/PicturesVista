@@ -3,24 +3,19 @@ import { useLanguageText } from "@/stores/languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
 import LanguageSelectorUser from "@/components/language/languageSelectorUser";
+import TranslationTableRow from "@/components/language/translationTableRow";
+import TranslateTableHeader from "@/components/language/translateTableHeader";
+import { fileOpen, fileSave } from "browser-fs-access";
 
 const LanguageDevModal = () => {
-  const {
-    availableLanguages,
-    setLanguage,
-    selectedLanguage,
-    currLangText,
-    allLoadedLanguages,
-    getLanguage,
-  } = useLanguageText();
+  const { availableLanguages, currLangText, getLanguage } = useLanguageText();
 
-  const [newTranslation, setNewTranslation] = React.useState<{
-    [key: string]: string;
-  }>({});
-
-  console.log(newTranslation);
-  const [createNew, setCreateNew] = React.useState(false);
-  const [loadNew, setLoadNew] = React.useState(false);
+  const [newTranslation, setNewTranslation] = React.useState<
+    | {
+        [key: string]: string;
+      }
+    | undefined
+  >(undefined);
 
   const [disableInput, setDisableInput] = React.useState(false);
   const [updatedValues, setUpdatedValues] = React.useState<{
@@ -28,11 +23,11 @@ const LanguageDevModal = () => {
   }>({});
   const [existingLanguageInitCopy, setExistingLanguageInitCopy] =
     React.useState<{ [key: string]: string } | undefined>(undefined);
+  const [_, setRerenderComponent] = React.useState("");
 
   const langNameOnChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const timeout = setTimeout(() => {
-        console.log(newTranslation, e.target.value);
         if (e.target.value) {
           if (availableLanguages[e.target.value]) {
             (async () => {
@@ -42,7 +37,7 @@ const LanguageDevModal = () => {
             })();
           } else {
             setExistingLanguageInitCopy(undefined);
-            setNewTranslation({});
+            setNewTranslation({ lang: e.target.value });
           }
         }
       }, 500);
@@ -55,133 +50,111 @@ const LanguageDevModal = () => {
 
   const translateOnChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>, key: string) => {
-      const timeout = setTimeout(() => {
-        const newUpdatedValues = updatedValues;
-        if (e.target.value) {
-          setNewTranslation({
-            ...newTranslation,
-            [key]: e.target.value,
-          });
-          if (!existingLanguageInitCopy) {
+      const newUpdatedValues = updatedValues;
+      if (e.target.value) {
+        let updateNewTranslation = newTranslation;
+        if (updateNewTranslation) {
+          updateNewTranslation[key] = e.target.value;
+        } else {
+          updateNewTranslation = {};
+          updateNewTranslation[key] = e.target.value;
+        }
+        setNewTranslation(updateNewTranslation);
+        if (!existingLanguageInitCopy) {
+          if (e.target.value.trim()) {
             newUpdatedValues[key] = true;
           } else {
-            if (existingLanguageInitCopy[key] === e.target.value) {
-              newUpdatedValues[key] = false;
-            } else {
-              newUpdatedValues[key] = true;
-            }
+            newUpdatedValues[key] = false;
           }
         } else {
-          const updateNewTranslation = newTranslation;
-          delete updateNewTranslation[key];
-          setNewTranslation(updateNewTranslation);
+          if (existingLanguageInitCopy[key] === e.target.value.trim()) {
+            newUpdatedValues[key] = false;
+          } else {
+            newUpdatedValues[key] = true;
+          }
+        }
+      } else {
+        const updateNewTranslation = newTranslation;
 
-          // const newUpdatedValues = updatedValues;
-          delete newUpdatedValues[key];
+        if (updateNewTranslation) {
+          delete updateNewTranslation[key];
         }
-        setUpdatedValues(newUpdatedValues);
-        if (Object.values(newUpdatedValues).some((v) => v === true)) {
-          setDisableInput(true);
-        } else {
-          setDisableInput(false);
-        }
-      }, 500);
-      return () => {
-        clearTimeout(timeout);
-      };
+        setNewTranslation(updateNewTranslation);
+        delete newUpdatedValues[key];
+      }
+      setUpdatedValues(newUpdatedValues);
+      if (Object.values(newUpdatedValues).some((v) => v === true)) {
+        setDisableInput(true);
+      } else {
+        setDisableInput(false);
+      }
+      setRerenderComponent(`${key}-${e.target.value}`);
     },
     [newTranslation, existingLanguageInitCopy, updatedValues]
   );
 
-  const onChangePassed = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      if (e.target.value === "create_new") {
-        setCreateNew(true);
-        setLoadNew(false);
-      } else if (e.target.value === "load_new") {
-        setLoadNew(true);
-        setCreateNew(true);
+  const saveChanges = React.useCallback(async () => {
+    if (newTranslation && currLangText) {
+      const fileName = `${newTranslation.lang
+        ?.trim()
+        ?.toLowerCase()
+        ?.replace(" ", "_")}.json`;
+
+      let all = "no";
+      if (existingLanguageInitCopy) {
+        if (
+          Object.entries(existingLanguageInitCopy).every(
+            ([key, value]) =>
+              newTranslation[key] || newTranslation[key] === value
+          )
+        ) {
+          all = "yes";
+        }
       } else {
-        setLoadNew(false);
-        setCreateNew(false);
+        if (Object.keys(currLangText).every((key) => newTranslation[key])) {
+          all = "yes";
+        }
       }
-    },
-    []
-  );
+      const recorNewTranslation = { ...newTranslation };
+      recorNewTranslation[
+        "0"
+      ] = `{ lang: ${recorNewTranslation.lang}, complete: ${all} }`;
+      delete recorNewTranslation.lang;
+      for (const key in recorNewTranslation) {
+        recorNewTranslation[key] = recorNewTranslation[key].trim();
+      }
+      const jsonString = JSON.stringify(recorNewTranslation, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+
+      try {
+        await fileSave(blob, {
+          fileName: fileName ?? "undefined.json",
+          extensions: [".json"],
+        });
+      } catch {}
+    }
+  }, [newTranslation]);
 
   return (
     <div>
       <Modal sizeScale={0.8}>
         <table className={languageStyles.table}>
-          {/* <colgroup>
-              <col className={languageStyles.first_column} />
-              <col className={languageStyles.other_column} />
-              <col className={languageStyles.other_column} />
-            </colgroup> */}
-          <thead>
-            <th className={languageStyles.first_column}>
-              <p>id</p>
-            </th>
-            <th className={languageStyles.second_column}>
-              <LanguageSelectorUser
-                selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
-              />
-            </th>
-            <th className={languageStyles.third_column}>
-              <LanguageSelectorUser
-                selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
-                onChangePassed={onChangePassed}
-                disabledSelect={disableInput}
-              >
-                <optgroup>
-                  <option value="create_new">Create New</option>
-                  <option value="load_new">Load From File</option>
-                </optgroup>
-                <optgroup
-                  style={{ fontSize: "1.1rem" }}
-                  label="Available:"
-                ></optgroup>
-              </LanguageSelectorUser>
-              {loadNew && (
-                <input
-                  style={{ fontSize: "calc(var(--btn_font_size)*1.1)" }}
-                  className={languageStyles.textarea}
-                  type="file"
-                />
-              )}
-              {createNew && (
-                <input
-                  {...(createNew && !loadNew && { autoFocus: true })}
-                  className={languageStyles.textarea}
-                  type="text"
-                  onChange={langNameOnChange}
-                  disabled={disableInput}
-                />
-              )}
-            </th>
-          </thead>
+          <TranslateTableHeader
+            disableInput={disableInput}
+            langNameOnChange={langNameOnChange}
+            saveChanges={saveChanges}
+          />
           {currLangText &&
             Object.entries(currLangText).map(([key, value], idx) => {
               return (
-                <tr key={"translation " + idx}>
-                  <td className={languageStyles.first_column}>
-                    <p>{key}</p>
-                  </td>
-                  <td className={languageStyles.second_column}>
-                    <p>{value}</p>
-                  </td>
-                  <td className={languageStyles.third_column}>
-                    <textarea
-                      className={languageStyles.textarea}
-                      onKeyUp={(e) => {
-                        translateOnChange(e, key);
-                      }}
-                      // value={newTranslation[key] ? newTranslation[key] : ""}
-                    >
-                      {newTranslation[key] ? newTranslation[key] : ""}
-                    </textarea>
-                  </td>
-                </tr>
+                <TranslationTableRow
+                  key={"translation " + idx}
+                  key_val={key}
+                  value={value}
+                  onChange={translateOnChange}
+                  updatedTransaltion={newTranslation ? newTranslation[key] : ""}
+                  updated={updatedValues[key]}
+                />
               );
             })}
         </table>

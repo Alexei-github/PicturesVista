@@ -66,6 +66,12 @@ p {
   text-overflow: ellipsis;
 }
 
+button span {
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 0;
+}
+
 /* @media (prefers-color-scheme: light) {
   :root {
     --foreground-rgb: rgb(255, 255, 255);

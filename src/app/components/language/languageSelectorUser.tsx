@@ -32,29 +32,34 @@ const LanguageSelectorUser = ({
   }, [setLanguage]);
 
   return (
-    <div>
-      <select
-        id="clickedLanguage"
-        name="language"
-        defaultValue={defaultLanguage}
-        onChange={onChangePassed ? onChangePassed : onChange}
-        className={selectorClassName}
-        {...(!onChangePassed && { value: selectedLanguage })}
-        disabled={disabledSelect}
-      >
-        {children}
+    <select
+      id="clickedLanguage"
+      name="language"
+      defaultValue={defaultLanguage}
+      onChange={onChangePassed ? onChangePassed : onChange}
+      className={selectorClassName}
+      {...(!onChangePassed && { value: selectedLanguage })}
+      disabled={disabledSelect}
+      style={{
+        ...(disabledSelect && {
+          color: "grey",
+          borderColor: "grey",
+          cursor: "default",
+        }),
+      }}
+    >
+      {children}
 
-        {Object.keys(availableLanguages).map((language, idx) => {
-          return (
-            <optgroup key={language + idx}>
-              <option value={language} style={{ padding: "20px" }}>
-                {language}
-              </option>
-            </optgroup>
-          );
-        })}
-      </select>
-    </div>
+      {Object.keys(availableLanguages).map((language, idx) => {
+        return (
+          <optgroup key={language + idx}>
+            <option value={language} style={{ padding: "20px" }}>
+              {language}
+            </option>
+          </optgroup>
+        );
+      })}
+    </select>
   );
 };
 
