@@ -9,6 +9,7 @@ type Props = {
   onChangePassed?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   children?: React.ReactNode;
   disabledSelect?: boolean;
+  value?: string;
 };
 
 const LanguageSelectorUser = ({
@@ -16,6 +17,7 @@ const LanguageSelectorUser = ({
   onChangePassed,
   children,
   disabledSelect = false,
+  value,
 }: Props) => {
   const { getText, availableLanguages, setLanguage, selectedLanguage } =
     useLanguageText();
@@ -35,7 +37,7 @@ const LanguageSelectorUser = ({
     <select
       id="clickedLanguage"
       name="language"
-      defaultValue={defaultLanguage}
+      // defaultValue={defaultLanguage}
       onChange={onChangePassed ? onChangePassed : onChange}
       className={selectorClassName}
       {...(!onChangePassed && { value: selectedLanguage })}
@@ -47,6 +49,8 @@ const LanguageSelectorUser = ({
           cursor: "default",
         }),
       }}
+      // {...(value && { defaultValue: value })}
+      // value={"language"}
     >
       {children}
 

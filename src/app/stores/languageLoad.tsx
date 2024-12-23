@@ -7,8 +7,11 @@ type UseLanguageText = {
   availableLanguages: { [language: string]: string };
   selectedLanguage: string;
   editMode: boolean;
+  allIdsSet: Set<string>;
   setLanguage: (setLanguage: string) => void;
-  getLanguage: (setLanguage: string) => {} | undefined;
+  getLanguage: (
+    setLanguage: string
+  ) => Promise<{ [key: string]: string } | undefined>;
   getText: (getElementNumber: string) => string | undefined;
 };
 
@@ -18,6 +21,7 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
   selectedLanguage: "1",
   editMode: true,
   allLoadedLanguages: {},
+  allIdsSet: new Set(),
   getLanguage: async (newLanguage: string) => {
     if (get().allLoadedLanguages?.[newLanguage]) {
       return get().allLoadedLanguages?.[newLanguage];
@@ -31,7 +35,8 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
         }
       );
       if (newLanguageText) {
-        const newLanguageTextDefault = newLanguageText.default;
+        const newLanguageTextDefault: { [key: string]: string } =
+          newLanguageText.default;
         delete newLanguageTextDefault["0"];
         set((state) => {
           const newAllLoadedLanguages = state.allLoadedLanguages;
@@ -39,12 +44,14 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
           return {
             ...state,
             allLoadedLanguages: newAllLoadedLanguages,
+            allIdsSet: new Set(Object.keys(newLanguageTextDefault)),
           };
         });
 
         return newLanguageTextDefault;
       }
     } catch {} //do nothing and remove language from list of available
+
     set((state) => {
       const newAvailableLanguages = state.availableLanguages;
       delete newAvailableLanguages[newLanguage];

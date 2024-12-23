@@ -135,3 +135,17 @@ button.save_btn {
 
   /* height: 100%; */
 }
+
+.file_input {
+  font-size: calc(var(--btn_font_size) * 1.1);
+  &:not(:disabled):hover {
+    outline: none;
+    border: 2px solid var(--active-drag-line-rgb);
+    border-radius: 0.3rem;
+    vertical-align: top;
+    cursor: pointer;
+  }
+  &:disabled {
+    border-color: grey;
+  }
+}

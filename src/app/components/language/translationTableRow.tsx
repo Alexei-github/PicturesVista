@@ -10,6 +10,7 @@ type Props = {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>, key: string) => void;
   updatedTransaltion: string;
   updated: boolean;
+  updatedAfterLatestSave: boolean;
 };
 
 const TranslationTableRow = ({
@@ -18,9 +19,8 @@ const TranslationTableRow = ({
   onChange,
   updatedTransaltion,
   updated,
+  updatedAfterLatestSave,
 }: Props) => {
-  const [counter, setCounter] = React.useState(0);
-
   return (
     <tr>
       <td className={languageStyles.first_column}>
@@ -30,7 +30,30 @@ const TranslationTableRow = ({
         <p>{value}</p>
       </td>
       <td className={languageStyles.third_column}>
-        {updated && <div className={languageStyles.green_tick}>&#10004;</div>}
+        {updated && !updatedAfterLatestSave && (
+          <div className={languageStyles.green_tick}>&#10004;</div>
+        )}
+        {updated && updatedAfterLatestSave && (
+          <div className={languageStyles.green_tick}>
+            <span
+              style={{
+                display: "inline-block",
+                position: "relative",
+                left: "10%",
+              }}
+            >
+              &#10004;
+            </span>{" "}
+            <span
+              style={{
+                position: "absolute",
+                left: "0%",
+              }}
+            >
+              &#10004;
+            </span>
+          </div>
+        )}
         <textarea
           className={languageStyles.textarea}
           onChange={(e) => {
