@@ -2,9 +2,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import compStyles from "@/components/components.module.css";
-import LanguageSelectorUser from "@/components/language/languageSelectorUser";
-import languageStyles from "@/components/language/language.module.css";
-import LanguageEditTransalte from "@/components/language/languageEditTranslate";
+import MainLangSelect from "@/components/language/mainLangSelect";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,10 +13,7 @@ export default function Navbar() {
     <nav className={compStyles.navbar}>
       <h1 className={compStyles.h1}>PicsVista</h1>
       <div style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}>
-        <LanguageSelectorUser
-          selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
-        />
-        <LanguageEditTransalte />
+        <MainLangSelect />
       </div>
 
       <a

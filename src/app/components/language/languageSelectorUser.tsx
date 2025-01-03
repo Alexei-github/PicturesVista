@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
 import { useLanguageText } from "@/stores/languageLoad";
-const defaultLanguage = "Español";
+// const defaultLanguage = "Español";
 import languageStyles from "@/components/language/language.module.css";
 import LanguageEditTransalte from "@/components/language/languageEditTranslate";
 
@@ -9,7 +11,8 @@ type Props = {
   onChangePassed?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   children?: React.ReactNode;
   disabledSelect?: boolean;
-  value?: string;
+  // defaultValuePassed?: string;
+  defaultLanguage: string;
 };
 
 const LanguageSelectorUser = ({
@@ -17,7 +20,8 @@ const LanguageSelectorUser = ({
   onChangePassed,
   children,
   disabledSelect = false,
-  value,
+  // defaultValuePassed,
+  defaultLanguage,
 }: Props) => {
   const { getText, availableLanguages, setLanguage, selectedLanguage } =
     useLanguageText();
@@ -29,18 +33,16 @@ const LanguageSelectorUser = ({
     [setLanguage]
   );
 
-  React.useEffect(() => {
-    setLanguage(defaultLanguage);
-  }, [setLanguage]);
+  
 
   return (
     <select
       id="clickedLanguage"
       name="language"
-      // defaultValue={defaultLanguage}
+      defaultValue={defaultLanguage}
       onChange={onChangePassed ? onChangePassed : onChange}
       className={selectorClassName}
-      {...(!onChangePassed && { value: selectedLanguage })}
+      // {...(!onChangePassed && { value: selectedLanguage })}
       disabled={disabledSelect}
       style={{
         ...(disabledSelect && {

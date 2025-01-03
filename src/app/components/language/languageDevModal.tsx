@@ -1,71 +1,208 @@
+"use client";
+
 import React from "react";
 import { useLanguageText } from "@/stores/languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
 import LanguageSelectorUser from "@/components/language/languageSelectorUser";
 import TranslationTableRow from "@/components/language/translationTableRow";
-import TranslateTableHeader from "@/components/language/translateTableHeader";
+import TranslateTableHeader, {
+  TableHeaderRefType,
+} from "@/components/language/translateTableHeader";
 import { fileOpen, fileSave } from "browser-fs-access";
 import { LanguageText } from "@/components/language/types";
 
-const LanguageDevModal = () => {
-  const { availableLanguages, currLangText, getLanguage, allIdsSet } =
-    useLanguageText();
+type Props = {
+  onClose: () => void;
+};
+
+const LanguageDevModal = ({ onClose }: Props) => {
+  const {
+    availableLanguages,
+    currLangText,
+    getLanguage,
+    allIdsSet,
+    setLanguage,
+    selectedLanguage,
+    selectedIdx,
+  } = useLanguageText();
 
   const [newTranslation, setNewTranslation] = React.useState<LanguageText>({});
-  const [disableLangSelect, setDisableLangSelect] = React.useState(false);
-  const [disableLangInput, setDisableLangInput] = React.useState(false);
+
   const [updatedValues, setUpdatedValues] = React.useState<{
     [key: string]: boolean;
   }>({});
-  const [doubleUpdatedValues, setDoubleUpdatedValues] = React.useState<{
+  const [unsavedUpdate, setUnsavedUpdate] = React.useState<{
     [key: string]: boolean;
   }>({});
   const [languageInitCopy, setLanguageInitCopy] = React.useState<LanguageText>(
     {}
   );
-
+  const [reset, setReset] = React.useState(false);
   const [latestSave, setLatestSave] = React.useState<LanguageText>({});
+  const [rerenderComponet, setRerenderComponent] = React.useState("");
+  const [fromLanguage, setFromLanguage] = React.useState<LanguageText>({});
+  const [syncChangesOn, setSyncChangesOn] = React.useState(false);
+  const [syncChangeStart, setSyncChangeStart] = React.useState(false);
 
-  const [_, setRerenderComponent] = React.useState("");
+  console.log("=======51=====", newTranslation, reset);
+  const headerRef = React.useRef<TableHeaderRefType>(null);
 
-  const langNameOnChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  React.useEffect(() => {
+    const element = document.getElementById(`translate_row_${selectedIdx}`);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [selectedIdx]);
+
+  const getFromLanguage = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      (async () => {
+        setFromLanguage((await getLanguage(e.target.value)) ?? {});
+      })();
+    },
+    [setFromLanguage, getLanguage]
+  );
+
+  React.useEffect(() => {
+    const unsavedTranslationStateString = localStorage.getItem(
+      "unsavedTranslationState"
+    );
+
+    if (unsavedTranslationStateString) {
+      const unsavedTranslationState = JSON.parse(unsavedTranslationStateString);
+      if (headerRef && unsavedTranslationState.translateTableHeader) {
+        headerRef.current?.setInitState(
+          unsavedTranslationState.translateTableHeader
+        );
+      }
+      setNewTranslation(unsavedTranslationState.newTranslation);
+      setLatestSave(unsavedTranslationState.latestSave);
+      setLanguageInitCopy(unsavedTranslationState.languageInitCopy);
+      setUnsavedUpdate(unsavedTranslationState.unsavedUpdate);
+      setFromLanguage(unsavedTranslationState.fromLanguage);
+      setSyncChangesOn(unsavedTranslationState.syncChangesOn);
+      setUpdatedValues(unsavedTranslationState.updatedValues);
+      setReset(unsavedTranslationState.reset);
+    }
+  }, [headerRef]);
+
+  React.useEffect(() => {
+    if (syncChangesOn) {
       const timeout = setTimeout(() => {
-        if (e.target.value) {
-          if (availableLanguages[e.target.value]) {
-            (async () => {
-              const existLang = await getLanguage(e.target.value);
-              setLanguageInitCopy(existLang ?? {});
-              setNewTranslation({ ...existLang, lang: e.target.value });
-            })();
-          } else {
-            if (Object.keys(languageInitCopy).length > 0) {
-              setLanguageInitCopy({});
-              setUpdatedValues({});
-              setDoubleUpdatedValues({});
-              setLatestSave({});
-              setNewTranslation({});
-            }
-            newTranslation["lang"] = e.target.value;
-          }
-        }
-      }, 500);
+        setSyncChangeStart(true);
+        setLanguage(selectedLanguage, newTranslation);
+      }, 2000);
       return () => {
+        setSyncChangeStart(false);
         clearTimeout(timeout);
       };
+    }
+  }, [
+    rerenderComponet,
+    syncChangesOn,
+    newTranslation,
+    selectedLanguage,
+    setLanguage,
+  ]);
+
+  
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (Object.keys(newTranslation).length !== 0) {
+        const unsavedTranslationState = {
+          newTranslation,
+          latestSave,
+          languageInitCopy,
+          unsavedUpdate,
+          fromLanguage,
+          syncChangesOn,
+          updatedValues,
+          reset,
+          translateTableHeader: {
+            langName: headerRef?.current?.getState()?.langName ?? "",
+            loadNew: headerRef?.current?.getState()?.loadNew ?? false,
+            createNew: headerRef?.current?.getState()?.createNew ?? false,
+            disableLangSelect:
+              headerRef?.current?.getState()?.disableLangSelect ?? false,
+            selectedFileName:
+              headerRef?.current?.getState()?.selectedFileName ?? "",
+          },
+        };
+
+        localStorage.setItem(
+          "unsavedTranslationState",
+          JSON.stringify(unsavedTranslationState)
+        );
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [
+    rerenderComponet,
+    fromLanguage,
+    languageInitCopy,
+    latestSave,
+    newTranslation,
+    syncChangesOn,
+    unsavedUpdate,
+    updatedValues,
+    reset,
+  ]);
+
+  React.useEffect(() => {
+    if (!syncChangesOn) {
+      setSyncChangeStart(false);
+      setLanguage(selectedLanguage);
+    }
+  }, [syncChangesOn, selectedLanguage, setLanguage]);
+
+  const processLangNameChange = React.useCallback(
+    (lang: string) => {
+      // if (lang) {
+      if (!headerRef?.current?.getState().editLanguageName || reset) {
+        setReset(false);
+        if (availableLanguages[lang]) {
+          (async () => {
+            const existLang = await getLanguage(lang);
+            setLanguageInitCopy(existLang ?? {});
+            setNewTranslation({ ...existLang, lang: lang });
+            setUpdatedValues({});
+            setUnsavedUpdate({});
+            setLatestSave({});
+          })();
+        } else {
+          if (Object.keys(languageInitCopy).length > 0) {
+            setLanguageInitCopy({});
+            setNewTranslation({});
+            setUpdatedValues({});
+            setUnsavedUpdate({});
+            setLatestSave({});
+          }
+        }
+      }
+      newTranslation.lang = lang;
+      setRerenderComponent(`langName-${lang}`);
+
+      // }
     },
-    [availableLanguages, languageInitCopy, getLanguage]
+    [availableLanguages, languageInitCopy, getLanguage, reset, newTranslation]
   );
 
   const onFileLoad = React.useCallback(
     (language: { [keyof: string]: string }) => {
       // setLanguageInitCopy({ ...language });
       setNewTranslation({ ...language });
+      newTranslation["lang"] = language.lang;
+
       if (availableLanguages[language.lang]) {
         (async () => {
           const existLang = await getLanguage(language.lang);
-          setLanguageInitCopy(existLang ?? {});
           const newUpdateVal: { [key: string]: boolean } = {};
           const newLatestSave: LanguageText = {};
           for (const key in existLang) {
@@ -74,56 +211,49 @@ const LanguageDevModal = () => {
               newLatestSave[key] = language[key];
             }
           }
+          setLanguageInitCopy(existLang ?? {});
           setUpdatedValues(newUpdateVal);
           setLatestSave(newLatestSave);
-          setDoubleUpdatedValues({});
+          setUnsavedUpdate({});
         })();
       } else {
-        if (Object.keys(languageInitCopy).length > 0) {
-          setLanguageInitCopy({ ...language });
-          setUpdatedValues({});
-          setDoubleUpdatedValues({});
-          setLatestSave({});
-        }
-        newTranslation["lang"] = language.lang;
+        setLanguageInitCopy({ ...language });
+        setUpdatedValues({});
+        setUnsavedUpdate({});
+        setLatestSave({});
       }
     },
-    []
+    [availableLanguages, getLanguage, newTranslation]
   );
 
   const translateOnChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>, key: string) => {
-      if (e.target.value) {
-        newTranslation[key] = e.target.value;
+      const valueTrimmed = e.target.value?.trim() ?? "";
 
-        updatedValues[key] =
-          newTranslation[key]?.trim() !== languageInitCopy[key]?.trim();
-        if (latestSave[key]) {
-          doubleUpdatedValues[key] =
-            newTranslation[key]?.trim() !== latestSave[key]?.trim();
-        }
+      headerRef?.current?.setEditLanguageName(false);
+      updatedValues[key] =
+        valueTrimmed !== (languageInitCopy[key]?.trim() ?? "");
 
-        if (
-          Object.keys(updatedValues).some(
-            (k) => updatedValues[k] && !latestSave[k]
-          ) ||
-          Object.values(doubleUpdatedValues).some((v) => v)
-        ) {
-          setDisableLangSelect(true);
-          setDisableLangInput(true);
-        } else {
-          setDisableLangSelect(false);
-        }
+      unsavedUpdate[key] =
+        valueTrimmed !== (latestSave[key]?.trim() ?? "") &&
+        valueTrimmed !== (languageInitCopy[key]?.trim() ?? "");
+
+      if (
+        Object.keys(updatedValues).some(
+          (k) => updatedValues[k] && !latestSave[k]
+        ) ||
+        Object.values(unsavedUpdate).some((v) => v)
+      ) {
+        headerRef?.current?.setDisableLangSelect(true);
+        headerRef?.current?.setDisableLangInput(true);
+      } else {
+        headerRef?.current?.setDisableLangSelect(false);
       }
+      newTranslation[key] = e.target.value;
+
       setRerenderComponent(`${key}-${e.target.value}`);
     },
-    [
-      newTranslation,
-      languageInitCopy,
-      updatedValues,
-      doubleUpdatedValues,
-      latestSave,
-    ]
+    [newTranslation, languageInitCopy, updatedValues, unsavedUpdate, latestSave]
   );
 
   const saveChanges = React.useCallback(async () => {
@@ -137,10 +267,7 @@ const LanguageDevModal = () => {
       : "no";
 
     const recordNewTranslation = { ...newTranslation };
-    // recordNewTranslation["0"] = JSON.stringify({
-    //   lang: recordNewTranslation.lang,
-    //   complete: all,
-    // });
+
     const savedChanges: { [key: string]: string } = {};
 
     for (const key in recordNewTranslation) {
@@ -161,46 +288,58 @@ const LanguageDevModal = () => {
         fileName: fileName ?? "undefined.json",
         extensions: [".json"],
       });
-      setDisableLangSelect(false);
+      headerRef?.current?.setDisableLangSelect(false);
       setLatestSave({ ...savedChanges });
-      setDoubleUpdatedValues({});
+      setUnsavedUpdate({});
     } catch {}
-  }, [newTranslation, updatedValues]);
+  }, [newTranslation, updatedValues, allIdsSet]);
+
+  const toggleSync = React.useCallback(() => {
+    setSyncChangesOn(!syncChangesOn);
+  }, [syncChangesOn]);
+
+  const turnResetOn = React.useCallback(() => {
+    setReset(true);
+  }, []);
 
   return (
-    <div>
-      <Modal sizeScale={0.8}>
-        <table className={languageStyles.table}>
-          <TranslateTableHeader
-            disableLangSelect={disableLangSelect}
-            disableLangInput={disableLangInput}
-            langNameOnChange={langNameOnChange}
-            setDisableLangInput={setDisableLangInput}
-            saveChanges={saveChanges}
-            onFileLoad={onFileLoad}
-          />
+    <Modal sizeScale={0.8} onClose={onClose}>
+      <table className={languageStyles.table}>
+        <TranslateTableHeader
+          ref={headerRef}
+          reset={reset}
+          turnResetOn={turnResetOn}
+          saveChanges={saveChanges}
+          onFileLoad={onFileLoad}
+          getFromLanguage={getFromLanguage}
+          syncChangesOn={syncChangesOn}
+          toggleSync={toggleSync}
+          syncStart={syncChangeStart}
+          processLangNameChange={processLangNameChange}
+        />
+        <tbody>
           {currLangText &&
             Array.from(allIdsSet)
               .sort((a, b) => parseInt(a) - parseInt(b))
               .map((key, idx) => {
                 return (
                   <TranslationTableRow
-                    key={"translation " + idx}
+                    key={"translate_row_" + key}
+                    id={"translate_row_" + key}
                     key_val={key}
-                    value={currLangText[key]}
+                    fromLangValue={fromLanguage[key]}
                     onChange={translateOnChange}
                     updatedTransaltion={
                       newTranslation ? newTranslation[key] : ""
                     }
                     updated={updatedValues[key]}
-                    updatedAfterLatestSave={doubleUpdatedValues[key]}
-                    // updated={updatedValues[key]}
+                    updatedAfterLatestSave={unsavedUpdate[key]}
                   />
                 );
               })}
-        </table>
-      </Modal>
-    </div>
+        </tbody>
+      </table>
+    </Modal>
   );
 };
 

@@ -1,17 +1,18 @@
 import { create } from "zustand";
 import languages from "@/lib/text/languagesRegistry.json";
+import { LanguageText } from "@/components/language/types";
 
 type UseLanguageText = {
-  currLangText: { [element: string]: string } | undefined;
-  allLoadedLanguages: { [lang: string]: { [element: string]: string } };
+  currLangText: LanguageText | undefined;
+  allLoadedLanguages: { [lang: string]: LanguageText };
   availableLanguages: { [language: string]: string };
   selectedLanguage: string;
   editMode: boolean;
   allIdsSet: Set<string>;
-  setLanguage: (setLanguage: string) => void;
-  getLanguage: (
-    setLanguage: string
-  ) => Promise<{ [key: string]: string } | undefined>;
+  selectedIdx: string;
+  setSelectedIdx: (idx: string) => void;
+  setLanguage: (setLanguage: string, newTranslation?: LanguageText) => void;
+  getLanguage: (setLanguage: string) => Promise<LanguageText | undefined>;
   getText: (getElementNumber: string) => string | undefined;
 };
 
@@ -22,6 +23,12 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
   editMode: true,
   allLoadedLanguages: {},
   allIdsSet: new Set(),
+  selectedIdx: "",
+  setSelectedIdx: (idx: string) => {
+    set((state) => {
+      return { ...state, selectedIdx: idx };
+    });
+  },
   getLanguage: async (newLanguage: string) => {
     if (get().allLoadedLanguages?.[newLanguage]) {
       return get().allLoadedLanguages?.[newLanguage];
@@ -35,8 +42,7 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
         }
       );
       if (newLanguageText) {
-        const newLanguageTextDefault: { [key: string]: string } =
-          newLanguageText.default;
+        const newLanguageTextDefault: LanguageText = newLanguageText.default;
         delete newLanguageTextDefault["0"];
         set((state) => {
           const newAllLoadedLanguages = state.allLoadedLanguages;
@@ -44,7 +50,10 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
           return {
             ...state,
             allLoadedLanguages: newAllLoadedLanguages,
-            allIdsSet: new Set(Object.keys(newLanguageTextDefault)),
+            allIdsSet: new Set([
+              ...Array.from(state.allIdsSet),
+              ...Object.keys(newLanguageTextDefault),
+            ]),
           };
         });
 
@@ -61,8 +70,11 @@ export const useLanguageText = create<UseLanguageText>((set, get) => ({
       };
     });
   },
-  setLanguage: async (newLanguage: string) => {
-    const newLang = await get().getLanguage(newLanguage);
+  setLanguage: async (newLanguage: string, newTranslation?: LanguageText) => {
+    const newLang = {
+      ...(await get().getLanguage(newLanguage)),
+      ...newTranslation,
+    };
     if (newLang) {
       set((state) => {
         return {

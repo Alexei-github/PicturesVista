@@ -10,6 +10,16 @@ const nextConfig = {
   // reactStrictMode: true,
   optimizeFonts: false,
   output: "export",
+  // experimental: {
+  //   turbo: {
+  //     rules: {
+  //       "*.svg": {
+  //         loaders: ["@svgr/webpack"],
+  //         as: "*.js",
+  //       },
+  //     },
+  //   },
+  // },
   webpack: (config, { dev, isServer }) => {
     // if (!isServer && !dev) {
     if (!dev) {
