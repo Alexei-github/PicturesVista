@@ -1,13 +1,12 @@
 "use client";
 
-const defaultLanguage = "Español";
-
 import React from "react";
 import LanguageSelectorUser from "@/components/language/languageSelectorUser";
 import libStyles from "@/lib/lib.module.css";
 import languageStyles from "@/components/language/language.module.css";
 import Btn from "@/lib/buttons/btn";
 import { useLanguageText } from "@/stores/languageLoad";
+import useTranslateTableHeaderState from "@/components/language/customHooks/useTranslateTableHeaderState";
 
 export type TableHeaderRefType = {
   getState: () => {
@@ -17,6 +16,7 @@ export type TableHeaderRefType = {
     editLanguageName: boolean;
     disableLangSelect: boolean;
     selectedFileName: string;
+    disableLangInput: boolean;
   };
   setDisableLangSelect: (state: boolean) => void;
   setDisableLangInput: (state: boolean) => void;
@@ -27,6 +27,8 @@ export type TableHeaderRefType = {
     langName: string;
     disableLangSelect: boolean;
     selectedFileName: string;
+    editLanguageName: boolean;
+    disableLangInput: boolean;
   }) => void;
 };
 
@@ -56,134 +58,47 @@ const TranslateTableHeader = (
   }: Props,
   ref?: React.ForwardedRef<TableHeaderRefType>
 ) => {
-  const {
-    availableLanguages,
-    currLangText,
-    getLanguage,
-    allIdsSet,
-    setLanguage,
-    selectedLanguage,
-    selectedIdx,
-  } = useLanguageText();
-
-  const [createNew, setCreateNew] = React.useState(false);
-  const [loadNew, setLoadNew] = React.useState(false);
+  const { selectedLanguage } = useLanguageText();
   const langChoiceRef = React.useRef<HTMLInputElement>(null);
-  const [langName, setLangName] = React.useState("");
-  const [disableLangSelect, setDisableLangSelect] = React.useState(false);
-  const [disableLangInput, setDisableLangInput] = React.useState(false);
-  const [editLanguageName, setEditLanguageName] = React.useState(false);
-  const [selectedFileName, setSelectedFileName] = React.useState("");
 
-  const loadFromFile = React.useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      try {
-        const blobLang = e.target.files?.[0];
-        if (blobLang) {
-          const language = await new Response(blobLang).json();
-          language.lang = JSON.parse(language["0"].replaceAll("'", '"')).lang;
-          delete language["0"];
-          onFileLoad(language);
-          setLangName(language.lang);
-          setSelectedFileName(blobLang?.name ?? "");
-        }
-      } catch {
-        console.log("read error");
-      }
-    },
-    [onFileLoad]
-  );
+  const {
+    createNew,
+    loadNew,
+    langName,
+    disableLangSelect,
+    disableLangInput,
+    editLanguageName,
+    selectedFileName,
+    loadFromFile,
+    refFunction,
+    inputMethodChanged,
+    clickOnEditLangName,
+    onChangeLangName,
+  } = useTranslateTableHeaderState({
+    reset,
+    onFileLoad,
+    turnResetOn,
+    processLangNameChange,
+    langChoiceRef,
+  });
+
+  React.useImperativeHandle(ref, refFunction, [
+    createNew,
+    loadNew,
+    langName,
+    disableLangSelect,
+    editLanguageName,
+    selectedFileName,
+    disableLangInput,
+  ]);
 
   React.useEffect(() => {
     const mockEvent = {
       target: { value: selectedLanguage },
     } as React.ChangeEvent<HTMLSelectElement>;
     getFromLanguage(mockEvent);
-  }, [getFromLanguage, selectedLanguage]);
+  }, []);
 
-  React.useImperativeHandle(
-    ref,
-    () => {
-      return {
-        getState: () => {
-          return {
-            createNew,
-            loadNew,
-            langName,
-            editLanguageName,
-            disableLangSelect,
-            selectedFileName,
-          };
-        },
-        setDisableLangSelect: (state: boolean) => setDisableLangSelect(state),
-        setDisableLangInput: (state: boolean) => setDisableLangInput(state),
-        setEditLanguageName: (state: boolean) => setEditLanguageName(state),
-        setInitState: ({
-          createNew,
-          loadNew,
-          langName,
-          disableLangSelect,
-          selectedFileName,
-        }) => {
-          setCreateNew(createNew);
-          setLoadNew(loadNew);
-          setLangName(langName);
-          setDisableLangSelect(disableLangSelect);
-          setDisableLangInput(true);
-          setEditLanguageName(true);
-          setSelectedFileName(selectedFileName);
-        },
-      };
-    },
-    [
-      createNew,
-      loadNew,
-      langName,
-      disableLangSelect,
-      editLanguageName,
-      selectedFileName,
-    ]
-  );
-
-  React.useEffect(() => {
-    const timeout = setTimeout(
-      () => {
-        processLangNameChange(langName);
-      },
-      reset ? 0 : 500
-    );
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [langName, processLangNameChange, reset]);
-
-  const inputMethodChanged = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setDisableLangInput(false);
-      turnResetOn();
-      setCreateNew(true);
-      setSelectedFileName("");
-
-      if (e.target.value === "create_new") {
-        setLoadNew(false);
-        setEditLanguageName(false);
-        setLangName("");
-      } else if (e.target.value === "load_new") {
-        setLoadNew(true);
-        langChoiceRef.current && (langChoiceRef.current.value = "");
-        setLangName("");
-        setEditLanguageName(true);
-      } else {
-        setLoadNew(false);
-        setLangName(e.target.value);
-        setEditLanguageName(true);
-      }
-
-      e.target.value = "lang";
-    },
-    [turnResetOn]
-  );
   return (
     <thead>
       <tr>
@@ -201,23 +116,11 @@ const TranslateTableHeader = (
         </th>
         <th className={languageStyles.third_column}>
           <div className={languageStyles.select_save_div}>
-            <Btn
-              className={languageStyles.sync_btn}
-              style={{
-                ...(syncChangesOn && {
-                  color: "var(--btn_green)",
-                  border: "0.2rem solid var(--btn_green)",
-                }),
-              }}
-              onClick={toggleSync}
-            >
-              <span className={languageStyles.sync_symbol}>&#x21BB;</span>
-              {syncStart && (
-                <svg className={languageStyles.progress_circle_svg}>
-                  <circle className={languageStyles.progress} />
-                </svg>
-              )}
-            </Btn>
+            <SyncBtn
+              syncChangesOn={syncChangesOn}
+              syncStart={syncStart}
+              toggleSync={toggleSync}
+            />
             <LanguageSelectorUser
               defaultLanguage="lang"
               selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
@@ -243,53 +146,24 @@ const TranslateTableHeader = (
               </button>
             )}
           </div>
-          {loadNew &&
-            (!selectedFileName ? (
-              <input
-                ref={langChoiceRef}
-                className={
-                  languageStyles.textarea + " " + languageStyles.file_input
-                }
-                type="file"
-                onInput={loadFromFile}
-                disabled={disableLangSelect || disableLangInput}
-              />
-            ) : (
-              <input
-                className={
-                  languageStyles.textarea +
-                  " " +
-                  languageStyles.file_input_selected
-                }
-                type="text"
-                disabled
-                placeholder={`Loaded File: ${selectedFileName}`}
-              />
-            ))}
+          {loadNew && (
+            <LoadLangFromFile
+              selectedFileName={selectedFileName}
+              langChoiceRef={langChoiceRef}
+              loadFromFile={loadFromFile}
+              disableLangSelect={disableLangSelect}
+              disableLangInput={disableLangInput}
+            />
+          )}
           {((createNew && selectedFileName) || (createNew && !loadNew)) && (
-            <div className={languageStyles.lang_input_area}>
-              <input
-                {...(createNew && !loadNew && { autoFocus: true })}
-                className={languageStyles.textarea}
-                type="text"
-                onChange={(e) => {
-                  setLangName(e.target.value);
-                }}
-                disabled={disableLangInput}
-                value={langName}
-              />
-              {disableLangInput && (
-                <Btn
-                  className={languageStyles.btn_language_input}
-                  onClick={() => {
-                    setEditLanguageName(true);
-                    setDisableLangInput(false);
-                  }}
-                >
-                  ✏️
-                </Btn>
-              )}
-            </div>
+            <LangNameInput
+              createNew={createNew}
+              loadNew={loadNew}
+              disableLangInput={disableLangInput}
+              langName={langName}
+              onChangeLangName={onChangeLangName}
+              clickOnEditLangName={clickOnEditLangName}
+            />
           )}
         </th>
       </tr>
@@ -300,3 +174,105 @@ const TranslateTableHeader = (
 export default React.memo(
   React.forwardRef<TableHeaderRefType, Props>(TranslateTableHeader)
 );
+
+type PropsForLangNameInput = {
+  createNew: boolean;
+  loadNew: boolean;
+  disableLangInput: boolean;
+  onChangeLangName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  langName: string;
+  clickOnEditLangName: () => void;
+};
+
+const LangNameInput = ({
+  createNew,
+  loadNew,
+  disableLangInput,
+  langName,
+  onChangeLangName,
+  clickOnEditLangName,
+}: PropsForLangNameInput) => {
+  return (
+    <div className={languageStyles.lang_input_area}>
+      <input
+        {...(createNew && !loadNew && { autoFocus: true })}
+        className={languageStyles.textarea}
+        type="text"
+        onChange={onChangeLangName}
+        disabled={disableLangInput}
+        value={langName}
+      />
+      {disableLangInput && (
+        <Btn
+          className={languageStyles.btn_language_input}
+          onClick={clickOnEditLangName}
+        >
+          ✏️
+        </Btn>
+      )}
+    </div>
+  );
+};
+
+type PropsForLoadLangFromFile = {
+  selectedFileName: string;
+  langChoiceRef: React.RefObject<HTMLInputElement>;
+  loadFromFile: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  disableLangSelect: boolean;
+  disableLangInput: boolean;
+};
+
+const LoadLangFromFile = ({
+  selectedFileName,
+  langChoiceRef,
+  loadFromFile,
+  disableLangSelect,
+  disableLangInput,
+}: PropsForLoadLangFromFile) => {
+  return !selectedFileName ? (
+    <input
+      ref={langChoiceRef}
+      className={languageStyles.textarea + " " + languageStyles.file_input}
+      type="file"
+      onInput={loadFromFile}
+      disabled={disableLangSelect || disableLangInput}
+    />
+  ) : (
+    <input
+      className={
+        languageStyles.textarea + " " + languageStyles.file_input_selected
+      }
+      type="text"
+      disabled
+      placeholder={`Loaded File: ${selectedFileName}`}
+    />
+  );
+};
+
+type PropsForSyncBtn = {
+  syncChangesOn: boolean;
+  syncStart: boolean;
+  toggleSync: () => void;
+};
+
+const SyncBtn = ({ syncChangesOn, syncStart, toggleSync }: PropsForSyncBtn) => {
+  return (
+    <Btn
+      className={languageStyles.sync_btn}
+      style={{
+        ...(syncChangesOn && {
+          color: "var(--btn_green)",
+          border: "0.2rem solid var(--btn_green)",
+        }),
+      }}
+      onClick={toggleSync}
+    >
+      <span className={languageStyles.sync_symbol}>&#x21BB;</span>
+      {syncStart && (
+        <svg className={languageStyles.progress_circle_svg}>
+          <circle className={languageStyles.progress} />
+        </svg>
+      )}
+    </Btn>
+  );
+};

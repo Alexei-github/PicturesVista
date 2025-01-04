@@ -33,11 +33,11 @@ const LanguageSelectorUser = ({
     [setLanguage]
   );
 
-  
+  const selectTagId = React.useId();
 
   return (
     <select
-      id="clickedLanguage"
+      id={`clickedLanguage_${selectTagId}`}
       name="language"
       defaultValue={defaultLanguage}
       onChange={onChangePassed ? onChangePassed : onChange}

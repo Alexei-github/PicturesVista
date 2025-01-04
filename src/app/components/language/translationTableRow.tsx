@@ -68,6 +68,7 @@ const TranslationTableRow = ({
           </div>
         )}
         <textarea
+          id={`newTranslate_textArea_${id}`}
           className={languageStyles.textarea}
           onChange={(e) => {
             onChange(e, key_val);

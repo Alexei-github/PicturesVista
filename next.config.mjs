@@ -10,6 +10,7 @@ const nextConfig = {
   // reactStrictMode: true,
   optimizeFonts: false,
   output: "export",
+  productionBrowserSourceMaps: true,
   // experimental: {
   //   turbo: {
   //     rules: {
