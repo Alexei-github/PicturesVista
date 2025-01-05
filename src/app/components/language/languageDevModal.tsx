@@ -11,51 +11,39 @@ import TranslateTableHeader, {
 } from "@/components/language/translateTableHeader";
 import { fileOpen, fileSave } from "browser-fs-access";
 import { LanguageText } from "@/components/language/types";
-import useLanguageState from "./customHooks/useLanguageDevState";
+import useLanguageDevState from "./customHooks/useLanguageDevState";
 
 type Props = {
   onClose: () => void;
 };
 
-const LanguageDevModal = ({ onClose }: Props) => {
-  const {
-    currLangText,
-    allIdsSet,
-    fromLanguage,
-    newTranslation,
-    updatedValues,
-    unsavedUpdate,
-    reset,
-    syncChangesOn,
-    syncChangeStart,
-    onFileLoad,
-    saveChanges,
-    toggleSync,
-    processLangNameChange,
-    getFromLanguage,
-    translateOnChange,
-    headerRef,
-    turnResetOn,
-  } = useLanguageState();
+const LanguageDevModal = (p: Props) => {
+  const gs = useLanguageText((s) => ({
+    availableLanguages: s.availableLanguages,
+    currLangText: s.currLangText,
+    allIdsSet: s.allIdsSet,
+  }));
+
+  const h = useLanguageDevState();
 
   return (
-    <Modal sizeScale={0.8} onClose={onClose}>
+    <Modal sizeScale={0.8} onClose={p.onClose}>
       <table className={languageStyles.table}>
         <TranslateTableHeader
-          ref={headerRef}
-          reset={reset}
-          turnResetOn={turnResetOn}
-          saveChanges={saveChanges}
-          onFileLoad={onFileLoad}
-          getFromLanguage={getFromLanguage}
-          syncChangesOn={syncChangesOn}
-          toggleSync={toggleSync}
-          syncStart={syncChangeStart}
-          processLangNameChange={processLangNameChange}
+          ref={h.headerRef}
+          reset={h.reset}
+          turnResetOn={h.turnResetOn}
+          saveChanges={h.saveChanges}
+          onFileLoad={h.onFileLoad}
+          getFromLanguage={h.getFromLanguage}
+          syncChangesOn={h.syncChangesOn}
+          toggleSync={h.toggleSync}
+          syncStart={h.syncChangeStart}
+          processLangNameChange={h.processLangNameChange}
         />
         <tbody>
-          {currLangText &&
-            Array.from(allIdsSet)
+          {gs.currLangText &&
+            Array.from(gs.allIdsSet)
               .sort((a, b) => parseInt(a) - parseInt(b))
               .map((key, idx) => {
                 return (
@@ -63,13 +51,13 @@ const LanguageDevModal = ({ onClose }: Props) => {
                     key={"translate_row_" + key}
                     id={"translate_row_" + key}
                     key_val={key}
-                    fromLangValue={fromLanguage[key]}
-                    onChange={translateOnChange}
+                    fromLangValue={h.fromLanguage[key]}
+                    onChange={h.translateOnChange}
                     updatedTransaltion={
-                      newTranslation ? newTranslation[key] : ""
+                      h.newTranslation ? h.newTranslation[key] : ""
                     }
-                    updated={updatedValues[key]}
-                    updatedAfterLatestSave={unsavedUpdate[key]}
+                    updated={h.updatedValues[key]}
+                    updatedAfterLatestSave={h.unsavedUpdate[key]}
                   />
                 );
               })}

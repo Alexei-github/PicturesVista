@@ -9,16 +9,16 @@ import {
   SYNC_DEBOUNCE_TIME,
 } from "@/components/language/lib/constants";
 
-export default function useLanguageState() {
-  const {
-    availableLanguages,
-    currLangText,
-    getLanguage,
-    allIdsSet,
-    setLanguage,
-    selectedLanguage,
-    selectedIdx,
-  } = useLanguageText();
+export default function useLanguageDevState() {
+  const gs = useLanguageText((s) => ({
+    availableLanguages: s.availableLanguages,
+    currLangText: s.currLangText,
+    getLanguage: s.getLanguage,
+    allIdsSet: s.allIdsSet,
+    setLanguage: s.setLanguage,
+    selectedLanguage: s.selectedLanguage,
+    selectedIdx: s.selectedIdx,
+  }));
 
   const [newTranslation, setNewTranslation] = React.useState<LanguageText>({});
 
@@ -34,9 +34,7 @@ export default function useLanguageState() {
   const [reset, setReset] = React.useState(false);
   const [latestSave, setLatestSave] = React.useState<LanguageText>({});
   const [rerenderComponet, setRerenderComponent] = React.useState("");
-  const [fromLanguage, setFromLanguage] = React.useState<LanguageText>(
-    currLangText ?? {}
-  );
+  const [fromLanguage, setFromLanguage] = React.useState<LanguageText>({});
   const [syncChangesOn, setSyncChangesOn] = React.useState(false);
   const [syncChangeStart, setSyncChangeStart] = React.useState(false);
   const headerRef = React.useRef<TableHeaderRefType>(null);
@@ -44,22 +42,22 @@ export default function useLanguageState() {
   // console.log("=======51=====", newTranslation, reset);
 
   React.useEffect(() => {
-    const element = document.getElementById(`translate_row_${selectedIdx}`);
+    const element = document.getElementById(`translate_row_${gs.selectedIdx}`);
     if (element) {
       element.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
-  }, [selectedIdx]);
+  }, [gs.selectedIdx]);
 
   const getFromLanguage = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       (async () => {
-        setFromLanguage((await getLanguage(e.target.value)) ?? {});
+        setFromLanguage((await gs.getLanguage(e.target.value)) ?? {});
       })();
     },
-    [setFromLanguage, getLanguage]
+    [setFromLanguage, gs.getLanguage]
   );
   // console.log(performance.getEntries());
 
@@ -90,7 +88,7 @@ export default function useLanguageState() {
     if (syncChangesOn) {
       const timeout = setTimeout(() => {
         setSyncChangeStart(true);
-        setLanguage(selectedLanguage, newTranslation);
+        gs.setLanguage(gs.selectedLanguage, newTranslation);
       }, SYNC_DEBOUNCE_TIME);
       return () => {
         setSyncChangeStart(false);
@@ -101,8 +99,8 @@ export default function useLanguageState() {
     rerenderComponet,
     syncChangesOn,
     newTranslation,
-    selectedLanguage,
-    setLanguage,
+    gs.selectedLanguage,
+    gs.setLanguage,
   ]);
 
   React.useEffect(() => {
@@ -160,9 +158,9 @@ export default function useLanguageState() {
   React.useEffect(() => {
     if (!syncChangesOn) {
       setSyncChangeStart(false);
-      setLanguage(selectedLanguage);
+      gs.setLanguage(gs.selectedLanguage);
     }
-  }, [syncChangesOn, selectedLanguage, setLanguage]);
+  }, [syncChangesOn, gs.selectedLanguage, gs.setLanguage]);
   /**
    *
    */
@@ -171,9 +169,9 @@ export default function useLanguageState() {
       // if (lang) {
       if (!headerRef?.current?.getState().editLanguageName || reset) {
         setReset(false);
-        if (availableLanguages[lang]) {
+        if (gs.availableLanguages[lang]) {
           (async () => {
-            const existLang = await getLanguage(lang);
+            const existLang = await gs.getLanguage(lang);
             setLanguageInitCopy(existLang ?? {});
             setNewTranslation({ ...existLang, lang: lang });
             setUpdatedValues({});
@@ -196,7 +194,13 @@ export default function useLanguageState() {
 
       // }
     },
-    [availableLanguages, languageInitCopy, getLanguage, reset, newTranslation]
+    [
+      gs.availableLanguages,
+      languageInitCopy,
+      gs.getLanguage,
+      reset,
+      newTranslation,
+    ]
   );
 
   const onFileLoad = React.useCallback(
@@ -205,9 +209,9 @@ export default function useLanguageState() {
       setNewTranslation({ ...language });
       newTranslation["lang"] = language.lang;
 
-      if (availableLanguages[language.lang]) {
+      if (gs.availableLanguages[language.lang]) {
         (async () => {
-          const existLang = await getLanguage(language.lang);
+          const existLang = await gs.getLanguage(language.lang);
           const newUpdateVal: { [key: string]: boolean } = {};
           const newLatestSave: LanguageText = {};
           for (const key in existLang) {
@@ -228,7 +232,7 @@ export default function useLanguageState() {
         setLatestSave({});
       }
     },
-    [availableLanguages, getLanguage, newTranslation]
+    [gs.availableLanguages, gs.getLanguage, newTranslation]
   );
   /**
    *
@@ -274,12 +278,12 @@ export default function useLanguageState() {
     const latestSavedChanges = await saveTranslationChanges({
       newTranslation,
       updatedValues,
-      allIdsSet,
+      allIdsSet: gs.allIdsSet,
     });
     headerRef?.current?.setDisableLangSelect(false);
     setLatestSave(latestSavedChanges);
     setUnsavedUpdate({});
-  }, [newTranslation, updatedValues, allIdsSet]);
+  }, [newTranslation, updatedValues, gs.allIdsSet]);
 
   /**
    *
@@ -293,9 +297,7 @@ export default function useLanguageState() {
   }, []);
 
   return {
-    currLangText,
-    availableLanguages,
-    allIdsSet,
+    currLangText: gs.currLangText,
     fromLanguage,
     newTranslation,
     updatedValues,
