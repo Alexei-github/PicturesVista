@@ -6,11 +6,12 @@
     "plugin:next/recommended"
   ],
   // "extends": ["next/babel", "next/core-web-vitals"]
-  "plugins": ["react", "next"],
+  "plugins": ["react", "next", "unicorn"],
   "rules": {
     "no-unused-vars": [
       "warn",
       { "vars": "all", "args": "all", "ignoreRestSiblings": false }
-    ]
+    ],
+    "unicorn/no-unused-properties": "warn"
   }
 }
