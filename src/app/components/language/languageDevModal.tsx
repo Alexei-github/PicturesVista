@@ -19,7 +19,7 @@ type Props = {
 
 const LanguageDevModal = (p: Props) => {
   const gs = useLanguageText((s) => ({
-    availableLanguages: s.availableLanguages,
+    // availableLanguages: s.availableLanguages,
     currLangText: s.currLangText,
     allIdsSet: s.allIdsSet,
   }));
@@ -27,7 +27,8 @@ const LanguageDevModal = (p: Props) => {
   const h = useLanguageDevState();
 
   return (
-    <Modal sizeScale={0.8} onClose={p.onClose}>
+    <Modal sizeScale={0.8} 
+    onClose={p.onClose}>
       <table className={languageStyles.table}>
         <TranslateTableHeader
           ref={h.headerRef}

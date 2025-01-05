@@ -1,7 +1,15 @@
 import React from "react";
 import { TableHeaderRefType } from "@/components/language/translateTableHeader";
 
-export default function useTranslateTableHeaderState(p: Props) {
+export default function useTranslateTableHeaderState(pp: Props) {
+  const p = {
+    reset: pp.reset,
+    turnResetOn: pp.turnResetOn,
+    onFileLoad: pp.onFileLoad,
+    processLangNameChange: pp.processLangNameChange,
+    langChoiceRef: pp.langChoiceRef,
+  };
+
   const [createNew, setCreateNew] = React.useState(false);
   const [loadNew, setLoadNew] = React.useState(false);
   const [langName, setLangName] = React.useState("");
@@ -81,7 +89,7 @@ export default function useTranslateTableHeaderState(p: Props) {
   const inputMethodChanged = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setDisableLangInput(false);
-      p.turnResetOn();
+      // p.turnResetOn();
       setCreateNew(true);
       setSelectedFileName("");
 
@@ -102,7 +110,9 @@ export default function useTranslateTableHeaderState(p: Props) {
 
       e.target.value = "lang";
     },
-    [p.turnResetOn]
+    [
+      // p.turnResetOn
+    ]
   );
 
   const clickOnEditLangName = () => {
