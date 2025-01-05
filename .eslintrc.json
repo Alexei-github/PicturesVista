@@ -1,4 +1,23 @@
 {
-  "extends": ["next/core-web-vitals"]
+  "extends": ["next/core-web-vitals"],
   // "extends": ["next/babel", "next/core-web-vitals"]
+  "plugins": ["unused-imports"],
+  "rules": {
+    "unused-imports/no-unused-vars": "warn",
+    "unused-imports/no-unused-vars-ts": "warn"
+  }
+
+  // "rules": {
+  //   "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
+  //   "unused-imports/no-unused-imports": "error",
+  //   "unused-imports/no-unused-vars": [
+  //     "warn",
+  //     {
+  //       "vars": "all",
+  //       "varsIgnorePattern": "^_",
+  //       "args": "after-used",
+  //       "argsIgnorePattern": "^_"
+  //     }
+  //   ]
+  // }
 }
