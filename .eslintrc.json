@@ -1,4 +1,16 @@
 {
-  "extends": ["next/core-web-vitals"]
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:next/recommended"
+  ],
   // "extends": ["next/babel", "next/core-web-vitals"]
+  "plugins": ["react", "next"],
+  "rules": {
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "all", "ignoreRestSiblings": false }
+    ]
+  }
 }
