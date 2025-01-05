@@ -40,7 +40,7 @@ const DirLoadButton = () => {
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadDir}>
       {/* Load Folder(s) */}
-      <TextDisplay elementType="btn" elementNumber="2" />
+      <TextDisplay elementType="btn" p_elementNumber="2" />
     </button>
   );
 };

@@ -77,7 +77,7 @@ function ImgsPane() {
             }}
           >
             <p>
-              <TextDisplay elementType="textArea" elementNumber="4" />
+              <TextDisplay elementType="textArea" p_elementNumber="4" />
             </p>
           </div>
         )}

@@ -3,11 +3,11 @@ import React from "react";
 import LanguageSelectorUser from "@/components/language/languageSelectorUser";
 import languageStyles from "@/components/language/language.module.css";
 import LanguageEditTransalte from "@/components/language/languageEditTranslate";
-import { useLanguageText } from "@/stores/languageLoad";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 import { DEFAULT_LANGUAGE } from "@/components/language/lib/constants";
 
 export default function MainLangSelect() {
-  const { setLanguage } = useLanguageText();
+  const { setLanguage: setLanguage } = gs_1_useLanguageText();
 
   React.useEffect(() => {
     setLanguage(DEFAULT_LANGUAGE);

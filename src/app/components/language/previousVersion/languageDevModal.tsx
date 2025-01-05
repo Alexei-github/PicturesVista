@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useLanguageText } from "@/stores/languageLoad";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
 import LanguageSelectorUser from "@/components/language/languageSelectorUser";
@@ -18,14 +18,14 @@ type Props = {
 
 const LanguageDevModal = ({ onClose }: Props) => {
   const {
-    availableLanguages,
-    currLangText,
-    getLanguage,
-    allIdsSet,
-    setLanguage,
-    selectedLanguage,
-    selectedIdx,
-  } = useLanguageText();
+    availableLanguages: availableLanguages,
+    currLangText: currLangText,
+    getLanguage: getLanguage,
+    allIdsSet: allIdsSet,
+    setLanguage: setLanguage,
+    selectedLanguage: selectedLanguage,
+    selectedIdx: selectedIdx,
+  } = gs_1_useLanguageText();
 
   const [newTranslation, setNewTranslation] = React.useState<LanguageText>({});
 

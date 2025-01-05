@@ -1,5 +1,5 @@
 import React from "react";
-import { useLanguageText } from "@/stores/languageLoad";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 import { TableHeaderRefType } from "@/components/language/translateTableHeader";
 import { LanguageText } from "@/components/language/types";
 import saveTranslationChanges from "@/components/language/functions/useSaveTranslationChnages";
@@ -10,18 +10,23 @@ import {
 } from "@/components/language/lib/constants";
 
 export default function useLanguageDevState() {
-  const gs = useLanguageText((s) => ({
-    availableLanguages: s.availableLanguages,
-    currLangText: s.currLangText,
-    getLanguage: s.getLanguage,
-    allIdsSet: s.allIdsSet,
-    setLanguage: s.setLanguage,
-    selectedLanguage: s.selectedLanguage,
-    selectedIdx: s.selectedIdx,
+  const {
+    gs_1_availableLanguages,
+    gs_1_getLanguage,
+    gs_1_allIdsSet,
+    gs_1_setLanguage,
+    gs_1_selectedLanguage,
+    gs_1_selectedIdx,
+  } = gs_1_useLanguageText((s) => ({
+    gs_1_availableLanguages: s.availableLanguages,
+    gs_1_getLanguage: s.getLanguage,
+    gs_1_allIdsSet: s.allIdsSet,
+    gs_1_setLanguage: s.setLanguage,
+    gs_1_selectedLanguage: s.selectedLanguage,
+    gs_1_selectedIdx: s.selectedIdx,
   }));
 
   const [newTranslation, setNewTranslation] = React.useState<LanguageText>({});
-
   const [updatedValues, setUpdatedValues] = React.useState<{
     [key: string]: boolean;
   }>({});
@@ -42,22 +47,24 @@ export default function useLanguageDevState() {
   // console.log("=======51=====", newTranslation, reset);
 
   React.useEffect(() => {
-    const element = document.getElementById(`translate_row_${gs.selectedIdx}`);
+    const element = document.getElementById(
+      `translate_row_${gs_1_selectedIdx}`
+    );
     if (element) {
       element.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }
-  }, [gs.selectedIdx]);
+  }, [gs_1_selectedIdx]);
 
   const getFromLanguage = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       (async () => {
-        setFromLanguage((await gs.getLanguage(e.target.value)) ?? {});
+        setFromLanguage((await gs_1_getLanguage(e.target.value)) ?? {});
       })();
     },
-    [setFromLanguage, gs.getLanguage]
+    [setFromLanguage, gs_1_getLanguage]
   );
   // console.log(performance.getEntries());
 
@@ -88,7 +95,7 @@ export default function useLanguageDevState() {
     if (syncChangesOn) {
       const timeout = setTimeout(() => {
         setSyncChangeStart(true);
-        gs.setLanguage(gs.selectedLanguage, newTranslation);
+        gs_1_setLanguage(gs_1_selectedLanguage, newTranslation);
       }, SYNC_DEBOUNCE_TIME);
       return () => {
         setSyncChangeStart(false);
@@ -99,8 +106,8 @@ export default function useLanguageDevState() {
     rerenderComponet,
     syncChangesOn,
     newTranslation,
-    gs.selectedLanguage,
-    gs.setLanguage,
+    gs_1_selectedLanguage,
+    gs_1_setLanguage,
   ]);
 
   React.useEffect(() => {
@@ -158,9 +165,9 @@ export default function useLanguageDevState() {
   React.useEffect(() => {
     if (!syncChangesOn) {
       setSyncChangeStart(false);
-      gs.setLanguage(gs.selectedLanguage);
+      gs_1_setLanguage(gs_1_selectedLanguage);
     }
-  }, [syncChangesOn, gs.selectedLanguage, gs.setLanguage]);
+  }, [syncChangesOn, gs_1_selectedLanguage, gs_1_setLanguage]);
   /**
    *
    */
@@ -169,9 +176,9 @@ export default function useLanguageDevState() {
       // if (lang) {
       if (!headerRef?.current?.getState().editLanguageName || reset) {
         setReset(false);
-        if (gs.availableLanguages[lang]) {
+        if (gs_1_availableLanguages[lang]) {
           (async () => {
-            const existLang = await gs.getLanguage(lang);
+            const existLang = await gs_1_getLanguage(lang);
             setLanguageInitCopy(existLang ?? {});
             setNewTranslation({ ...existLang, lang: lang });
             setUpdatedValues({});
@@ -195,9 +202,9 @@ export default function useLanguageDevState() {
       // }
     },
     [
-      gs.availableLanguages,
+      gs_1_availableLanguages,
       languageInitCopy,
-      gs.getLanguage,
+      gs_1_getLanguage,
       reset,
       newTranslation,
     ]
@@ -209,9 +216,9 @@ export default function useLanguageDevState() {
       setNewTranslation({ ...language });
       newTranslation["lang"] = language.lang;
 
-      if (gs.availableLanguages[language.lang]) {
+      if (gs_1_availableLanguages[language.lang]) {
         (async () => {
-          const existLang = await gs.getLanguage(language.lang);
+          const existLang = await gs_1_getLanguage(language.lang);
           const newUpdateVal: { [key: string]: boolean } = {};
           const newLatestSave: LanguageText = {};
           for (const key in existLang) {
@@ -232,7 +239,7 @@ export default function useLanguageDevState() {
         setLatestSave({});
       }
     },
-    [gs.availableLanguages, gs.getLanguage, newTranslation]
+    [gs_1_availableLanguages, gs_1_getLanguage, newTranslation]
   );
   /**
    *
@@ -278,12 +285,12 @@ export default function useLanguageDevState() {
     const latestSavedChanges = await saveTranslationChanges({
       newTranslation,
       updatedValues,
-      allIdsSet: gs.allIdsSet,
+      allIdsSet: gs_1_allIdsSet,
     });
     headerRef?.current?.setDisableLangSelect(false);
     setLatestSave(latestSavedChanges);
     setUnsavedUpdate({});
-  }, [newTranslation, updatedValues, gs.allIdsSet]);
+  }, [newTranslation, updatedValues, gs_1_allIdsSet]);
 
   /**
    *
@@ -297,21 +304,20 @@ export default function useLanguageDevState() {
   }, []);
 
   return {
-    currLangText: gs.currLangText,
-    fromLanguage,
-    newTranslation,
-    updatedValues,
-    unsavedUpdate,
-    reset,
-    syncChangesOn,
-    headerRef,
-    syncChangeStart,
-    saveChanges,
-    onFileLoad,
-    toggleSync,
-    processLangNameChange,
-    getFromLanguage,
-    translateOnChange,
-    turnResetOn,
+    ch_1_fromLanguage: fromLanguage,
+    ch_1_newTranslation: newTranslation,
+    ch_1_updatedValues: updatedValues,
+    ch_1_unsavedUpdate: unsavedUpdate,
+    ch_1_reset: reset,
+    ch_1_syncChangesOn: syncChangesOn,
+    ch_1_headerRef: headerRef,
+    ch_1_syncChangeStart: syncChangeStart,
+    ch_1_saveChanges: saveChanges,
+    ch_1_onFileLoad: onFileLoad,
+    ch_1_toggleSync: toggleSync,
+    ch_1_processLangNameChange: processLangNameChange,
+    ch_1_getFromLanguage: getFromLanguage,
+    ch_1_translateOnChange: translateOnChange,
+    ch_1_turnResetOn: turnResetOn,
   };
 }

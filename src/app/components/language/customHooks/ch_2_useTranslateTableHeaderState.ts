@@ -1,15 +1,13 @@
 import React from "react";
 import { TableHeaderRefType } from "@/components/language/translateTableHeader";
 
-export default function useTranslateTableHeaderState(pp: Props) {
-  const p = {
-    reset: pp.reset,
-    turnResetOn: pp.turnResetOn,
-    onFileLoad: pp.onFileLoad,
-    processLangNameChange: pp.processLangNameChange,
-    langChoiceRef: pp.langChoiceRef,
-  };
-
+export default function useTranslateTableHeaderState({
+  p_reset,
+  p_turnResetOn,
+  p_onFileLoad,
+  p_processLangNameChange,
+  p_langChoiceRef,
+}: Props) {
   const [createNew, setCreateNew] = React.useState(false);
   const [loadNew, setLoadNew] = React.useState(false);
   const [langName, setLangName] = React.useState("");
@@ -26,7 +24,7 @@ export default function useTranslateTableHeaderState(pp: Props) {
           const language = await new Response(blobLang).json();
           language.lang = JSON.parse(language["0"].replaceAll("'", '"')).lang;
           delete language["0"];
-          p.onFileLoad(language);
+          p_onFileLoad(language);
           setLangName(language.lang);
           setSelectedFileName(blobLang?.name ?? "");
         }
@@ -34,10 +32,10 @@ export default function useTranslateTableHeaderState(pp: Props) {
         console.log("read error");
       }
     },
-    [p.onFileLoad]
+    [p_onFileLoad]
   );
 
-  const refFunction = (): TableHeaderRefType => {
+  const refFunction = React.useCallback((): TableHeaderRefType => {
     return {
       getState: () => {
         return {
@@ -71,25 +69,33 @@ export default function useTranslateTableHeaderState(pp: Props) {
         setSelectedFileName(selectedFileName);
       },
     };
-  };
+  }, [
+    createNew,
+    loadNew,
+    langName,
+    disableLangSelect,
+    editLanguageName,
+    selectedFileName,
+    disableLangInput,
+  ]);
 
   React.useEffect(() => {
     const timeout = setTimeout(
       () => {
-        p.processLangNameChange(langName);
+        p_processLangNameChange(langName);
       },
-      p.reset ? 0 : 500
+      p_reset ? 0 : 500
     );
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [langName, p.processLangNameChange, p.reset]);
+  }, [langName, p_processLangNameChange, p_reset]);
 
   const inputMethodChanged = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setDisableLangInput(false);
-      // p.turnResetOn();
+      p_turnResetOn();
       setCreateNew(true);
       setSelectedFileName("");
 
@@ -99,7 +105,9 @@ export default function useTranslateTableHeaderState(pp: Props) {
         setLangName("");
       } else if (e.target.value === "load_new") {
         setLoadNew(true);
-        p.langChoiceRef.current && (p.langChoiceRef.current.value = "");
+        if (p_langChoiceRef.current) {
+          p_langChoiceRef.current.value = "";
+        }
         setLangName("");
         setEditLanguageName(true);
       } else {
@@ -110,9 +118,7 @@ export default function useTranslateTableHeaderState(pp: Props) {
 
       e.target.value = "lang";
     },
-    [
-      // p.turnResetOn
-    ]
+    [p_turnResetOn, p_langChoiceRef]
   );
 
   const clickOnEditLangName = () => {
@@ -125,25 +131,24 @@ export default function useTranslateTableHeaderState(pp: Props) {
   };
 
   return {
-    createNew,
-    loadNew,
-    langName,
-    disableLangSelect,
-    disableLangInput,
-    editLanguageName,
-    selectedFileName,
-    loadFromFile,
-    refFunction,
-    inputMethodChanged,
-    clickOnEditLangName,
-    onChangeLangName,
+    ch_2_createNew: createNew,
+    ch_2_loadNew: loadNew,
+    ch_2_langName: langName,
+    ch_2_disableLangSelect: disableLangSelect,
+    ch_2_disableLangInput: disableLangInput,
+    ch_2_selectedFileName: selectedFileName,
+    ch_2_loadFromFile: loadFromFile,
+    ch_2_refFunction: refFunction,
+    ch_2_inputMethodChanged: inputMethodChanged,
+    ch_2_clickOnEditLangName: clickOnEditLangName,
+    ch_2_onChangeLangName: onChangeLangName,
   };
 }
 
 type Props = {
-  reset: boolean;
-  turnResetOn: () => void;
-  onFileLoad: (language: { [keyof: string]: string }) => void;
-  processLangNameChange: (langName: string) => void;
-  langChoiceRef: React.RefObject<HTMLInputElement>;
+  p_reset: boolean;
+  p_turnResetOn: () => void;
+  p_onFileLoad: (language: { [keyof: string]: string }) => void;
+  p_processLangNameChange: (langName: string) => void;
+  p_langChoiceRef: React.RefObject<HTMLInputElement>;
 };

@@ -184,7 +184,7 @@ export default function Sidebar({
                   // height: "100%",
                 }}
               >
-                <TextDisplay elementType="textArea" elementNumber="3" />
+                <TextDisplay elementType="textArea" p_elementNumber="3" />
               </p>
             )}
             <FileUploader />

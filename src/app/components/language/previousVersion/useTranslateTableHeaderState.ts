@@ -3,7 +3,7 @@ import LanguageSelectorUser from "@/components/language/languageSelectorUser";
 import libStyles from "@/lib/lib.module.css";
 import languageStyles from "@/components/language/language.module.css";
 import Btn from "@/lib/buttons/btn";
-import { useLanguageText } from "@/stores/languageLoad";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 import {
   UNSAVED_TRANSLATION_LOCAL_STORAGE,
   LOCAL_STORAGE_DEBOUNCE_TIME,
@@ -49,7 +49,7 @@ export default function useTranslateTableHeaderState({
   getFromLanguage,
   processLangNameChange,
 }: Props) {
-  const { selectedLanguage } = useLanguageText();
+  const { selectedLanguage: selectedLanguage } = gs_1_useLanguageText();
 
   const [createNew, setCreateNew] = React.useState(false);
   const [loadNew, setLoadNew] = React.useState(false);

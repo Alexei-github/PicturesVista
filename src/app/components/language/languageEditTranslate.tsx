@@ -1,10 +1,7 @@
 "use client";
 
 import React from "react";
-import { useLanguageText } from "@/stores/languageLoad";
-const defaultLanguage = "Español";
 import Btn from "@/lib/buttons/btn";
-import languageStyles from "@/components/language/language.module.css";
 import LanguageDevModal from "@/components/language/languageDevModal";
 
 const LanguageEditTransalte = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLanguageText } from "@/stores/languageLoad";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
 import LanguageSelectorUser from "@/components/language/languageSelectorUser";
@@ -8,16 +8,17 @@ import TranslateTableHeader, {
   TableHeaderRefType,
 } from "@/components/language/translateTableHeader";
 import { fileOpen, fileSave } from "browser-fs-access";
-import { LanguageText, LanguageUpdateValues } from "@/components/language/types";
-
+import {
+  LanguageText,
+  LanguageUpdateValues,
+} from "@/components/language/types";
 
 type Props = {
-    newTranslation: LanguageText,
-  updatedValues: LanguageUpdateValues,
-  setUnsavedUpdate,
-  setLatestSave
-}
-
+  newTranslation: LanguageText;
+  updatedValues: LanguageUpdateValues;
+  setUnsavedUpdate;
+  setLatestSave;
+};
 
 export default function useSaveTranslationCanges(
   newTranslation,
@@ -25,8 +26,7 @@ export default function useSaveTranslationCanges(
   setUnsavedUpdate,
   setLatestSave
 ) {
-  const { allIdsSet } = useLanguageText();
-
+  const { allIdsSet: allIdsSet } = gs_1_useLanguageText();
 
   const saveChanges = React.useCallback(async () => {
     const fileName = `${newTranslation.lang

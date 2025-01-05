@@ -1,10 +1,7 @@
 "use client";
 
 import React from "react";
-import { useLanguageText } from "@/stores/languageLoad";
-// const defaultLanguage = "Español";
-import languageStyles from "@/components/language/language.module.css";
-import LanguageEditTransalte from "@/components/language/languageEditTranslate";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 
 type Props = {
   selectorClassName: string;
@@ -20,11 +17,10 @@ const LanguageSelectorUser = ({
   onChangePassed,
   children,
   disabledSelect = false,
-  // defaultValuePassed,
   defaultLanguage,
 }: Props) => {
-  const { getText, availableLanguages, setLanguage, selectedLanguage } =
-    useLanguageText();
+  const { availableLanguages: availableLanguages, setLanguage: setLanguage } =
+    gs_1_useLanguageText();
 
   const onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {

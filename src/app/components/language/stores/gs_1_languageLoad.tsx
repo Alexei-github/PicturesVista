@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import languages from "@/lib/text/languagesRegistry.json";
+import availableLanguages from "@/lib/text/languagesRegistry.json";
 import { LanguageText } from "@/components/language/types";
 
 type UseLanguageText = {
@@ -16,9 +16,9 @@ type UseLanguageText = {
   getText: (getElementNumber: string) => string | undefined;
 };
 
-export const useLanguageText = create<UseLanguageText>((set, get) => ({
+export const gs_1_useLanguageText = create<UseLanguageText>((set, get) => ({
   currLangText: undefined,
-  availableLanguages: languages,
+  availableLanguages: availableLanguages,
   selectedLanguage: "1",
   editMode: true,
   allLoadedLanguages: {},

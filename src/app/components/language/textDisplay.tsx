@@ -1,15 +1,19 @@
 "use client";
 import React from "react";
-import { useLanguageText } from "@/stores/languageLoad";
+import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 
 type Props = {
-  elementType: TextAreaType;
-  elementNumber: string;
+  // elementType: TextAreaType;
+  p_elementNumber: string;
 };
 
-const TextDisplay = ({ elementType, elementNumber }: Props) => {
-  const { getText, editMode, setSelectedIdx } = useLanguageText();
+const TextDisplay = ({ p_elementNumber }: Props) => {
+  const {
+    getText: getText,
+    editMode: editMode,
+    setSelectedIdx: setSelectedIdx,
+  } = gs_1_useLanguageText();
   //   console.log(text);
   return (
     <>
@@ -19,15 +23,15 @@ const TextDisplay = ({ elementType, elementNumber }: Props) => {
             className={languageStyles.text_idx}
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedIdx(elementNumber);
+              setSelectedIdx(p_elementNumber);
             }}
           >
-            {elementNumber}
+            {p_elementNumber}
           </sup>
-          {getText(elementNumber)}
+          {getText(p_elementNumber)}
         </>
       ) : (
-        getText(elementNumber)
+        getText(p_elementNumber)
       )}
     </>
   );
