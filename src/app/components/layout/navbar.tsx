@@ -2,7 +2,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import compStyles from "@/components/components.module.css";
-import MainLangSelect from "@/components/language/mainLangSelect";
+import MainLangSelect from "@/components/language/MainLangSelect";
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -1,25 +1,25 @@
 "use client";
 
 import React from "react";
-import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
+import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
-import TranslationTableRow from "@/components/language/translationTableRow";
-import TranslateTableHeader from "@/components/language/translateTableHeader";
-import useLanguageDevState from "./customHooks/ch_1_useLanguageDevState";
+import TranslationTableRow from "@/components/language/TranslationTableRow";
+import TranslateTableHeader from "@/components/language/TranslateTableHeader";
+import useLanguageDevState_ch_1 from "./customHooks/ch_1_useLanguageDevState";
 
 type Props = {
-  onClose: () => void;
+  p_onClose: () => void;
 };
 
-const LanguageDevModal = (p: Props) => {
-  const gs = gs_1_useLanguageText((s) => ({
-    // availableLanguages: s.availableLanguages,
-    currLangText: s.currLangText,
-    allIdsSet: s.allIdsSet,
+const LanguageDevModal = ({ p_onClose }: Props) => {
+  const { gs_1_currLangText, gs_1_allIdsSet } = useLanguageText_gs_1((s) => ({
+    gs_1_currLangText: s.currLangText,
+    gs_1_allIdsSet: s.allIdsSet,
   }));
 
   const {
+    ch_1_displayingInitCopy,
     ch_1_fromLanguage,
     ch_1_newTranslation,
     ch_1_updatedValues,
@@ -32,13 +32,13 @@ const LanguageDevModal = (p: Props) => {
     ch_1_onFileLoad,
     ch_1_toggleSync,
     ch_1_processLangNameChange,
-    ch_1_getFromLanguage,
+    ch_1_updateTheFromLanguage,
     ch_1_translateOnChange,
     ch_1_turnResetOn,
-  } = useLanguageDevState();
+  } = useLanguageDevState_ch_1();
 
   return (
-    <Modal sizeScale={0.8} onClose={p.onClose}>
+    <Modal sizeScale={0.8} onClose={p_onClose}>
       <table className={languageStyles.table}>
         <TranslateTableHeader
           ref={ch_1_headerRef}
@@ -46,15 +46,18 @@ const LanguageDevModal = (p: Props) => {
           p_turnResetOn={ch_1_turnResetOn}
           p_saveChanges={ch_1_saveChanges}
           p_onFileLoad={ch_1_onFileLoad}
-          p_getFromLanguage={ch_1_getFromLanguage}
+          p_updateTheFromLanguage={ch_1_updateTheFromLanguage}
           p_syncChangesOn={ch_1_syncChangesOn}
           p_toggleSync={ch_1_toggleSync}
           p_syncStart={ch_1_syncChangeStart}
           p_processLangNameChange={ch_1_processLangNameChange}
+          p_fromLanguageName={
+            ch_1_displayingInitCopy ? ch_1_fromLanguage.lang : ""
+          }
         />
         <tbody>
-          {gs.currLangText &&
-            Array.from(gs.allIdsSet)
+          {gs_1_currLangText &&
+            Array.from(gs_1_allIdsSet)
               .sort((a, b) => parseInt(a) - parseInt(b))
               .map((key) => {
                 return (

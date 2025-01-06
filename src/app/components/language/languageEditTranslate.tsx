@@ -2,7 +2,7 @@
 
 import React from "react";
 import Btn from "@/lib/buttons/btn";
-import LanguageDevModal from "@/components/language/languageDevModal";
+import LanguageDevModal from "@/components/language/LanguageDevModal";
 
 const LanguageEditTransalte = () => {
   const [editTranslate, setEditTranslate] = React.useState(false);
@@ -18,7 +18,7 @@ const LanguageEditTransalte = () => {
   return (
     <>
       <Btn onClick={openLanguageEdit}>✏️</Btn>
-      {editTranslate && <LanguageDevModal onClose={closeLanguageEdit} />}
+      {editTranslate && <LanguageDevModal p_onClose={closeLanguageEdit} />}
     </>
   );
 };

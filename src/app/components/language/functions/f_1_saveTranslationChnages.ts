@@ -10,7 +10,7 @@ type Props = {
   allIdsSet: Set<string>;
 };
 
-export default async function saveTranslationChanges({
+export default async function f_1_saveTranslationChanges({
   newTranslation,
   updatedValues,
   allIdsSet,
@@ -48,5 +48,5 @@ export default async function saveTranslationChanges({
     });
   } catch {}
 
-  return savedChanges;
+  return { f_1_savedChanges: savedChanges };
 }

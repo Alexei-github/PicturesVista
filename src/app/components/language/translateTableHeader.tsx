@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import LanguageSelectorUser from "@/components/language/languageSelectorUser";
+import LanguageSelectorUser from "@/components/language/LanguageSelectorUser";
 import libStyles from "@/lib/lib.module.css";
 import languageStyles from "@/components/language/language.module.css";
 import Btn from "@/lib/buttons/btn";
-import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
-import useTranslateTableHeaderState from "@/components/language/customHooks/ch_2_useTranslateTableHeaderState";
+import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
+import useTranslateTableHeaderState_ch_2 from "@/components/language/customHooks/ch_2_useTranslateTableHeaderState";
+import TextDisplay from "@/components/language/TextDisplay";
 
 const TranslateTableHeader = (
   {
@@ -16,14 +17,17 @@ const TranslateTableHeader = (
     p_turnResetOn,
     p_saveChanges,
     p_onFileLoad,
-    p_getFromLanguage,
+    p_updateTheFromLanguage,
     p_toggleSync,
     p_processLangNameChange,
+    p_fromLanguageName,
   }: Props,
   ref?: React.ForwardedRef<TableHeaderRefType>
 ) => {
-  const { selectedLanguage: selectedLanguage } = gs_1_useLanguageText();
+  const gs_1_selectedLanguage = useLanguageText_gs_1((s) => s.selectedLanguage);
   const langChoiceRef = React.useRef<HTMLInputElement>(null);
+  const gs_1_getText = useLanguageText_gs_1((s) => s.getTextForString);
+  useLanguageText_gs_1((s) => s.selectedIdx);
 
   const {
     ch_2_createNew,
@@ -37,11 +41,9 @@ const TranslateTableHeader = (
     ch_2_inputMethodChanged,
     ch_2_clickOnEditLangName,
     ch_2_onChangeLangName,
-  } = useTranslateTableHeaderState({
-    p_reset,
+  } = useTranslateTableHeaderState_ch_2({
     p_onFileLoad,
     p_turnResetOn,
-    p_processLangNameChange,
     p_langChoiceRef: langChoiceRef,
   });
 
@@ -49,11 +51,24 @@ const TranslateTableHeader = (
 
   React.useEffect(() => {
     const mockEvent = {
-      target: { value: selectedLanguage },
+      target: { value: gs_1_selectedLanguage },
     } as React.ChangeEvent<HTMLSelectElement>;
-    p_getFromLanguage(mockEvent);
+    p_updateTheFromLanguage(mockEvent);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [p_getFromLanguage]);
+  }, []);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(
+      () => {
+        p_processLangNameChange(ch_2_langName);
+      },
+      p_reset ? 0 : 500
+    );
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [ch_2_langName, p_processLangNameChange, p_reset]);
 
   return (
     <thead>
@@ -62,13 +77,30 @@ const TranslateTableHeader = (
           <p>id</p>
         </th>
         <th className={languageStyles.second_column}>
-          <LanguageSelectorUser
-            defaultLanguage={selectedLanguage}
-            selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
-            onChangePassed={p_getFromLanguage}
-          >
-            <option value="start_version">Start Version</option>
-          </LanguageSelectorUser>
+          <div className={languageStyles.from_lang_header}>
+            <LanguageSelectorUser
+              p_defaultLanguage={gs_1_selectedLanguage}
+              p_selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
+              p_onChangePassed={p_updateTheFromLanguage}
+            >
+              <optgroup>
+                <option value="init_version">{gs_1_getText("6")}</option>
+                {/* <option value="init_version">Initial Version</option> */}
+              </optgroup>
+            </LanguageSelectorUser>
+            {p_fromLanguageName && (
+              <input
+                className={
+                  languageStyles.textarea +
+                  " " +
+                  languageStyles.file_input_selected
+                }
+                type="text"
+                disabled
+                placeholder={p_fromLanguageName}
+              />
+            )}
+          </div>
         </th>
         <th className={languageStyles.third_column}>
           <div className={languageStyles.select_save_div}>
@@ -78,14 +110,14 @@ const TranslateTableHeader = (
               p_toggleSync={p_toggleSync}
             />
             <LanguageSelectorUser
-              defaultLanguage="lang"
-              selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
-              onChangePassed={ch_2_inputMethodChanged}
-              disabledSelect={ch_2_disableLangSelect}
+              p_defaultLanguage="lang"
+              p_selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
+              p_onChangePassed={ch_2_inputMethodChanged}
+              p_disabledSelect={ch_2_disableLangSelect}
             >
               <optgroup>
                 <option value="lang" disabled>
-                  Language:
+                  {gs_1_getText("7")}
                 </option>
                 <option value="create_new">Create New</option>
                 <option value="load_new">Load From File</option>
@@ -97,7 +129,9 @@ const TranslateTableHeader = (
                 className={` ${libStyles.btn_main_navbar} ${languageStyles.save_btn}`}
                 onClick={p_saveChanges}
               >
-                <span>Save Changes</span>
+                <span>
+                  <TextDisplay p_elementId="8" />
+                </span>
               </button>
             )}
           </div>
@@ -178,9 +212,7 @@ const LoadLangFromFile = ({
     />
   ) : (
     <input
-      className={
-        languageStyles.textarea + " " + languageStyles.file_input_selected
-      }
+      className={languageStyles.file_input_selected}
       type="text"
       disabled
       placeholder={`Loaded File: ${p_selectedFileName}`}
@@ -242,10 +274,11 @@ export type Props = {
   p_syncChangesOn: boolean;
   p_syncStart: boolean;
   p_reset: boolean;
+  p_fromLanguageName: string;
   p_turnResetOn: () => void;
   p_saveChanges: () => void;
   p_onFileLoad: (language: { [keyof: string]: string }) => void;
-  p_getFromLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  p_updateTheFromLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   p_toggleSync: () => void;
   p_processLangNameChange: (langName: string) => void;
 };

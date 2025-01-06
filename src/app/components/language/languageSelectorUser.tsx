@@ -1,32 +1,33 @@
 "use client";
 
 import React from "react";
-import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
+import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
 
 type Props = {
-  selectorClassName: string;
-  onChangePassed?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  p_selectorClassName: string;
+  p_onChangePassed?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   children?: React.ReactNode;
-  disabledSelect?: boolean;
-  // defaultValuePassed?: string;
-  defaultLanguage: string;
+  p_disabledSelect?: boolean;
+  p_defaultLanguage: string;
 };
 
 const LanguageSelectorUser = ({
-  selectorClassName,
-  onChangePassed,
+  p_selectorClassName,
+  p_onChangePassed,
   children,
-  disabledSelect = false,
-  defaultLanguage,
+  p_disabledSelect = false,
+  p_defaultLanguage,
 }: Props) => {
-  const { availableLanguages: availableLanguages, setLanguage: setLanguage } =
-    gs_1_useLanguageText();
+  const gs_1_availableLanguages = useLanguageText_gs_1(
+    (s) => s.availableLanguages
+  );
+  const gs_1_setLanguage = useLanguageText_gs_1((s) => s.setLanguage);
 
   const onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setLanguage(e.target.value);
+      gs_1_setLanguage(e.target.value);
     },
-    [setLanguage]
+    [gs_1_setLanguage]
   );
 
   const selectTagId = React.useId();
@@ -35,24 +36,14 @@ const LanguageSelectorUser = ({
     <select
       id={`clickedLanguage_${selectTagId}`}
       name="language"
-      defaultValue={defaultLanguage}
-      onChange={onChangePassed ? onChangePassed : onChange}
-      className={selectorClassName}
-      // {...(!onChangePassed && { value: selectedLanguage })}
-      disabled={disabledSelect}
-      style={{
-        ...(disabledSelect && {
-          color: "grey",
-          borderColor: "grey",
-          cursor: "default",
-        }),
-      }}
-      // {...(value && { defaultValue: value })}
-      // value={"language"}
+      defaultValue={p_defaultLanguage}
+      onChange={p_onChangePassed ? p_onChangePassed : onChange}
+      className={p_selectorClassName}
+      disabled={p_disabledSelect}
     >
       {children}
 
-      {Object.keys(availableLanguages).map((language, idx) => {
+      {Object.keys(gs_1_availableLanguages).map((language, idx) => {
         return (
           <optgroup key={language + idx}>
             <option value={language} style={{ padding: "20px" }}>

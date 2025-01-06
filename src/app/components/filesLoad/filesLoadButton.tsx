@@ -4,7 +4,7 @@ import useStoreFilesCustomHook from "@/customHooks/useStoreFiles";
 
 import compStyles from "@/components/components.module.css";
 import { ACCEPTED_IMGS_TYPES } from "@/lib/acceptedImgsTypes";
-import TextDisplay from "@/components/language/textDisplay";
+import TextDisplay from "@/components/language/TextDisplay";
 
 const FilesLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
@@ -41,7 +41,7 @@ const FilesLoadButton = () => {
 
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadImgs}>
-      <TextDisplay elementType="btn" p_elementNumber="1" />
+      <TextDisplay elementType="btn" p_elementId="1" />
     </button>
   );
 };

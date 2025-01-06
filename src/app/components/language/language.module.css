@@ -3,7 +3,7 @@
 }
 
 .text_idx {
-  border: 2px solid red;
+  border: 3px solid green;
   border-radius: 50%;
   height: fit-content;
   aspect-ratio: 1 / 1;
@@ -28,6 +28,7 @@
   border: var(--btn_border);
   line-height: 300;
   text-align: left;
+  max-width: 100%;
 
   &:hover {
     border: var(--btn_hover_border);
@@ -74,6 +75,7 @@
     padding: 0.5rem;
     text-align: center;
     border: 1px solid white;
+    height: 0.1rem;
   }
 }
 
@@ -117,6 +119,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 40%;
+  text-overflow: ellipsis;
 }
 .third_column {
   /* overflow: hidden; */
@@ -172,6 +175,8 @@ button.sync_btn {
 .file_input {
   font-size: calc(var(--btn_font_size) * 1.1);
   margin-top: 0.3rem;
+  height: fit-content;
+
   &:not(:disabled):hover {
     outline: none;
     border: 2px solid var(--active-drag-line-rgb);
@@ -186,6 +191,16 @@ button.sync_btn {
 }
 
 .file_input_selected {
+  max-width: 100%;
+  background-color: transparent;
+  width: 100%;
+  height: fit-content;
+  overflow: auto;
+  font-size: 1.3rem;
+  border: 1px solid white;
+  color: inherit;
+  pointer-events: auto;
+  padding: 0.3rem;
   margin-top: 0.3rem;
 
   &:disabled {
@@ -266,4 +281,15 @@ button.btn_language_input {
   to {
     stroke-dashoffset: 0;
   }
+}
+
+.from_lang_header {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  box-sizing: border-box;
 }

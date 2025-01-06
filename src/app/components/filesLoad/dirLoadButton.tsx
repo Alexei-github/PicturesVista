@@ -3,7 +3,7 @@ import { directoryOpen } from "browser-fs-access";
 import useStoreFilesCustomHook from "@/customHooks/useStoreFiles";
 import compStyles from "@/components/components.module.css";
 import { processFilesOldFS } from "@/components/filesLoad/processFilesOldFS";
-import TextDisplay from "@/components/language/textDisplay";
+import TextDisplay from "@/components/language/TextDisplay";
 
 const DirLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
@@ -40,7 +40,7 @@ const DirLoadButton = () => {
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadDir}>
       {/* Load Folder(s) */}
-      <TextDisplay elementType="btn" p_elementNumber="2" />
+      <TextDisplay p_elementId="2" />
     </button>
   );
 };

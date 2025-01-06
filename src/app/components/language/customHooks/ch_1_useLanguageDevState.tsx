@@ -1,15 +1,18 @@
 import React from "react";
-import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
-import { TableHeaderRefType } from "@/components/language/translateTableHeader";
-import { LanguageText } from "@/components/language/types";
-import saveTranslationChanges from "@/components/language/functions/useSaveTranslationChnages";
+import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
+import { TableHeaderRefType } from "@/components/language/TranslateTableHeader";
+import {
+  LanguageText,
+  LanguageUpdateValues,
+} from "@/components/language/types";
+import f_1_saveTranslationChanges from "@/components/language/functions/f_1_saveTranslationChnages";
 import {
   UNSAVED_TRANSLATION_LOCAL_STORAGE,
   LOCAL_STORAGE_DEBOUNCE_TIME,
   SYNC_DEBOUNCE_TIME,
 } from "@/components/language/lib/constants";
 
-export default function useLanguageDevState() {
+export default function useLanguageDevState_ch_1() {
   const {
     gs_1_availableLanguages,
     gs_1_getLanguage,
@@ -17,7 +20,7 @@ export default function useLanguageDevState() {
     gs_1_setLanguage,
     gs_1_selectedLanguage,
     gs_1_selectedIdx,
-  } = gs_1_useLanguageText((s) => ({
+  } = useLanguageText_gs_1((s) => ({
     gs_1_availableLanguages: s.availableLanguages,
     gs_1_getLanguage: s.getLanguage,
     gs_1_allIdsSet: s.allIdsSet,
@@ -36,6 +39,7 @@ export default function useLanguageDevState() {
   const [languageInitCopy, setLanguageInitCopy] = React.useState<LanguageText>(
     {}
   );
+  const [displayingInitCopy, setDisplayingInitCopy] = React.useState(false);
   const [reset, setReset] = React.useState(false);
   const [latestSave, setLatestSave] = React.useState<LanguageText>({});
   const [rerenderComponet, setRerenderComponent] = React.useState("");
@@ -43,8 +47,6 @@ export default function useLanguageDevState() {
   const [syncChangesOn, setSyncChangesOn] = React.useState(false);
   const [syncChangeStart, setSyncChangeStart] = React.useState(false);
   const headerRef = React.useRef<TableHeaderRefType>(null);
-
-  // console.log("=======51=====", newTranslation, reset);
 
   React.useEffect(() => {
     const element = document.getElementById(
@@ -58,15 +60,20 @@ export default function useLanguageDevState() {
     }
   }, [gs_1_selectedIdx]);
 
-  const getFromLanguage = React.useCallback(
+  const updateTheFromLanguage = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      (async () => {
-        setFromLanguage((await gs_1_getLanguage(e.target.value)) ?? {});
-      })();
+      if (e.target.value === "init_version") {
+        setFromLanguage(languageInitCopy);
+        setDisplayingInitCopy(true);
+      } else {
+        (async () => {
+          setFromLanguage((await gs_1_getLanguage(e.target.value)) ?? {});
+        })();
+        setDisplayingInitCopy(false);
+      }
     },
-    [setFromLanguage, gs_1_getLanguage]
+    [gs_1_getLanguage, languageInitCopy]
   );
-  // console.log(performance.getEntries());
 
   React.useEffect(() => {
     const unsavedTranslationStateString = localStorage.getItem(
@@ -141,10 +148,6 @@ export default function useLanguageDevState() {
           UNSAVED_TRANSLATION_LOCAL_STORAGE,
           JSON.stringify(unsavedTranslationState)
         );
-        // console.log(Object.values(localStorage));
-        // console.log(
-        //   new Blob(Object.values(localStorage)).size / 1024 / 1024 + " MB"
-        // );
       }
     }, LOCAL_STORAGE_DEBOUNCE_TIME);
     return () => {
@@ -179,25 +182,33 @@ export default function useLanguageDevState() {
         if (gs_1_availableLanguages[lang]) {
           (async () => {
             const existLang = await gs_1_getLanguage(lang);
-            setLanguageInitCopy(existLang ?? {});
             setNewTranslation({ ...existLang, lang: lang });
+            setLanguageInitCopy({ ...existLang, lang: lang });
             setUpdatedValues({});
             setUnsavedUpdate({});
             setLatestSave({});
+            setRerenderComponent(`langName-${lang}`);
+            if (displayingInitCopy) {
+              setFromLanguage({ ...existLang, lang: lang });
+            }
           })();
-          console.log("hello");
         } else {
           if (Object.keys(languageInitCopy).length > 0) {
-            setLanguageInitCopy({});
             setNewTranslation({});
+            setLanguageInitCopy({ lang: lang });
             setUpdatedValues({});
             setUnsavedUpdate({});
             setLatestSave({});
+            setRerenderComponent(`langName-${lang}`);
+            if (displayingInitCopy) {
+              setFromLanguage({ lang: lang });
+            }
           }
         }
+      } else {
+        newTranslation.lang = lang;
+        // setRerenderComponent(`langName-${lang}`);
       }
-      newTranslation.lang = lang;
-      setRerenderComponent(`langName-${lang}`);
 
       // }
     },
@@ -207,19 +218,19 @@ export default function useLanguageDevState() {
       gs_1_getLanguage,
       reset,
       newTranslation,
+      displayingInitCopy,
     ]
   );
 
   const onFileLoad = React.useCallback(
-    (language: { [keyof: string]: string }) => {
-      // setLanguageInitCopy({ ...language });
+    (language: LanguageText) => {
       setNewTranslation({ ...language });
       newTranslation["lang"] = language.lang;
 
       if (gs_1_availableLanguages[language.lang]) {
         (async () => {
           const existLang = await gs_1_getLanguage(language.lang);
-          const newUpdateVal: { [key: string]: boolean } = {};
+          const newUpdateVal: LanguageUpdateValues = {};
           const newLatestSave: LanguageText = {};
           for (const key in existLang) {
             if (existLang && existLang[key] !== language[key]) {
@@ -231,15 +242,26 @@ export default function useLanguageDevState() {
           setUpdatedValues(newUpdateVal);
           setLatestSave(newLatestSave);
           setUnsavedUpdate({});
+          if (displayingInitCopy) {
+            setFromLanguage(existLang ?? {});
+          }
         })();
       } else {
         setLanguageInitCopy({ ...language });
         setUpdatedValues({});
         setUnsavedUpdate({});
         setLatestSave({});
+        if (displayingInitCopy) {
+          setFromLanguage({ ...language });
+        }
       }
     },
-    [gs_1_availableLanguages, gs_1_getLanguage, newTranslation]
+    [
+      gs_1_availableLanguages,
+      gs_1_getLanguage,
+      newTranslation,
+      displayingInitCopy,
+    ]
   );
   /**
    *
@@ -282,13 +304,13 @@ export default function useLanguageDevState() {
    *
    */
   const saveChanges = React.useCallback(async () => {
-    const latestSavedChanges = await saveTranslationChanges({
+    const { f_1_savedChanges } = await f_1_saveTranslationChanges({
       newTranslation,
       updatedValues,
       allIdsSet: gs_1_allIdsSet,
     });
     headerRef?.current?.setDisableLangSelect(false);
-    setLatestSave(latestSavedChanges);
+    setLatestSave(f_1_savedChanges);
     setUnsavedUpdate({});
   }, [newTranslation, updatedValues, gs_1_allIdsSet]);
 
@@ -304,6 +326,7 @@ export default function useLanguageDevState() {
   }, []);
 
   return {
+    ch_1_displayingInitCopy: displayingInitCopy,
     ch_1_fromLanguage: fromLanguage,
     ch_1_newTranslation: newTranslation,
     ch_1_updatedValues: updatedValues,
@@ -316,7 +339,7 @@ export default function useLanguageDevState() {
     ch_1_onFileLoad: onFileLoad,
     ch_1_toggleSync: toggleSync,
     ch_1_processLangNameChange: processLangNameChange,
-    ch_1_getFromLanguage: getFromLanguage,
+    ch_1_updateTheFromLanguage: updateTheFromLanguage,
     ch_1_translateOnChange: translateOnChange,
     ch_1_turnResetOn: turnResetOn,
   };

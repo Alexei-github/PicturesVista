@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import availableLanguages from "@/lib/text/languagesRegistry.json";
+import availableLanguages from "@/components/language/lib/text/languagesRegistry.json";
 import { LanguageText } from "@/components/language/types";
 
 type UseLanguageText = {
@@ -13,10 +13,11 @@ type UseLanguageText = {
   setSelectedIdx: (idx: string) => void;
   setLanguage: (setLanguage: string, newTranslation?: LanguageText) => void;
   getLanguage: (setLanguage: string) => Promise<LanguageText | undefined>;
-  getText: (getElementNumber: string) => string | undefined;
+  getTextForComponent: (elementId: string) => string | undefined;
+  getTextForString: (elementId: string) => string | undefined;
 };
 
-export const gs_1_useLanguageText = create<UseLanguageText>((set, get) => ({
+export const useLanguageText_gs_1 = create<UseLanguageText>((set, get) => ({
   currLangText: undefined,
   availableLanguages: availableLanguages,
   selectedLanguage: "1",
@@ -36,7 +37,9 @@ export const gs_1_useLanguageText = create<UseLanguageText>((set, get) => ({
 
     try {
       const newLanguageText = await import(
-        `@/lib/text/${get().availableLanguages[newLanguage]}`,
+        `@/components/language/lib/text/${
+          get().availableLanguages[newLanguage]
+        }`,
         {
           assert: { type: "json" },
         }
@@ -85,7 +88,12 @@ export const gs_1_useLanguageText = create<UseLanguageText>((set, get) => ({
       });
     }
   },
-  getText: (getElementNumber: string) => {
-    return get().currLangText?.[getElementNumber];
+  getTextForComponent: (elementId: string) => {
+    return get().currLangText?.[elementId];
+  },
+  getTextForString: (elementId: string) => {
+    return get().editMode && get().selectedIdx === elementId
+      ? `( ${elementId} ) ${get().currLangText?.[elementId] ?? ""}`
+      : get().currLangText?.[elementId] ?? "";
   },
 }));

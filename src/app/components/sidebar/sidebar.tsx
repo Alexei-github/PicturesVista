@@ -7,7 +7,7 @@ import SidebarDir from "@/components/sidebar/sidebarOneDir";
 import { useStoredFiles } from "@/stores/storedFiles";
 import SortFnAscend from "@/lib/sortFn";
 import ManageBar from "@/components/sidebar/manageBar";
-import TextDisplay from "@/components/language/textDisplay";
+import TextDisplay from "@/components/language/TextDisplay";
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -184,7 +184,7 @@ export default function Sidebar({
                   // height: "100%",
                 }}
               >
-                <TextDisplay elementType="textArea" p_elementNumber="3" />
+                <TextDisplay elementType="textArea" p_elementId="3" />
               </p>
             )}
             <FileUploader />

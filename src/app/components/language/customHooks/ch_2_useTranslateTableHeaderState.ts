@@ -1,11 +1,9 @@
 import React from "react";
-import { TableHeaderRefType } from "@/components/language/translateTableHeader";
+import { TableHeaderRefType } from "@/components/language/TranslateTableHeader";
 
-export default function useTranslateTableHeaderState({
-  p_reset,
+export default function useTranslateTableHeaderState_ch_2({
   p_turnResetOn,
   p_onFileLoad,
-  p_processLangNameChange,
   p_langChoiceRef,
 }: Props) {
   const [createNew, setCreateNew] = React.useState(false);
@@ -79,19 +77,6 @@ export default function useTranslateTableHeaderState({
     disableLangInput,
   ]);
 
-  React.useEffect(() => {
-    const timeout = setTimeout(
-      () => {
-        p_processLangNameChange(langName);
-      },
-      p_reset ? 0 : 500
-    );
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [langName, p_processLangNameChange, p_reset]);
-
   const inputMethodChanged = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setDisableLangInput(false);
@@ -146,9 +131,7 @@ export default function useTranslateTableHeaderState({
 }
 
 type Props = {
-  p_reset: boolean;
   p_turnResetOn: () => void;
   p_onFileLoad: (language: { [keyof: string]: string }) => void;
-  p_processLangNameChange: (langName: string) => void;
   p_langChoiceRef: React.RefObject<HTMLInputElement>;
 };

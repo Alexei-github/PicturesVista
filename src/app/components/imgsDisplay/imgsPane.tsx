@@ -11,7 +11,7 @@ import DisplayOneImg from "@/components/imgsDisplay/displayOneImg";
 import { calculateImgSides } from "@/components/imgsDisplay/getImgSize";
 
 import { useClickedFileName } from "@/stores/storedFiles";
-import TextDisplay from "@/components/language/textDisplay";
+import TextDisplay from "@/components/language/TextDisplay";
 
 function ImgsPane() {
   const { loadedFilesDirs } = useStoredFiles();
@@ -77,7 +77,7 @@ function ImgsPane() {
             }}
           >
             <p>
-              <TextDisplay elementType="textArea" p_elementNumber="4" />
+              <TextDisplay elementType="textArea" p_elementId="4" />
             </p>
           </div>
         )}

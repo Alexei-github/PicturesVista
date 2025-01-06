@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { gs_1_useLanguageText } from "@/components/language/stores/gs_1_languageLoad";
+import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 
 type Props = {
@@ -23,16 +23,16 @@ const TranslationTableRow = ({
   updatedAfterLatestSave,
   id,
 }: Props) => {
-  const { selectedIdx: selectedIdx, setSelectedIdx: setSelectedIdx } =
-    gs_1_useLanguageText();
+  const gs_1_selectedIdx = useLanguageText_gs_1((s) => s.selectedIdx);
+  const gs_1_setSelectedIdx = useLanguageText_gs_1((s) => s.setSelectedIdx);
 
   return (
     <tr
-      className={selectedIdx == key_val ? languageStyles.active_row : ""}
+      className={gs_1_selectedIdx == key_val ? languageStyles.active_row : ""}
       id={id}
       onClick={(e) => {
         e.preventDefault();
-        setSelectedIdx(key_val);
+        gs_1_setSelectedIdx(key_val);
       }}
     >
       <td className={languageStyles.first_column}>
