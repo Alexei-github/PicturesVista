@@ -27,5 +27,4 @@
     "jsdoc/require-param-type": "off",
     "jsdoc/require-returns-type": "off"
   }
-  // "extends": ["next/babel", "next/core-web-vitals"]
 }

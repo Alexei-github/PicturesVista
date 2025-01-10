@@ -1,5 +1,11 @@
 {
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "pri ntWidth": 100,
   "plugins": ["prettier-plugin-jsdoc"],
-  "printWidth": 80,
-  "proseWrap": "always"
+  "proseWrap": "always",
+  "singleQuote": true,
+  "trailingComma": "all",
+  "semi": true,
+  "bracketSpacing": true,
+  "tabWidth": 2
 }
