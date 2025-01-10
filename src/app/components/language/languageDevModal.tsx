@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
+import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 import Modal from "@/components/modal/modal";
 import TranslationTableRow from "@/components/language/TranslationTableRow";
@@ -13,10 +13,10 @@ type Props = {
 };
 
 const LanguageDevModal = ({ p_onClose }: Props) => {
-  const { gs_1_currLangText, gs_1_allIdsSet } = useLanguageText_gs_1((s) => ({
-    gs_1_currLangText: s.currLangText,
-    gs_1_allIdsSet: s.allIdsSet,
-  }));
+  const { gs_1_currLangText, gs_1_allIdsSet } = useLanguageText_gs_1(
+    "currLangText",
+    "allIdsSet"
+  );
 
   const {
     ch_1_displayingInitCopy,

@@ -5,7 +5,7 @@ import LanguageSelectorUser from "@/components/language/LanguageSelectorUser";
 import libStyles from "@/lib/lib.module.css";
 import languageStyles from "@/components/language/language.module.css";
 import Btn from "@/lib/buttons/btn";
-import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
+import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
 import useTranslateTableHeaderState_ch_2 from "@/components/language/customHooks/ch_2_useTranslateTableHeaderState";
 import TextDisplay from "@/components/language/TextDisplay";
 
@@ -24,10 +24,13 @@ const TranslateTableHeader = (
   }: Props,
   ref?: React.ForwardedRef<TableHeaderRefType>
 ) => {
-  const gs_1_selectedLanguage = useLanguageText_gs_1((s) => s.selectedLanguage);
   const langChoiceRef = React.useRef<HTMLInputElement>(null);
-  const gs_1_getText = useLanguageText_gs_1((s) => s.getTextForString);
-  useLanguageText_gs_1((s) => s.selectedIdx);
+
+  const { gs_1_selectedLanguage, gs_1_getTextForString } = useLanguageText_gs_1(
+    "selectedLanguage",
+    "getTextForString",
+    "selectedIdx" //"selectedIdx" is requested to rerender current componenet on its change
+  );
 
   const {
     ch_2_createNew,
@@ -84,7 +87,9 @@ const TranslateTableHeader = (
               p_onChangePassed={p_updateTheFromLanguage}
             >
               <optgroup>
-                <option value="init_version">{gs_1_getText("6")}</option>
+                <option value="init_version">
+                  {gs_1_getTextForString("6")}
+                </option>
                 {/* <option value="init_version">Initial Version</option> */}
               </optgroup>
             </LanguageSelectorUser>
@@ -117,7 +122,7 @@ const TranslateTableHeader = (
             >
               <optgroup>
                 <option value="lang" disabled>
-                  {gs_1_getText("7")}
+                  {gs_1_getTextForString("7")}
                 </option>
                 <option value="create_new">Create New</option>
                 <option value="load_new">Load From File</option>

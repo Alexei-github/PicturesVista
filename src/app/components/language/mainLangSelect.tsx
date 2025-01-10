@@ -3,15 +3,15 @@ import React from "react";
 import LanguageSelectorUser from "@/components/language/LanguageSelectorUser";
 import languageStyles from "@/components/language/language.module.css";
 import LanguageEditTransalte from "@/components/language/LanguageEditTranslate";
-import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
+import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
 import { DEFAULT_LANGUAGE } from "@/components/language/lib/constants";
 
 export default function MainLangSelect() {
-  const { setLanguage: setLanguage } = useLanguageText_gs_1();
+  const { gs_1_setLanguage } = useLanguageText_gs_1("setLanguage");
 
   React.useEffect(() => {
-    setLanguage(DEFAULT_LANGUAGE);
-  }, [setLanguage]);
+    gs_1_setLanguage(DEFAULT_LANGUAGE);
+  }, [gs_1_setLanguage]);
 
   return (
     <div style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}>

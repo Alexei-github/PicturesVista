@@ -8,6 +8,11 @@ import TextDisplay from "@/components/language/TextDisplay";
 const DirLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
 
+  /**
+   * Loads images from click of a button event.
+   * Directory picker will open and user will be able to select one directory.
+   * @param e Click event
+   */
   const onClickLoadDir = React.useCallback(
     /**
      * Loads images from click of a button event.
@@ -22,7 +27,7 @@ const DirLoadButton = () => {
         const imgs = await directoryOpen({
           recursive: true,
         });
-        let { processedFiles } = processFilesOldFS(
+        const { processedFiles } = processFilesOldFS(
           imgs as FileWithDirectoryAndFileHandle[]
         );
 

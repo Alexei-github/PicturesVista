@@ -7,9 +7,6 @@ import useElementSizeObserver from "@/customHooks/useElementSizeObserver";
 import SortFnAscend from "@/lib/sortFn";
 import ImagesOneDir from "@/components/imgsDisplay/imagesOneDir";
 import ScaleBtn from "@/components/imgsDisplay/scaleBtn";
-import DisplayOneImg from "@/components/imgsDisplay/displayOneImg";
-import { calculateImgSides } from "@/components/imgsDisplay/getImgSize";
-
 import { useClickedFileName } from "@/stores/storedFiles";
 import TextDisplay from "@/components/language/TextDisplay";
 
@@ -77,7 +74,7 @@ function ImgsPane() {
             }}
           >
             <p>
-              <TextDisplay elementType="textArea" p_elementId="4" />
+              <TextDisplay p_elementId="4" />
             </p>
           </div>
         )}

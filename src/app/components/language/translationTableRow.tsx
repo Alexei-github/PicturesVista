@@ -2,10 +2,7 @@
 
 import React from "react";
 // import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
-import {
-  useLanguageText_gs_1,
-  useLanguageText_gs_1_t,
-} from "@/components/language/globalStores/gs_1_languageLoad";
+import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
 import languageStyles from "@/components/language/language.module.css";
 
 const TranslationTableRow = ({
@@ -17,25 +14,10 @@ const TranslationTableRow = ({
   updatedAfterLatestSave,
   id,
 }: Props) => {
-  const {
-    gs_1_selectedIdx,
-    gs_1_setSelectedIdx,
-  } = useLanguageText_gs_1_t(
-    "gs_1_selectedIdx",
-    "gs_1_setSelectedIdx",
+  const { gs_1_selectedIdx, gs_1_setSelectedIdx } = useLanguageText_gs_1(
+    "selectedIdx",
+    "setSelectedIdx"
   );
-
-  // const { gs_1_selectedIdx, gs_1_setSelectedIdx, gs_1_allIdsSet } =
-  //   useLanguageText_gs_1_t([
-  //     "gs_1_selectedIdx",
-  //     "gs_1_allIdsSet",
-  //     "gs_1_allIdsSet",
-  //   ] as const);
-  // const { gs_1_selectedIdx, gs_1_setSelectedIdx } =
-  //   useLanguageText_gs_1_t1("gs_1_selectedIdx", "gs_1_allIdsSet");
-  // console.log(gs_1_selectedIdx1);
-  // const gs_1_selectedIdx = useLanguageText_gs_1((s) => s.selectedIdx);
-  // const gs_1_setSelectedIdx = useLanguageText_gs_1((s) => s.setSelectedIdx);
 
   return (
     <tr

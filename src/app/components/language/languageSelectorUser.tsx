@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
+import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
 
 type Props = {
   p_selectorClassName: string;
@@ -11,6 +11,10 @@ type Props = {
   p_defaultLanguage: string;
 };
 
+//Provide detailed comments for this function in JSDoc format.
+
+
+
 const LanguageSelectorUser = ({
   p_selectorClassName,
   p_onChangePassed,
@@ -18,13 +22,32 @@ const LanguageSelectorUser = ({
   p_disabledSelect = false,
   p_defaultLanguage,
 }: Props) => {
-  const gs_1_availableLanguages = useLanguageText_gs_1(
-    (s) => s.availableLanguages
+  const { gs_1_availableLanguages, gs_1_setLanguage } = useLanguageText_gs_1(
+    "availableLanguages",
+    "setLanguage"
   );
-  const gs_1_setLanguage = useLanguageText_gs_1((s) => s.setLanguage);
+// 1
 
+// 2
+// 3
+// 4
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
   const onChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
+
+(e: React.ChangeEvent<HTMLSelectElement>) => {
       gs_1_setLanguage(e.target.value);
     },
     [gs_1_setLanguage]
@@ -43,7 +66,7 @@ const LanguageSelectorUser = ({
     >
       {children}
 
-      {Object.keys(gs_1_availableLanguages).map((language, idx) => {
+      {Object.keys(gs_1_availableLanguages ?? []).map((language, idx) => {
         return (
           <optgroup key={language + idx}>
             <option value={language} style={{ padding: "20px" }}>
@@ -57,3 +80,5 @@ const LanguageSelectorUser = ({
 };
 
 export default LanguageSelectorUser;
+
+

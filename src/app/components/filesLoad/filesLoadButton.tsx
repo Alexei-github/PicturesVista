@@ -41,7 +41,7 @@ const FilesLoadButton = () => {
 
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadImgs}>
-      <TextDisplay elementType="btn" p_elementId="1" />
+      <TextDisplay p_elementId="1" />
     </button>
   );
 };
