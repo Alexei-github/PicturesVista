@@ -1,7 +1,31 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["next/core-web-vitals", 
-  "plugin:@typescript-eslint/recommended"],
-  "plugins": ["@typescript-eslint"]
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jsdoc/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "jsdoc"],
+  "rules": {
+    "jsdoc/check-alignment": "warn",
+    "jsdoc/require-description-complete-sentence": "warn",
+    "jsdoc/check-indentation": "warn",
+    "jsdoc/check-param-names": "warn",
+    "jsdoc/require-returns": [
+      "error",
+      {
+        "contexts": [
+          "ArrowFunctionExpression",
+          "FunctionDeclaration",
+          "FunctionExpression"
+        ],
+        "checkConstructors": false,
+        "checkGetters": false,
+        "forceRequireReturn": false
+      }
+    ],
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": "off"
+  }
   // "extends": ["next/babel", "next/core-web-vitals"]
 }
