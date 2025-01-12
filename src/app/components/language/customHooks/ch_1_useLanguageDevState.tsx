@@ -1,18 +1,45 @@
-import React from "react";
-import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
-import { TableHeaderRefType } from "@/components/language/TranslateTableHeader";
-import {
-  LanguageText,
-  LanguageUpdateValues,
-} from "@/components/language/types";
-import f_1_saveTranslationChanges from "@/components/language/functions/f_1_saveTranslationChnages";
+import React from 'react';
+import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import { TableHeaderRefType } from '@/components/language/TranslateTableHeader';
+import { LanguageText, LanguageUpdateValues } from '@/components/language/types';
+import f_1_saveTranslationChanges from '@/components/language/functions/f_1_saveTranslationChnages';
 import {
   UNSAVED_TRANSLATION_LOCAL_STORAGE,
   LOCAL_STORAGE_DEBOUNCE_TIME,
   SYNC_DEBOUNCE_TIME,
-} from "@/components/language/lib/constants";
+} from '@/components/language/lib/constants';
 
-export default function useLanguageDevState_ch_1() {
+/**
+ * Custom hook to manage the state of the language translation modal.
+ *
+ * @returns An object with the following properties:
+ *
+ *   - `ch_1_displayingInitCopy`: a boolean indicating whether to show initial copy of the text from
+ *       which translation is being made
+ *   - `ch_1_fromTheLanguage`: text of the language from which the translation is being made.
+ *   - `ch_1_newTranslation`: text of the current translation state.
+ *   - `ch_1_updatedValues`: an object indicating the keys which values have been changed in the
+ *       translation.
+ *   - `ch_1_unsavedUpdate`: an object indicating the keys which values have been changed in the
+ *       translation and have not yet been saved to the file.
+ *   - `ch_1_reset`: a boolean indicating if values shown in translation modal should be reset.
+ *   - `ch_1_syncChangesOn`: a boolean indicating if the newly translated items should be displayed on
+ *       the website (synced to the elements on the website).
+ *   - `ch_1_headerRef`: a reference to the table header element. /////////////////////////////////////
+ *   - `ch_1_syncChangeStart`: a boolean indicating if the translation is being saved to the local
+ *       storage.
+ *   - `ch_1_saveChanges`: a function to save the translation to the local storage.
+ *   - `ch_1_onFileLoad`: a function to load a new file.
+ *   - `ch_1_toggleSync`: a function to toggle the value of `ch_1_syncChangesOn`.
+ *   - `ch_1_processLangNameChange`: a function to update the language state based on the new language
+ *       name.
+ *   - `ch_1_updateTheFromLanguage`: a function to update the language from which the translation is
+ *       being made.
+ *   - `ch_1_translateOnChange`: a function to handle the change in the translation text and update the
+ *       state accordingly.
+ *   - `ch_1_turnResetOn`: a function to turn the reset on.
+ */
+export default function useLanguageDevState_ch_1(): ReturnType {
   const {
     gs_1_availableLanguages,
     gs_1_getLanguage,
@@ -21,14 +48,17 @@ export default function useLanguageDevState_ch_1() {
     gs_1_selectedLanguage,
     gs_1_selectedIdx,
   } = useLanguageText_gs_1(
-    "availableLanguages",
-    "getLanguage",
-    "allIdsSet",
-    "setLanguage",
-    "selectedLanguage",
-    "selectedIdx"
+    'availableLanguages',
+    'getLanguage',
+    'allIdsSet',
+    'setLanguage',
+    'selectedLanguage',
+    'selectedIdx',
   );
 
+  const [displayingInitCopy, setDisplayingInitCopy] = React.useState(false);
+  const [fromTheLanguage, setFromTheLanguage] = React.useState<LanguageText>({});
+  const [languageInitCopy, setLanguageInitCopy] = React.useState<LanguageText>({});
   const [newTranslation, setNewTranslation] = React.useState<LanguageText>({});
   const [updatedValues, setUpdatedValues] = React.useState<{
     [key: string]: boolean;
@@ -36,84 +66,71 @@ export default function useLanguageDevState_ch_1() {
   const [unsavedUpdate, setUnsavedUpdate] = React.useState<{
     [key: string]: boolean;
   }>({});
-  const [languageInitCopy, setLanguageInitCopy] = React.useState<LanguageText>(
-    {}
-  );
-  const [displayingInitCopy, setDisplayingInitCopy] = React.useState(false);
   const [reset, setReset] = React.useState(false);
   const [latestSave, setLatestSave] = React.useState<LanguageText>({});
-  const [rerenderComponet, setRerenderComponent] = React.useState("");
-  const [fromLanguage, setFromLanguage] = React.useState<LanguageText>({});
+  const [rerenderComponet, setRerenderComponent] = React.useState('');
   const [syncChangesOn, setSyncChangesOn] = React.useState(false);
   const [syncChangeStart, setSyncChangeStart] = React.useState(false);
   const headerRef = React.useRef<TableHeaderRefType>(null);
 
   React.useEffect(() => {
-    const element = document.getElementById(
-      `translate_row_${gs_1_selectedIdx}`
-    );
+    const element = document.getElementById(`translate_row_${gs_1_selectedIdx}`);
     if (element) {
       element.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
+        behavior: 'smooth',
+        block: 'center',
       });
     }
   }, [gs_1_selectedIdx]);
 
   /**
    * Updates the state of the language from which the translation is being made.
+   *
    * @param e {React.ChangeEvent<HTMLSelectElement>} event object
    */
   const updateTheFromLanguage = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      if (e.target.value === "init_version") {
-        setFromLanguage(languageInitCopy);
+      if (e.target.value === 'init_version') {
+        setFromTheLanguage(languageInitCopy);
         setDisplayingInitCopy(true);
       } else {
         (async () => {
-          setFromLanguage((await gs_1_getLanguage(e.target.value)) ?? {});
+          setFromTheLanguage((await gs_1_getLanguage(e.target.value)) ?? {});
         })();
         setDisplayingInitCopy(false);
       }
     },
-    [gs_1_getLanguage, languageInitCopy]
+    [gs_1_getLanguage, languageInitCopy],
   );
 
   React.useEffect(
-    /**
-     * Loads the translation state from the local storage
-     */
+    /** Loads the translation state from the local storage */
     () => {
-      const unsavedTranslationStateString = localStorage.getItem(
-        UNSAVED_TRANSLATION_LOCAL_STORAGE
-      );
+      const unsavedTranslationStateString = localStorage.getItem(UNSAVED_TRANSLATION_LOCAL_STORAGE);
 
       if (unsavedTranslationStateString) {
-        const unsavedTranslationState = JSON.parse(
-          unsavedTranslationStateString
-        );
+        const unsavedTranslationState = JSON.parse(unsavedTranslationStateString);
         if (headerRef && unsavedTranslationState.translateTableHeader) {
-          headerRef.current?.setInitState(
-            unsavedTranslationState.translateTableHeader
-          );
+          headerRef.current?.setInitState(unsavedTranslationState.translateTableHeader);
         }
         setNewTranslation(unsavedTranslationState.newTranslation);
         setLatestSave(unsavedTranslationState.latestSave);
         setLanguageInitCopy(unsavedTranslationState.languageInitCopy);
         setUnsavedUpdate(unsavedTranslationState.unsavedUpdate);
-        setFromLanguage(unsavedTranslationState.fromLanguage);
+        setFromTheLanguage(unsavedTranslationState.fromLanguage);
         setSyncChangesOn(unsavedTranslationState.syncChangesOn);
         setUpdatedValues(unsavedTranslationState.updatedValues);
         setReset(unsavedTranslationState.reset);
       }
     },
-    [headerRef]
+    [headerRef],
   );
 
   React.useEffect(
     /**
      * Saves the translation state to the local storage
-     * @returns cleanup function
+     *
+     * @returns Cleanup function
      */
     (): (() => void) | undefined => {
       if (syncChangesOn) {
@@ -127,20 +144,16 @@ export default function useLanguageDevState_ch_1() {
         };
       }
     },
-    [
-      rerenderComponet,
-      syncChangesOn,
-      newTranslation,
-      gs_1_selectedLanguage,
-      gs_1_setLanguage,
-    ]
+    [rerenderComponet, syncChangesOn, newTranslation, gs_1_selectedLanguage, gs_1_setLanguage],
   );
 
   React.useEffect(
     /**
-     * This effect saves the state of the translation table to local storage when the unsaved translation state changes.
-     * It uses a debouncing mechanism to prevent too many write operations to local storage.
-     * @returns cleanup function
+     * This effect saves the state of the translation table to local storage when the unsaved
+     * translation state changes. It uses a debouncing mechanism to prevent too many write
+     * operations to local storage.
+     *
+     * @returns Cleanup function
      */
     () => {
       const timeout = setTimeout(() => {
@@ -150,28 +163,24 @@ export default function useLanguageDevState_ch_1() {
             latestSave,
             languageInitCopy,
             unsavedUpdate,
-            fromLanguage,
+            fromLanguage: fromTheLanguage,
             syncChangesOn,
             updatedValues,
             reset,
             translateTableHeader: {
-              langName: headerRef?.current?.getState()?.langName ?? "",
+              langName: headerRef?.current?.getState()?.langName ?? '',
               loadNew: headerRef?.current?.getState()?.loadNew ?? false,
               createNew: headerRef?.current?.getState()?.createNew ?? false,
-              disableLangSelect:
-                headerRef?.current?.getState()?.disableLangSelect ?? false,
-              selectedFileName:
-                headerRef?.current?.getState()?.selectedFileName ?? "",
-              editLanguageName:
-                headerRef?.current?.getState().editLanguageName ?? false,
-              disableLangInput:
-                headerRef?.current?.getState().disableLangInput ?? false,
+              disableLangSelect: headerRef?.current?.getState()?.disableLangSelect ?? false,
+              selectedFileName: headerRef?.current?.getState()?.selectedFileName ?? '',
+              editLanguageName: headerRef?.current?.getState().editLanguageName ?? false,
+              disableLangInput: headerRef?.current?.getState().disableLangInput ?? false,
             },
           };
 
           localStorage.setItem(
             UNSAVED_TRANSLATION_LOCAL_STORAGE,
-            JSON.stringify(unsavedTranslationState)
+            JSON.stringify(unsavedTranslationState),
           );
         }
       }, LOCAL_STORAGE_DEBOUNCE_TIME);
@@ -181,7 +190,7 @@ export default function useLanguageDevState_ch_1() {
     },
     [
       rerenderComponet,
-      fromLanguage,
+      fromTheLanguage,
       languageInitCopy,
       latestSave,
       newTranslation,
@@ -189,7 +198,7 @@ export default function useLanguageDevState_ch_1() {
       unsavedUpdate,
       updatedValues,
       reset,
-    ]
+    ],
   );
 
   React.useEffect(() => {
@@ -198,16 +207,14 @@ export default function useLanguageDevState_ch_1() {
       gs_1_setLanguage(gs_1_selectedLanguage);
     }
   }, [syncChangesOn, gs_1_selectedLanguage, gs_1_setLanguage]);
-  /**
-   *
-   */
   const processLangNameChange = React.useCallback(
     /**
      * Updates the language state based on the new language name.
      *
-     * If the language name is being edited or reset is active, it initializes the state.
-     * If the language has already been loaded and xists in available languages, it gets it local state of new translation.
-     * Otherwise, it clears the current new translation language state and only sets the language name.
+     * If the language name is being edited or reset is active, it initializes the state. If the
+     * language has already been loaded and xists in available languages, it gets it local state of
+     * new translation. Otherwise, it clears the current new translation language state and only
+     * sets the language name.
      *
      * @param lang {string} The new language name
      */
@@ -224,7 +231,7 @@ export default function useLanguageDevState_ch_1() {
             setLatestSave({});
             setRerenderComponent(`langName-${lang}`);
             if (displayingInitCopy) {
-              setFromLanguage({ ...existLang, lang: lang });
+              setFromTheLanguage({ ...existLang, lang: lang });
             }
           })();
         } else {
@@ -236,7 +243,7 @@ export default function useLanguageDevState_ch_1() {
             setLatestSave({});
             setRerenderComponent(`langName-${lang}`);
             if (displayingInitCopy) {
-              setFromLanguage({ lang: lang });
+              setFromTheLanguage({ lang: lang });
             }
           }
         }
@@ -251,13 +258,13 @@ export default function useLanguageDevState_ch_1() {
       reset,
       newTranslation,
       displayingInitCopy,
-    ]
+    ],
   );
 
   const onFileLoad = React.useCallback(
     (language: LanguageText) => {
       setNewTranslation({ ...language });
-      newTranslation["lang"] = language.lang;
+      newTranslation['lang'] = language.lang;
 
       if (gs_1_availableLanguages[language.lang]) {
         (async () => {
@@ -275,7 +282,7 @@ export default function useLanguageDevState_ch_1() {
           setLatestSave(newLatestSave);
           setUnsavedUpdate({});
           if (displayingInitCopy) {
-            setFromLanguage(existLang ?? {});
+            setFromTheLanguage(existLang ?? {});
           }
         })();
       } else {
@@ -284,41 +291,32 @@ export default function useLanguageDevState_ch_1() {
         setUnsavedUpdate({});
         setLatestSave({});
         if (displayingInitCopy) {
-          setFromLanguage({ ...language });
+          setFromTheLanguage({ ...language });
         }
       }
     },
-    [
-      gs_1_availableLanguages,
-      gs_1_getLanguage,
-      newTranslation,
-      displayingInitCopy,
-    ]
+    [gs_1_availableLanguages, gs_1_getLanguage, newTranslation, displayingInitCopy],
   );
-  /**
-   * Handles the change in the translation text and updates the state accordingly
-   */
+  /** Handles the change in the translation text and updates the state accordingly */
   const translateOnChange = React.useCallback(
     /**
      * Processes the change in the translation text and updates the state accordingly
+     *
      * @param e {React.ChangeEvent<HTMLTextAreaElement>} event object
      * @param key {string} index/key of the item which text is requested for
      */
     (e: React.ChangeEvent<HTMLTextAreaElement>, key: string) => {
-      const valueTrimmed = e.target.value?.trim() ?? "";
+      const valueTrimmed = e.target.value?.trim() ?? '';
 
       headerRef?.current?.setEditLanguageName(true);
-      updatedValues[key] =
-        valueTrimmed !== (languageInitCopy[key]?.trim() ?? "");
+      updatedValues[key] = valueTrimmed !== (languageInitCopy[key]?.trim() ?? '');
 
       unsavedUpdate[key] =
-        valueTrimmed !== (latestSave[key]?.trim() ?? "") &&
-        valueTrimmed !== (languageInitCopy[key]?.trim() ?? "");
+        valueTrimmed !== (latestSave[key]?.trim() ?? '') &&
+        valueTrimmed !== (languageInitCopy[key]?.trim() ?? '');
 
       if (
-        Object.keys(updatedValues).some(
-          (k) => updatedValues[k] && !latestSave[k]
-        ) ||
+        Object.keys(updatedValues).some((k) => updatedValues[k] && !latestSave[k]) ||
         Object.values(unsavedUpdate).some((v) => v)
       ) {
         headerRef?.current?.setDisableLangSelect(true);
@@ -330,11 +328,8 @@ export default function useLanguageDevState_ch_1() {
 
       setRerenderComponent(`${key}-${e.target.value}`);
     },
-    [newTranslation, languageInitCopy, updatedValues, unsavedUpdate, latestSave]
+    [newTranslation, languageInitCopy, updatedValues, unsavedUpdate, latestSave],
   );
-  /**
-   *
-   */
   const saveChanges = React.useCallback(async () => {
     const { f_1_savedChanges } = await f_1_saveTranslationChanges({
       newTranslation,
@@ -346,9 +341,6 @@ export default function useLanguageDevState_ch_1() {
     setUnsavedUpdate({});
   }, [newTranslation, updatedValues, gs_1_allIdsSet]);
 
-  /**
-   *
-   */
   const toggleSync = React.useCallback(() => {
     setSyncChangesOn((value) => !value);
   }, []);
@@ -359,7 +351,7 @@ export default function useLanguageDevState_ch_1() {
 
   return {
     ch_1_displayingInitCopy: displayingInitCopy,
-    ch_1_fromLanguage: fromLanguage,
+    ch_1_fromLanguage: fromTheLanguage,
     ch_1_newTranslation: newTranslation,
     ch_1_updatedValues: updatedValues,
     ch_1_unsavedUpdate: unsavedUpdate,
@@ -376,3 +368,22 @@ export default function useLanguageDevState_ch_1() {
     ch_1_turnResetOn: turnResetOn,
   };
 }
+
+type ReturnType = {
+  ch_1_displayingInitCopy: boolean;
+  ch_1_fromLanguage: LanguageText;
+  ch_1_newTranslation: LanguageText;
+  ch_1_updatedValues: { [key: string]: boolean };
+  ch_1_unsavedUpdate: { [key: string]: boolean };
+  ch_1_reset: boolean;
+  ch_1_syncChangesOn: boolean;
+  ch_1_headerRef: React.MutableRefObject<TableHeaderRefType | null>;
+  ch_1_syncChangeStart: boolean;
+  ch_1_saveChanges: () => Promise<void>;
+  ch_1_onFileLoad: (language: LanguageText) => void;
+  ch_1_toggleSync: () => void;
+  ch_1_processLangNameChange: (lang: string) => void;
+  ch_1_updateTheFromLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  ch_1_translateOnChange: (e: React.ChangeEvent<HTMLTextAreaElement>, key: string) => void;
+  ch_1_turnResetOn: () => void;
+};

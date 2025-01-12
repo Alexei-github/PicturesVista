@@ -1,18 +1,20 @@
-import { UseBoundStore, StoreApi } from "zustand";
+import { UseBoundStore, StoreApi } from 'zustand';
 
 /**
- * Helper function which prepares function to export slices from zustand store
- * in a way that is less verbose and adds store's index in front of the exported parameters
- * so that those parameters could be easily recognised inside components.
- * @param store - zustand store
- * @param storeId - store's ID
- * @returns returns fucntion which with appropriate types checking whihc in turn will be exported 
- *          out of the store
+ * Helper function which prepares function to export slices from zustand store in a way that is less
+ * verbose and adds store's index in front of the exported parameters so that those parameters could
+ * be easily recognised inside components.
+ *
+ * @param store - Zustand store
+ * @param storeId - Store's ID
+ * @returns Returns fucntion which with appropriate types checking whihc in turn will be exported
+ *   out of the store
  */
-export default function exportStore<
-  StoreType extends Record<string, any>,
-  S extends string
->(store: UseBoundStore<StoreApi<StoreType>>, storeId: S) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function exportStore<StoreType extends Record<string, any>, S extends string>(
+  store: UseBoundStore<StoreApi<StoreType>>,
+  storeId: S,
+) {
   return function <T extends (keyof StoreType & string)[]>(
     ...requestedItems: CheckUnique<T> extends T ? T : CheckUnique<T>
   ) {
@@ -20,21 +22,19 @@ export default function exportStore<
       [K in T[number] as `${typeof storeId}${string & K}`]: StoreType[K];
     };
 
-    const selectedExportItems: any = {};
+    const selectedExportItems: RequestedItems = {} as RequestedItems;
 
     for (const item of requestedItems) {
       selectedExportItems[`${storeId}${item}`] = store((s) => s[item]);
     }
-    return selectedExportItems as RequestedItems;
+    return selectedExportItems;
   };
 }
 
-/**
- * Checks that parameters passed to a fnction are unique.
- */
+/** Checks that parameters passed to a fnction are unique. */
 type CheckUnique<T extends string[], U extends string[] = []> = T extends [
   infer F extends string,
-  ...infer R extends string[]
+  ...infer R extends string[],
 ]
   ? F extends U[number]
     ? CheckUnique<R, [...U, `Remove duplicate of item: ${F}`]>
