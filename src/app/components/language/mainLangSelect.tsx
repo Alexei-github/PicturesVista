@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
+import LanguageSelectorUser from '@/components/language/languageSelectorUser';
 import languageStyles from '@/components/language/language.module.css';
-import LanguageEditTransalte from '@/components/language/LanguageEditTranslate';
+import LanguageEditTransalte from '@/components/language/languageEditTranslate';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import { DEFAULT_LANGUAGE } from '@/components/language/lib/constants';
 
-export default function MainLangSelect(): React.ReactNode {
+const MainLangSelect = (): React.ReactNode => {
   const { gs_1_setLanguage } = useLanguageText_gs_1('setLanguage');
 
   React.useEffect(() => {
@@ -22,4 +22,6 @@ export default function MainLangSelect(): React.ReactNode {
       <LanguageEditTransalte />
     </div>
   );
-}
+};
+
+export default MainLangSelect;

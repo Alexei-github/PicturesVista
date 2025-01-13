@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import modalStyles from "@/components/modal/modal.module.css";
-import DragDiv from "@/lib/dragDiv";
+import { useState, useCallback } from 'react';
+import modalStyles from '@/components/modal/modal.module.css';
+import DragDiv from '@/lib/dragDiv';
 
 type Props = {
   //   isOpen: boolean;
@@ -9,7 +9,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const Modal = ({ onClose, sizeScale, children }: Props) => {
+const Modal = ({ onClose, sizeScale, children }: Props): React.ReactNode => {
   const [position, setPosition] = useState({
     x: (window.innerWidth * (1 - sizeScale)) / 2,
     y: (window.innerHeight * (1 - sizeScale)) / 2,
@@ -32,7 +32,7 @@ const Modal = ({ onClose, sizeScale, children }: Props) => {
       setSize(newSize);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [drag]
+    [drag],
   );
 
   const setMove = useCallback(
@@ -44,11 +44,13 @@ const Modal = ({ onClose, sizeScale, children }: Props) => {
       setPosition(newPosition);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [drag]
+    [drag],
   );
 
   const close = useCallback(() => {
-    onClose && onClose();
+    if (onClose) {
+      onClose();
+    }
     setIsOpen(false);
   }, [onClose]);
 

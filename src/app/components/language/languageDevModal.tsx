@@ -1,11 +1,10 @@
 'use client';
-
 import React from 'react';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import languageStyles from '@/components/language/language.module.css';
 import Modal from '@/components/modal/modal';
-import TranslationTableRow from '@/components/language/TranslationTableRow';
-import TranslateTableHeader from '@/components/language/TranslateTableHeader';
+import TranslationTableRow from '@/components/language/translationTableRow';
+import TranslateTableHeader from '@/components/language/translateTableHeader';
 import useLanguageDevState_ch_1 from './customHooks/ch_1_useLanguageDevState';
 
 type Props = {
@@ -52,9 +51,9 @@ const LanguageDevModal = ({ p_onClose }: Props) => {
         />
         <tbody>
           {gs_1_currLangText &&
-            Array.from(gs_1_allIdsSet)
-              .sort((a, b) => parseInt(a) - parseInt(b))
-              .map((key) => {
+            (Array.from(gs_1_allIdsSet) as string[])
+              .sort((a: string, b: string) => parseInt(a) - parseInt(b))
+              .map((key: string) => {
                 return (
                   <TranslationTableRow
                     key={'translate_row_' + key}

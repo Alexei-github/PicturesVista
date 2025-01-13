@@ -8,14 +8,14 @@ type Props = {
 };
 
 const TextDisplay = ({ p_elementId }: Props) => {
-  // const { gs_1_editMode, gs_1_getTextForComponent, gs_1_selectedIdx, gs_1_setSelectedIdx } =
-  //   useLanguageText_gs_1(
-  //     'getTextForComponent',
-  //     'editMode',
-  //     'setSelectedIdx',
-  //     'selectedIdx',
-  //     'currLangText', //"currLangText" is for rerender on its change
-  //   );
+  const { gs_1_editMode, gs_1_getTextForComponent, gs_1_selectedIdx, gs_1_setSelectedIdx } =
+    useLanguageText_gs_1(
+      'getTextForComponent',
+      'editMode',
+      'setSelectedIdx',
+      'selectedIdx',
+      'currLangText', //"currLangText" is for rerender on its change
+    );
 
   return (
     <>

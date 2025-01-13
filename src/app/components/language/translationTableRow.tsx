@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 // import { useLanguageText_gs_1 } from "@/components/language/globalStores/gs_1_languageLoad";
-import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
-import languageStyles from "@/components/language/language.module.css";
+import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import languageStyles from '@/components/language/language.module.css';
 
 const TranslationTableRow = ({
   key_val,
@@ -15,13 +15,13 @@ const TranslationTableRow = ({
   id,
 }: Props) => {
   const { gs_1_selectedIdx, gs_1_setSelectedIdx } = useLanguageText_gs_1(
-    "selectedIdx",
-    "setSelectedIdx"
+    'selectedIdx',
+    'setSelectedIdx',
   );
 
   return (
     <tr
-      className={gs_1_selectedIdx == key_val ? languageStyles.active_row : ""}
+      className={gs_1_selectedIdx == key_val ? languageStyles.active_row : ''}
       id={id}
       onClick={(e) => {
         e.preventDefault();
@@ -42,17 +42,17 @@ const TranslationTableRow = ({
           <div className={languageStyles.green_tick}>
             <span
               style={{
-                display: "inline-block",
-                position: "relative",
-                left: "10%",
+                display: 'inline-block',
+                position: 'relative',
+                left: '10%',
               }}
             >
               &#10004;
-            </span>{" "}
+            </span>{' '}
             <span
               style={{
-                position: "absolute",
-                left: "0%",
+                position: 'absolute',
+                left: '0%',
               }}
             >
               &#10004;
@@ -65,7 +65,7 @@ const TranslationTableRow = ({
           onChange={(e) => {
             onChange(e, key_val);
           }}
-          value={updatedTransaltion ? updatedTransaltion : ""}
+          value={updatedTransaltion ? updatedTransaltion : ''}
         ></textarea>
       </td>
     </tr>

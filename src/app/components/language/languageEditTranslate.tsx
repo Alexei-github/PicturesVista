@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Btn from '@/lib/buttons/btn';
-import LanguageDevModal from '@/components/language/LanguageDevModal';
+import LanguageDevModal from '@/components/language/languageDevModal';
 
 const LanguageEditTransalte = () => {
   const [editTranslate, setEditTranslate] = React.useState(false);
