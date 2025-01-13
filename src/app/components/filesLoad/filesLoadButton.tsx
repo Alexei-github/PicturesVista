@@ -1,42 +1,40 @@
-import React from "react";
-import { fileOpen } from "browser-fs-access";
-import useStoreFilesCustomHook from "@/customHooks/useStoreFiles";
+import React from 'react';
+import { fileOpen } from 'browser-fs-access';
+import useStoreFilesCustomHook from '@/customHooks/useStoreFiles';
 
-import compStyles from "@/components/components.module.css";
-import { ACCEPTED_IMGS_TYPES } from "@/lib/acceptedImgsTypes";
-import TextDisplay from "@/components/language/TextDisplay";
+import compStyles from '@/components/components.module.css';
+import { ACCEPTED_IMGS_TYPES } from '@/lib/acceptedImgsTypes';
+import TextDisplay from '@/components/language/TextDisplay';
 
 const FilesLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
 
   const onClickLoadImgs = React.useCallback(
     async (
-      e:
-        | React.MouseEvent<HTMLButtonElement, MouseEvent>
-        | React.TouchEvent<HTMLButtonElement>
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
     ) => {
       try {
         const imgs = await fileOpen({
-          description: "Image files",
+          description: 'Image files',
           mimeTypes: ACCEPTED_IMGS_TYPES,
-          extensions: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+          extensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
           multiple: true,
         });
 
         await storeFiles({
-          "/": Object.fromEntries(
-            (Array.isArray(imgs) ? imgs : [imgs]).map((img) => [img.name, img])
+          '/': Object.fromEntries(
+            (Array.isArray(imgs) ? imgs : [imgs]).map((img) => [img.name, img]),
           ),
         });
       } catch (error) {
-        if (!(error instanceof DOMException && error.name === "AbortError")) {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
           throw error;
         } else {
-          console.log("Image picker was closed");
+          console.log('Image picker was closed');
         }
       }
     },
-    [storeFiles]
+    [storeFiles],
   );
 
   return (

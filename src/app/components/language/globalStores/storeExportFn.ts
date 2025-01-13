@@ -22,7 +22,8 @@ export default function exportStore<StoreType extends Record<string, any>, S ext
       [K in T[number] as `${typeof storeId}${string & K}`]: StoreType[K];
     };
 
-    const selectedExportItems: RequestedItems = {} as RequestedItems;
+    const selectedExportItems: any = {} as RequestedItems;
+    // const selectedExportItems: RequestedItems = {} as RequestedItems;
 
     for (const item of requestedItems) {
       selectedExportItems[`${storeId}${item}`] = store((s) => s[item]);

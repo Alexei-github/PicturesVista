@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import Btn from "@/lib/buttons/btn";
-import LanguageDevModal from "@/components/language/LanguageDevModal";
+import React from 'react';
+import Btn from '@/lib/buttons/btn';
+import LanguageDevModal from '@/components/language/LanguageDevModal';
 
 const LanguageEditTransalte = () => {
   const [editTranslate, setEditTranslate] = React.useState(false);

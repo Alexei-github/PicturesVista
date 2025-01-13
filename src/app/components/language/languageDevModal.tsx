@@ -1,22 +1,19 @@
-"use client";
+'use client';
 
-import React from "react";
-import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
-import languageStyles from "@/components/language/language.module.css";
-import Modal from "@/components/modal/modal";
-import TranslationTableRow from "@/components/language/TranslationTableRow";
-import TranslateTableHeader from "@/components/language/TranslateTableHeader";
-import useLanguageDevState_ch_1 from "./customHooks/ch_1_useLanguageDevState";
+import React from 'react';
+import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import languageStyles from '@/components/language/language.module.css';
+import Modal from '@/components/modal/modal';
+import TranslationTableRow from '@/components/language/TranslationTableRow';
+import TranslateTableHeader from '@/components/language/TranslateTableHeader';
+import useLanguageDevState_ch_1 from './customHooks/ch_1_useLanguageDevState';
 
 type Props = {
   p_onClose: () => void;
 };
 
 const LanguageDevModal = ({ p_onClose }: Props) => {
-  const { gs_1_currLangText, gs_1_allIdsSet } = useLanguageText_gs_1(
-    "currLangText",
-    "allIdsSet"
-  );
+  const { gs_1_currLangText, gs_1_allIdsSet } = useLanguageText_gs_1('currLangText', 'allIdsSet');
 
   const {
     ch_1_displayingInitCopy,
@@ -27,7 +24,7 @@ const LanguageDevModal = ({ p_onClose }: Props) => {
     ch_1_reset,
     ch_1_syncChangesOn,
     ch_1_headerRef,
-    ch_1_syncChangeStart,
+    ch_1_syncProgressStart,
     ch_1_saveChanges,
     ch_1_onFileLoad,
     ch_1_toggleSync,
@@ -49,11 +46,9 @@ const LanguageDevModal = ({ p_onClose }: Props) => {
           p_updateTheFromLanguage={ch_1_updateTheFromLanguage}
           p_syncChangesOn={ch_1_syncChangesOn}
           p_toggleSync={ch_1_toggleSync}
-          p_syncStart={ch_1_syncChangeStart}
+          p_syncProgressStart={ch_1_syncProgressStart}
           p_processLangNameChange={ch_1_processLangNameChange}
-          p_fromLanguageName={
-            ch_1_displayingInitCopy ? ch_1_fromLanguage.lang : ""
-          }
+          p_fromLanguageName={ch_1_displayingInitCopy ? ch_1_fromLanguage.lang : ''}
         />
         <tbody>
           {gs_1_currLangText &&
@@ -62,14 +57,12 @@ const LanguageDevModal = ({ p_onClose }: Props) => {
               .map((key) => {
                 return (
                   <TranslationTableRow
-                    key={"translate_row_" + key}
-                    id={"translate_row_" + key}
+                    key={'translate_row_' + key}
+                    id={'translate_row_' + key}
                     key_val={key}
                     fromLangValue={ch_1_fromLanguage[key]}
                     onChange={ch_1_translateOnChange}
-                    updatedTransaltion={
-                      ch_1_newTranslation ? ch_1_newTranslation[key] : ""
-                    }
+                    updatedTransaltion={ch_1_newTranslation ? ch_1_newTranslation[key] : ''}
                     updated={ch_1_updatedValues[key]}
                     updatedAfterLatestSave={ch_1_unsavedUpdate[key]}
                   />

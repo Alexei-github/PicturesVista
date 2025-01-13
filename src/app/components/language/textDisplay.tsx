@@ -1,25 +1,21 @@
-"use client";
-import React from "react";
-import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
-import languageStyles from "@/components/language/language.module.css";
+'use client';
+import React from 'react';
+import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import languageStyles from '@/components/language/language.module.css';
 
 type Props = {
   p_elementId: string;
 };
 
 const TextDisplay = ({ p_elementId }: Props) => {
-  const {
-    gs_1_editMode,
-    gs_1_getTextForComponent,
-    gs_1_selectedIdx,
-    gs_1_setSelectedIdx,
-  } = useLanguageText_gs_1(
-    "getTextForComponent",
-    "editMode",
-    "setSelectedIdx",
-    "selectedIdx",
-    "currLangText" //"currLangText" is for rerender on its change
-  );
+  // const { gs_1_editMode, gs_1_getTextForComponent, gs_1_selectedIdx, gs_1_setSelectedIdx } =
+  //   useLanguageText_gs_1(
+  //     'getTextForComponent',
+  //     'editMode',
+  //     'setSelectedIdx',
+  //     'selectedIdx',
+  //     'currLangText', //"currLangText" is for rerender on its change
+  //   );
 
   return (
     <>
@@ -29,7 +25,7 @@ const TextDisplay = ({ p_elementId }: Props) => {
             className={languageStyles.text_idx}
             style={{
               ...(gs_1_selectedIdx === p_elementId && {
-                borderColor: "red",
+                borderColor: 'red',
               }),
             }}
             onClick={(e) => {

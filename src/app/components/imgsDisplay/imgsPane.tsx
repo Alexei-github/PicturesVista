@@ -1,23 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import { useStoredFiles } from "@/stores/storedFiles";
-import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";
-import { useLayout } from "@/stores/layoutStore";
-import useElementSizeObserver from "@/customHooks/useElementSizeObserver";
-import SortFnAscend from "@/lib/sortFn";
-import ImagesOneDir from "@/components/imgsDisplay/imagesOneDir";
-import ScaleBtn from "@/components/imgsDisplay/scaleBtn";
-import { useClickedFileName } from "@/stores/storedFiles";
-import TextDisplay from "@/components/language/TextDisplay";
+import { useStoredFiles } from '@/stores/storedFiles';
+import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
+import { useLayout } from '@/stores/layoutStore';
+import useElementSizeObserver from '@/customHooks/useElementSizeObserver';
+import SortFnAscend from '@/lib/sortFn';
+import ImagesOneDir from '@/components/imgsDisplay/imagesOneDir';
+import ScaleBtn from '@/components/imgsDisplay/scaleBtn';
+import { useClickedFileName } from '@/stores/storedFiles';
+import TextDisplay from '@/components/language/TextDisplay';
 
 function ImgsPane() {
   const { loadedFilesDirs } = useStoredFiles();
   const { setImgsPaneSize } = useLayout();
   const { clickedImg } = useClickedFileName();
-  const [sizeObserverRef] =
-    useElementSizeObserver<HTMLUListElement>(setImgsPaneSize);
-  const { imgsPaneSize, imgsPaneScaleFactor, setImgsPaneScaleFactor } =
-    useLayout();
+  const [sizeObserverRef] = useElementSizeObserver<HTMLUListElement>(setImgsPaneSize);
+  const { imgsPaneSize, imgsPaneScaleFactor, setImgsPaneScaleFactor } = useLayout();
 
   React.useEffect(() => {
     const paneElement = sizeObserverRef.current;
@@ -33,13 +31,13 @@ function ImgsPane() {
         }
       };
 
-      paneElement.addEventListener("wheel", zoomFn, {
+      paneElement.addEventListener('wheel', zoomFn, {
         passive: false,
       });
 
       return () => {
         if (paneElement) {
-          paneElement.removeEventListener("wheel", zoomFn);
+          paneElement.removeEventListener('wheel', zoomFn);
         }
       };
     }
@@ -53,24 +51,18 @@ function ImgsPane() {
           Object.keys(loadedFilesDirs)
             .sort(SortFnAscend)
             .map((dir, idx_dir) => {
-              const indent = dir.replace(/^\//, "").split("/").length - 1;
-              return (
-                <ImagesOneDir
-                  key={`${dir}_${idx_dir}`}
-                  dir={dir}
-                  indent={indent}
-                />
-              );
+              const indent = dir.replace(/^\//, '').split('/').length - 1;
+              return <ImagesOneDir key={`${dir}_${idx_dir}`} dir={dir} indent={indent} />;
             })
         ) : (
           <div
             style={{
-              height: "100%",
-              margin: "auto auto",
-              padding: "0.3rem",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              height: '100%',
+              margin: 'auto auto',
+              padding: '0.3rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <p>

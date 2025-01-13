@@ -12,7 +12,8 @@ import { LanguageText, LanguageUpdateValues } from '@/components/language/types'
  * @param newTranslation - The new translation text to save.
  * @param updatedValues - Values indicating which translations have been updated.
  * @param allIdsSet - A set of all translation keys to verify completeness.
- * @returns Promise with an object containing the saved changes.
+ * @returns Promise with an object containing the saved changes or undefined if save operation
+ *   fails.
  * @throws Will catch and ignore any errors during the file save operation.
  */
 
@@ -20,7 +21,7 @@ export default async function f_1_saveTranslationChanges({
   newTranslation,
   updatedValues,
   allIdsSet,
-}: Props): Promise<{ f_1_savedChanges: { [key: string]: string } }> {
+}: Props): Promise<{ f_1_savedChanges: { [key: string]: string } | undefined }> {
   const fileName = `${newTranslation.lang?.trim()?.toLowerCase()?.replace(' ', '_')}.json`;
 
   const all = Array.from(allIdsSet).every((key) => newTranslation[key]) ? 'yes' : 'no';
@@ -45,11 +46,11 @@ export default async function f_1_saveTranslationChanges({
       fileName: fileName ?? 'undefined.json',
       extensions: ['.json'],
     });
+    return { f_1_savedChanges: savedChanges };
   } catch {
-    // ignore error and return an enpty object below indicating that nothing was saved
+    // ignore error and return undefined indicating that nothing was saved
+    return { f_1_savedChanges: undefined };
   }
-
-  return { f_1_savedChanges: savedChanges };
 }
 
 type Props = {

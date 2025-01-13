@@ -1,5 +1,5 @@
-import React from "react";
-import { TableHeaderRefType } from "@/components/language/TranslateTableHeader";
+import React from 'react';
+import { TableHeaderRefType } from '@/components/language/TranslateTableHeader';
 
 export default function useTranslateTableHeaderState_ch_2({
   p_turnResetOn,
@@ -8,11 +8,11 @@ export default function useTranslateTableHeaderState_ch_2({
 }: Props) {
   const [createNew, setCreateNew] = React.useState(false);
   const [loadNew, setLoadNew] = React.useState(false);
-  const [langName, setLangName] = React.useState("");
+  const [langName, setLangName] = React.useState('');
   const [disableLangSelect, setDisableLangSelect] = React.useState(false);
   const [disableLangInput, setDisableLangInput] = React.useState(false);
   const [editLanguageName, setEditLanguageName] = React.useState(false);
-  const [selectedFileName, setSelectedFileName] = React.useState("");
+  const [selectedFileName, setSelectedFileName] = React.useState('');
 
   const loadFromFile = React.useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,17 +20,17 @@ export default function useTranslateTableHeaderState_ch_2({
         const blobLang = e.target.files?.[0];
         if (blobLang) {
           const language = await new Response(blobLang).json();
-          language.lang = JSON.parse(language["0"].replaceAll("'", '"')).lang;
-          delete language["0"];
+          language.lang = JSON.parse(language['0'].replaceAll("'", '"')).lang;
+          delete language['0'];
           p_onFileLoad(language);
           setLangName(language.lang);
-          setSelectedFileName(blobLang?.name ?? "");
+          setSelectedFileName(blobLang?.name ?? '');
         }
       } catch {
-        console.log("read error");
+        console.log('read error');
       }
     },
-    [p_onFileLoad]
+    [p_onFileLoad],
   );
 
   const refFunction = React.useCallback((): TableHeaderRefType => {
@@ -82,18 +82,18 @@ export default function useTranslateTableHeaderState_ch_2({
       setDisableLangInput(false);
       p_turnResetOn();
       setCreateNew(true);
-      setSelectedFileName("");
+      setSelectedFileName('');
 
-      if (e.target.value === "create_new") {
+      if (e.target.value === 'create_new') {
         setLoadNew(false);
         setEditLanguageName(false);
-        setLangName("");
-      } else if (e.target.value === "load_new") {
+        setLangName('');
+      } else if (e.target.value === 'load_new') {
         setLoadNew(true);
         if (p_langChoiceRef.current) {
-          p_langChoiceRef.current.value = "";
+          p_langChoiceRef.current.value = '';
         }
-        setLangName("");
+        setLangName('');
         setEditLanguageName(true);
       } else {
         setLoadNew(false);
@@ -101,9 +101,9 @@ export default function useTranslateTableHeaderState_ch_2({
         setEditLanguageName(true);
       }
 
-      e.target.value = "lang";
+      e.target.value = 'lang';
     },
-    [p_turnResetOn, p_langChoiceRef]
+    [p_turnResetOn, p_langChoiceRef],
   );
 
   const clickOnEditLangName = () => {

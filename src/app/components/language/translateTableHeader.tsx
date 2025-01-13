@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import React from "react";
-import LanguageSelectorUser from "@/components/language/LanguageSelectorUser";
-import libStyles from "@/lib/lib.module.css";
-import languageStyles from "@/components/language/language.module.css";
-import Btn from "@/lib/buttons/btn";
-import useLanguageText_gs_1 from "@/components/language/globalStores/gs_1_languageLoad";
-import useTranslateTableHeaderState_ch_2 from "@/components/language/customHooks/ch_2_useTranslateTableHeaderState";
-import TextDisplay from "@/components/language/TextDisplay";
+import React from 'react';
+import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
+import libStyles from '@/lib/lib.module.css';
+import languageStyles from '@/components/language/language.module.css';
+import Btn from '@/lib/buttons/btn';
+import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import useTranslateTableHeaderState_ch_2 from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
+import TextDisplay from '@/components/language/TextDisplay';
 
 const TranslateTableHeader = (
   {
     p_syncChangesOn,
-    p_syncStart,
+    p_syncProgressStart,
     p_reset,
     p_turnResetOn,
     p_saveChanges,
@@ -22,14 +22,14 @@ const TranslateTableHeader = (
     p_processLangNameChange,
     p_fromLanguageName,
   }: Props,
-  ref?: React.ForwardedRef<TableHeaderRefType>
+  ref?: React.ForwardedRef<TableHeaderRefType>,
 ) => {
   const langChoiceRef = React.useRef<HTMLInputElement>(null);
 
   const { gs_1_selectedLanguage, gs_1_getTextForString } = useLanguageText_gs_1(
-    "selectedLanguage",
-    "getTextForString",
-    "selectedIdx" //"selectedIdx" is requested to rerender current componenet on its change
+    'selectedLanguage',
+    'getTextForString',
+    'selectedIdx', //"selectedIdx" is requested to rerender current componenet on its change
   );
 
   const {
@@ -65,7 +65,7 @@ const TranslateTableHeader = (
       () => {
         p_processLangNameChange(ch_2_langName);
       },
-      p_reset ? 0 : 500
+      p_reset ? 0 : 500,
     );
 
     return () => {
@@ -87,19 +87,13 @@ const TranslateTableHeader = (
               p_onChangePassed={p_updateTheFromLanguage}
             >
               <optgroup>
-                <option value="init_version">
-                  {gs_1_getTextForString("6")}
-                </option>
+                <option value="init_version">{gs_1_getTextForString('6')}</option>
                 {/* <option value="init_version">Initial Version</option> */}
               </optgroup>
             </LanguageSelectorUser>
             {p_fromLanguageName && (
               <input
-                className={
-                  languageStyles.textarea +
-                  " " +
-                  languageStyles.file_input_selected
-                }
+                className={languageStyles.textarea + ' ' + languageStyles.file_input_selected}
                 type="text"
                 disabled
                 placeholder={p_fromLanguageName}
@@ -111,7 +105,7 @@ const TranslateTableHeader = (
           <div className={languageStyles.select_save_div}>
             <SyncBtn
               p_syncChangesOn={p_syncChangesOn}
-              p_syncStart={p_syncStart}
+              p_syncProgressStart={p_syncProgressStart}
               p_toggleSync={p_toggleSync}
             />
             <LanguageSelectorUser
@@ -122,12 +116,12 @@ const TranslateTableHeader = (
             >
               <optgroup>
                 <option value="lang" disabled>
-                  {gs_1_getTextForString("7")}
+                  {gs_1_getTextForString('7')}
                 </option>
                 <option value="create_new">Create New</option>
                 <option value="load_new">Load From File</option>
               </optgroup>
-              <optgroup style={{ fontSize: "1.1rem" }} label="Available:" />
+              <optgroup style={{ fontSize: '1.1rem' }} label="Available:" />
             </LanguageSelectorUser>
             {ch_2_disableLangSelect && (
               <button
@@ -149,8 +143,7 @@ const TranslateTableHeader = (
               p_disableLangInput={ch_2_disableLangInput}
             />
           )}
-          {((ch_2_createNew && ch_2_selectedFileName) ||
-            (ch_2_createNew && !ch_2_loadNew)) && (
+          {((ch_2_createNew && ch_2_selectedFileName) || (ch_2_createNew && !ch_2_loadNew)) && (
             <LangNameInput
               p_createNew={ch_2_createNew}
               p_loadNew={ch_2_loadNew}
@@ -166,9 +159,7 @@ const TranslateTableHeader = (
   );
 };
 
-export default React.memo(
-  React.forwardRef<TableHeaderRefType, Props>(TranslateTableHeader)
-);
+export default React.memo(React.forwardRef<TableHeaderRefType, Props>(TranslateTableHeader));
 
 const LangNameInput = ({
   p_createNew,
@@ -189,10 +180,7 @@ const LangNameInput = ({
         value={p_langName}
       />
       {p_disableLangInput && (
-        <Btn
-          className={languageStyles.btn_language_input}
-          onClick={p_clickOnEditLangName}
-        >
+        <Btn className={languageStyles.btn_language_input} onClick={p_clickOnEditLangName}>
           ✏️
         </Btn>
       )}
@@ -210,7 +198,7 @@ const LoadLangFromFile = ({
   return !p_selectedFileName ? (
     <input
       ref={p_langChoiceRef}
-      className={languageStyles.textarea + " " + languageStyles.file_input}
+      className={languageStyles.textarea + ' ' + languageStyles.file_input}
       type="file"
       onInput={p_loadFromFile}
       disabled={p_disableLangSelect || p_disableLangInput}
@@ -225,24 +213,20 @@ const LoadLangFromFile = ({
   );
 };
 
-const SyncBtn = ({
-  p_syncChangesOn,
-  p_syncStart,
-  p_toggleSync,
-}: Partial<Props>) => {
+const SyncBtn = ({ p_syncChangesOn, p_syncProgressStart, p_toggleSync }: Partial<Props>) => {
   return (
     <Btn
       className={languageStyles.sync_btn}
       style={{
         ...(p_syncChangesOn && {
-          color: "var(--btn_green)",
-          border: "0.2rem solid var(--btn_green)",
+          color: 'var(--btn_green)',
+          border: '0.2rem solid var(--btn_green)',
         }),
       }}
       onClick={p_toggleSync}
     >
       <span className={languageStyles.sync_symbol}>&#x21BB;</span>
-      {p_syncStart && (
+      {p_syncProgressStart && (
         <svg className={languageStyles.progress_circle_svg}>
           <circle className={languageStyles.progress} />
         </svg>
@@ -277,7 +261,7 @@ export type TableHeaderRefType = {
 
 export type Props = {
   p_syncChangesOn: boolean;
-  p_syncStart: boolean;
+  p_syncProgressStart: boolean;
   p_reset: boolean;
   p_fromLanguageName: string;
   p_turnResetOn: () => void;
