@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import modalStyles from '@/components/modal/modal.module.css';
-import DragDiv from '@/lib/dragDiv';
+import DragDiv from '@/lib/DragDiv';
 
 type Props = {
   //   isOpen: boolean;

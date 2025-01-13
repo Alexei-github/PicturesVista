@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import LanguageSelectorUser from '@/components/language/languageSelectorUser';
+import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
 import libStyles from '@/lib/lib.module.css';
 import languageStyles from '@/components/language/language.module.css';
 import Btn from '@/lib/buttons/btn';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import useTranslateTableHeaderState_ch_2 from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
-import TextDisplay from '@/components/language/textDisplay';
+import TextDisplay from '@/components/language/TextDisplay';
 
 const TranslateTableHeader = (
   {

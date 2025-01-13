@@ -1,16 +1,16 @@
-import React from "react";
-import Image from "next/image";
-import OpenDirBtn from "@/components/sidebar/openDirBtn";
-import { useStoredFiles, useOpenDir } from "@/stores/storedFiles";
-import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";
-import { useLayout } from "@/stores/layoutStore";
-import { calculateImgSides } from "@/components/imgsDisplay/getImgSize";
-import SortFnAscend from "@/lib/sortFn";
-import { getImgNaturalSizeFn } from "@/components/imgsDisplay/getImgSize";
+import React from 'react';
+import Image from 'next/image';
+import OpenDirBtn from '@/components/sidebar/OpenDirBtn';
+import { useStoredFiles, useOpenDir } from '@/stores/storedFiles';
+import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
+import { useLayout } from '@/stores/layoutStore';
+import { calculateImgSides } from '@/components/imgsDisplay/getImgSize';
+import SortFnAscend from '@/lib/sortFn';
+import { getImgNaturalSizeFn } from '@/components/imgsDisplay/getImgSize';
 
-import isShowDirFn from "@/lib/isShowDir";
+import isShowDirFn from '@/lib/isShowDir';
 
-import DisplayOneImg from "@/components/imgsDisplay/displayOneImg";
+import DisplayOneImg from '@/components/imgsDisplay/DisplayOneImg';
 
 type Props = { dir: string; indent: number };
 
@@ -31,9 +31,7 @@ export default function ImagesOneDir({ dir, indent }: Props) {
 
   React.useEffect(() => {
     setImgsData({});
-    setLoadingImgsNames(
-      Object.keys(loadedFilesDirs[dir]).sort(SortFnAscend).reverse()
-    );
+    setLoadingImgsNames(Object.keys(loadedFilesDirs[dir]).sort(SortFnAscend).reverse());
   }, [loadedFilesDirs, dir]);
 
   React.useEffect(() => {
@@ -78,10 +76,10 @@ export default function ImagesOneDir({ dir, indent }: Props) {
         imgHeight,
         imgsPaneScaleFactor,
         imgsPaneSize.height,
-        imgsPaneSize.width
+        imgsPaneSize.width,
       );
     },
-    [imgsPaneScaleFactor, imgsPaneSize]
+    [imgsPaneScaleFactor, imgsPaneSize],
   );
 
   return (
@@ -105,7 +103,7 @@ export default function ImagesOneDir({ dir, indent }: Props) {
                 imgName={imgName}
                 imgCalculatedSize={calculateImgSize(
                   imgsData[imgName].imgNaturalSize.width,
-                  imgsData[imgName].imgNaturalSize.height
+                  imgsData[imgName].imgNaturalSize.height,
                 )}
                 className={imgsDisplayStyle.one_img}
               />

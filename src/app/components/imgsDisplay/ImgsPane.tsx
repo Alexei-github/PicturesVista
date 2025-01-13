@@ -5,8 +5,8 @@ import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
 import { useLayout } from '@/stores/layoutStore';
 import useElementSizeObserver from '@/customHooks/useElementSizeObserver';
 import SortFnAscend from '@/lib/sortFn';
-import ImagesOneDir from '@/components/imgsDisplay/imagesOneDir';
-import ScaleBtn from '@/components/imgsDisplay/scaleBtn';
+import ImagesOneDir from '@/components/imgsDisplay/ImagesOneDir';
+import ScaleBtn from '@/components/imgsDisplay/ScaleBtn';
 import { useClickedFileName } from '@/stores/storedFiles';
 import TextDisplay from '@/components/language/TextDisplay';
 

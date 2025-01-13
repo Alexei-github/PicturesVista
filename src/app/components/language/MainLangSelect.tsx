@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import LanguageSelectorUser from '@/components/language/languageSelectorUser';
+import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
 import languageStyles from '@/components/language/language.module.css';
-import LanguageEditTransalte from '@/components/language/languageEditTranslate';
+import LanguageEditTransalte from '@/components/language/LanguageEditTranslate';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import { DEFAULT_LANGUAGE } from '@/components/language/lib/constants';
 

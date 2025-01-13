@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
 import sidebarStyles from '@/components/sidebar/sidebar.module.css';
-import SidebarDragLine from '@/components/sidebar/sidebarDragLine';
-import FileUploader from '@/components/filesLoad/filesUploader';
-import SidebarDir from '@/components/sidebar/sidebarOneDir';
+import SidebarDragLine from '@/components/sidebar/SidebarDragLine';
+import FileUploader from '@/components/filesLoad/FilesUploader';
+import SidebarDir from '@/components/sidebar/SidebarOneDir';
 import { useStoredFiles } from '@/stores/storedFiles';
 import SortFnAscend from '@/lib/sortFn';
-import ManageBar from '@/components/sidebar/manageBar';
+import ManageBar from '@/components/sidebar/ManageBar';
 import TextDisplay from '@/components/language/TextDisplay';
 type Props = {
   openSidebar: boolean;

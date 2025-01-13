@@ -1,6 +1,6 @@
 import React from 'react';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
-import { TableHeaderRefType } from '@/components/language/translateTableHeader';
+import { TableHeaderRefType } from '@/components/language/TranslateTableHeader';
 import { LanguageText, LanguageUpdateValues } from '@/components/language/types';
 import f_1_saveTranslationChanges from '@/components/language/functions/f_1_saveTranslationChnages';
 import {

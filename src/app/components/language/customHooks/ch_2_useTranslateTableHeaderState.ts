@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableHeaderRefType } from '@/components/language/translateTableHeader';
+import { TableHeaderRefType } from '@/components/language/TranslateTableHeader';
 
 export default function useTranslateTableHeaderState_ch_2({
   p_turnResetOn,

@@ -1,36 +1,36 @@
-import "@testing-library/jest-dom";
-import * as React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import SidebarDragLine from "@/components/sidebar/sidebarDragLine";
+import '@testing-library/jest-dom';
+import * as React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import SidebarDragLine from '@/components/sidebar/SidebarDragLine';
 
-describe("SidebarDragLine", () => {
+describe('SidebarDragLine', () => {
   const onClickAndDrag = jest.fn();
 
-  it("renders dragline", async () => {
+  it('renders dragline', async () => {
     render(
       <SidebarDragLine
         setSidebarSize={onClickAndDrag}
         setEffectiveSidebarSize={onClickAndDrag}
         resizeMargin={50}
-      />
+      />,
     );
 
-    expect(screen.getByRole("separator")).toBeInTheDocument();
+    expect(screen.getByRole('separator')).toBeInTheDocument();
     // const dragLine = document.querySelectorAll('hr[class^="vertical_line"]')[0];
-    const dragLine = document.getElementsByClassName("vertical_line")[0];
+    const dragLine = document.getElementsByClassName('vertical_line')[0];
     expect(dragLine).toBeInTheDocument();
   });
-  it("dragline has correct style class assigned", async () => {
+  it('dragline has correct style class assigned', async () => {
     render(
       <SidebarDragLine
         setSidebarSize={onClickAndDrag}
         setEffectiveSidebarSize={onClickAndDrag}
         resizeMargin={50}
-      />
+      />,
     );
 
     // const dragLine = document.querySelectorAll('hr[class^="vertical_line"]')[0];
-    const dragLine = document.getElementsByClassName("vertical_line")[0];
+    const dragLine = document.getElementsByClassName('vertical_line')[0];
     expect(dragLine).toBeInTheDocument();
 
     // apperantly it is near impossible to test not inline css with jest.

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/layout/navbar';
-import MainWithTouches from '@/components/layout/mainWithTouches';
+import Navbar from '@/components/layout/Navbar';
+import MainWithTouches from '@/components/layout/MainWithTouches';
 import React from 'react';
 
 import styles from './page.module.css';

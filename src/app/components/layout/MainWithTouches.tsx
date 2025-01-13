@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import Sidebar from '@/components/sidebar/sidebar';
+import Sidebar from '@/components/sidebar/Sidebar';
 import { useBrowserCanUse } from '@/stores/browserDetect';
-import ImgsPane from '@/components/imgsDisplay/imgsPane';
+import ImgsPane from '@/components/imgsDisplay/ImgsPane';
 import styles from '@/components/components.module.css';
 
 const MainWithTouches = (
