@@ -7,6 +7,15 @@ type Props = {
   p_elementId: string;
 };
 
+/**
+ * A component that displays the text for a specific language element.
+ *
+ * @param p_elementId - A string representing the ID (key in JSON file) of the language element to
+ *   be displayed.
+ * @returns A JSX element. If edit mode is enabled, the element ID is displayed as a clickable
+ *   superscript.
+ */
+
 const TextDisplay = ({ p_elementId }: Props) => {
   const { gs_1_editMode, gs_1_getTextForComponent, gs_1_selectedIdx, gs_1_setSelectedIdx } =
     useLanguageText_gs_1(

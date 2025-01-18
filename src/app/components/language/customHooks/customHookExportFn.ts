@@ -11,25 +11,21 @@ import { UseBoundStore, StoreApi } from 'zustand';
  *   out of the store
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function exportStore<StoreInterface extends Record<string, any>, S extends string>(
-  store: UseBoundStore<StoreApi<StoreInterface>>,
-  storeId: S,
-) {
-  return function <T extends (keyof StoreInterface & string)[]>(
-    ...requestedItems: CheckUnique<T> extends T ? T : CheckUnique<T>
-  ) {
-    type RequestedItems = {
-      [K in T[number] as `${typeof storeId}${string & K}`]: StoreInterface[K];
-    };
-
-    const selectedExportItems = {} as RequestedItems;
-    // const selectedExportItems: RequestedItems = {} as RequestedItems;
-
-    for (const item of requestedItems) {
-      selectedExportItems[`${storeId}${item}`] = store((s) => s[item]);
-    }
-    return selectedExportItems;
+export default function exportCustomHook<
+  HookReturnType extends Record<string, any>,
+  S extends string,
+>(hook: () => HookReturnType, hookId: S) {
+  type RequestedItems = {
+    [K in T[number] as `${typeof storeId}${string & K}`]: StoreType[K];
   };
+
+  const selectedExportItems = {} as RequestedItems;
+  // const selectedExportItems: RequestedItems = {} as RequestedItems;
+
+  for (const item of requestedItems) {
+    selectedExportItems[`${storeId}${item}`] = store((s) => s[item]);
+  }
+  return selectedExportItems;
 }
 
 /** Checks that parameters passed to a fnction are unique. */

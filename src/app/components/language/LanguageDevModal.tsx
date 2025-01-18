@@ -7,10 +7,13 @@ import TranslationTableRow from '@/components/language/TranslationTableRow';
 import TranslateTableHeader from '@/components/language/TranslateTableHeader';
 import useLanguageDevState_ch_1 from './customHooks/ch_1_useLanguageDevState';
 
-type Props = {
-  p_onClose: () => void;
-};
-
+/**
+ * Component which displays a modal window with a table for editing the language translations.
+ *
+ * @param props - The component props.
+ * @param props.p_onClose - A function to call when the modal window is closed.
+ * @returns A React component.
+ */
 const LanguageDevModal = ({ p_onClose }: Props) => {
   const { gs_1_currLangText, gs_1_allIdsSet } = useLanguageText_gs_1('currLangText', 'allIdsSet');
 
@@ -58,7 +61,7 @@ const LanguageDevModal = ({ p_onClose }: Props) => {
                   <TranslationTableRow
                     key={'translate_row_' + key}
                     id={'translate_row_' + key}
-                    key_val={key}
+                    keyVal={key}
                     fromLangValue={ch_1_fromLanguage[key]}
                     onChange={ch_1_translateOnChange}
                     updatedTransaltion={ch_1_newTranslation ? ch_1_newTranslation[key] : ''}
@@ -74,3 +77,7 @@ const LanguageDevModal = ({ p_onClose }: Props) => {
 };
 
 export default LanguageDevModal;
+
+type Props = {
+  p_onClose: () => void;
+};

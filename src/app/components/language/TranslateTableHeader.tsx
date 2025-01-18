@@ -8,7 +8,25 @@ import Btn from '@/lib/buttons/btn';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import useTranslateTableHeaderState_ch_2 from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
 import TextDisplay from '@/components/language/TextDisplay';
+import { TableHeaderRefType } from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
 
+/**
+ * A React component that renders a table header for a language translation table.
+ *
+ * @property p_syncChangesOn - A flag to indicate if the sync changes button should be enabled.
+ * @property p_syncProgressStart - A flag to indicate that sync progress should start being shown.
+ * @property p_reset - A flag to indicate if the component should be reset.
+ * @property p_turnResetOn - A function to trigger a reset action.
+ * @property p_saveChanges - A function to save translation changes.
+ * @property p_onFileLoad - A function to process text loaded from JSON file.
+ * @property p_updateTheFromLanguage - A function to update the language from which translation
+ *   being made.
+ * @property p_toggleSync - A function to toggle the sync changes button.
+ * @property p_processLangNameChange - A function to process changes to the language name.
+ * @property p_fromLanguageName - The name of the language from which translation is being made.
+ * @param ref - A reference to the component.
+ * @returns A JSX element representing the table header.
+ */
 const TranslateTableHeader = (
   {
     p_syncChangesOn,
@@ -52,26 +70,40 @@ const TranslateTableHeader = (
 
   React.useImperativeHandle(ref, ch_2_refFunction, [ch_2_refFunction]);
 
-  React.useEffect(() => {
-    const mockEvent = {
-      target: { value: gs_1_selectedLanguage },
-    } as React.ChangeEvent<HTMLSelectElement>;
-    p_updateTheFromLanguage(mockEvent);
+  React.useEffect(
+    /**
+     * Updates language from which the translation is being made on component mount. It triggers the
+     * `p_updateTheFromLanguage` function with a mock event containing the selected language value.
+     */
+    () => {
+      const mockEvent = {
+        target: { value: gs_1_selectedLanguage },
+      } as React.ChangeEvent<HTMLSelectElement>;
+      p_updateTheFromLanguage(mockEvent);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    [],
+  );
 
-  React.useEffect(() => {
-    const timeout = setTimeout(
-      () => {
-        p_processLangNameChange(ch_2_langName);
-      },
-      p_reset ? 0 : 500,
-    );
+  React.useEffect(
+    /**
+     * Calls the `p_processLangNameChange` function after a short delay once the `ch_2_langName`
+     * value has been changed.
+     */
+    () => {
+      const timeout = setTimeout(
+        () => {
+          p_processLangNameChange(ch_2_langName);
+        },
+        p_reset ? 0 : 500,
+      );
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [ch_2_langName, p_processLangNameChange, p_reset]);
+      return () => {
+        clearTimeout(timeout);
+      };
+    },
+    [ch_2_langName, p_processLangNameChange, p_reset],
+  );
 
   return (
     <thead>
@@ -161,6 +193,16 @@ const TranslateTableHeader = (
 
 export default React.memo(React.forwardRef<TableHeaderRefType, Props>(TranslateTableHeader));
 
+/**
+ * A component to handle the input of a new language name.
+ *
+ * @param p_createNew - Boolean indicating if a new language is being created.
+ * @param p_loadNew - Boolean indicating if a new language is being loaded.
+ * @param p_disableLangInput - Boolean indicating if language input field is to be disabled.
+ * @param p_onChangeLangName - Function to handle changes to the language name input.
+ * @param p_langName - String representing the language name of the current new translation.
+ * @param p_clickOnEditLangName - Function to enable editing of the language name.
+ */
 const LangNameInput = ({
   p_createNew,
   p_loadNew,
@@ -188,6 +230,16 @@ const LangNameInput = ({
   );
 };
 
+/**
+ * A component to load a language from a JSON file.
+ *
+ * @param p_selectedFileName - String representing the name of the loaded file.
+ * @param p_langChoiceRef - A React ref to the input field of type file.
+ * @param p_loadFromFile - Function to load text from selected JSON file.
+ * @param p_disableLangSelect - Boolean indicating if the language selection field is to be
+ *   disabled.
+ * @param p_disableLangInput - Boolean indicating if the language input field is to be disabled.
+ */
 const LoadLangFromFile = ({
   p_selectedFileName,
   p_langChoiceRef,
@@ -213,6 +265,15 @@ const LoadLangFromFile = ({
   );
 };
 
+/**
+ * A button to toggle the syncing of translation changes to reflect new translations on the app's UI
+ * elements. If changes are being synced, the button shows a green color and a rotating progress
+ * circle.
+ *
+ * @param p_syncChangesOn - A boolean indicating if changes are being synced.
+ * @param p_syncProgressStart - A boolean indicating if the new sync process has started.
+ * @param p_toggleSync - A function to toggle the sync process.
+ */
 const SyncBtn = ({ p_syncChangesOn, p_syncProgressStart, p_toggleSync }: Partial<Props>) => {
   return (
     <Btn
@@ -233,30 +294,6 @@ const SyncBtn = ({ p_syncChangesOn, p_syncProgressStart, p_toggleSync }: Partial
       )}
     </Btn>
   );
-};
-
-export type TableHeaderRefType = {
-  getState: () => {
-    createNew: boolean;
-    loadNew: boolean;
-    langName: string;
-    editLanguageName: boolean;
-    disableLangSelect: boolean;
-    selectedFileName: string;
-    disableLangInput: boolean;
-  };
-  setDisableLangSelect: (state: boolean) => void;
-  setDisableLangInput: (state: boolean) => void;
-  setEditLanguageName: (state: boolean) => void;
-  setInitState: (initStateValues: {
-    createNew: boolean;
-    loadNew: boolean;
-    langName: string;
-    disableLangSelect: boolean;
-    selectedFileName: string;
-    editLanguageName: boolean;
-    disableLangInput: boolean;
-  }) => void;
 };
 
 export type Props = {

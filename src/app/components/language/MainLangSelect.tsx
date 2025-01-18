@@ -6,8 +6,14 @@ import LanguageEditTransalte from '@/components/language/LanguageEditTranslate';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import { DEFAULT_LANGUAGE } from '@/components/language/lib/constants';
 
+/**
+ * A component that renders a language selector and if edit mode is enabled, an edit translate
+ * button. When the component mounts, it sets the language to the default language.
+ *
+ * @returns A JSX element representing the language selector and edit translate button.
+ */
 const MainLangSelect = (): React.ReactNode => {
-  const { gs_1_setLanguage } = useLanguageText_gs_1('setLanguage');
+  const { gs_1_setLanguage, gs_1_editMode } = useLanguageText_gs_1('setLanguage', 'editMode');
 
   React.useEffect(() => {
     gs_1_setLanguage(DEFAULT_LANGUAGE);
@@ -19,7 +25,7 @@ const MainLangSelect = (): React.ReactNode => {
         p_defaultLanguage={DEFAULT_LANGUAGE}
         p_selectorClassName={`${languageStyles.language_selector} ${languageStyles.language_selector_navbar}`}
       />
-      <LanguageEditTransalte />
+      {gs_1_editMode && <LanguageEditTransalte />}
     </div>
   );
 };
