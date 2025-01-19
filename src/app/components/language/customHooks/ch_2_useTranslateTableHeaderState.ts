@@ -1,5 +1,4 @@
 import React from 'react';
-
 /**
  * Custom hook to manage the state and behavior of the language translation table header.
  *
