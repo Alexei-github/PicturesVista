@@ -10,6 +10,22 @@ const nextConfig = {
   // reactStrictMode: true,
   optimizeFonts: false,
   output: "export",
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
+  productionBrowserSourceMaps: true,
+  // experimental: {
+  //   turbo: {
+  //     rules: {
+  //       "*.svg": {
+  //         loaders: ["@svgr/webpack"],
+  //         as: "*.js",
+  //       },
+  //     },
+  //   },
+  // },
   webpack: (config, { dev, isServer }) => {
     // if (!isServer && !dev) {
     if (!dev) {

@@ -1,7 +1,7 @@
-import React from "react";
-import PinButton from "@/components/sidebar/pinButton";
-import sidebarStyles from "@/components/sidebar/sidebar.module.css";
-import LoadCVModels from "@/components/computerVision/computerVision";
+import React from 'react';
+import PinButton from '@/components/sidebar/PinButton';
+import sidebarStyles from '@/components/sidebar/sidebar.module.css';
+import LoadCVModels from '@/components/computerVision/ComputerVision';
 type Props = {
   pinnedOpen: boolean;
   openManageBar: boolean;
@@ -9,12 +9,7 @@ type Props = {
   onChange: (value: boolean) => void;
 };
 
-const ManageBar = ({
-  pinnedOpen,
-  openManageBar,
-  setPinnedOpen,
-  onChange,
-}: Props) => {
+const ManageBar = ({ pinnedOpen, openManageBar, setPinnedOpen, onChange }: Props) => {
   const [openBar, setOpeBar] = React.useState(openManageBar);
 
   React.useEffect(() => {
@@ -26,8 +21,8 @@ const ManageBar = ({
       className={sidebarStyles.manage_bar}
       style={
         openBar
-          ? { height: "2rem", transition: "height 0.2s ease" }
-          : { height: "0px", transition: "height 0.5s ease" }
+          ? { height: '2rem', transition: 'height 0.2s ease' }
+          : { height: '0px', transition: 'height 0.5s ease' }
       }
       onMouseEnter={() => {
         setOpeBar(true);

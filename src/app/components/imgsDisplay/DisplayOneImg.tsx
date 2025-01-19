@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import BBox from "@/components/imgsDisplay/bBox";
+import BBox from "@/components/imgsDisplay/BBox";
 import { getImgNaturalSizeFn } from "@/components/imgsDisplay/getImgSize";
 import { useVision } from "@/stores/computerVisionStore";
 import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";

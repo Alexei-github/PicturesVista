@@ -1,14 +1,14 @@
-"use client";
-import React from "react";
-import SidebarItem from "@/components/sidebar/sidebarOneItem";
-import sidebarStyles from "@/components/sidebar/sidebar.module.css";
-import styled from "styled-components";
-import isShowDirFn from "@/lib/isShowDir";
+'use client';
+import React from 'react';
+import SidebarItem from '@/components/sidebar/SidebarOneItem';
+import sidebarStyles from '@/components/sidebar/sidebar.module.css';
+import styled from 'styled-components';
+import isShowDirFn from '@/lib/isShowDir';
 
-import { useStoredFiles, useOpenDir } from "@/stores/storedFiles";
-import SortFnAscend from "@/lib/sortFn";
+import { useStoredFiles, useOpenDir } from '@/stores/storedFiles';
+import SortFnAscend from '@/lib/sortFn';
 
-import OpenDirBtn from "@/components/sidebar/openDirBtn";
+import OpenDirBtn from '@/components/sidebar/OpenDirBtn';
 
 type Props = {
   dirName: string;
@@ -24,9 +24,7 @@ function SidebarDir({ dirName, indent, sidebarSize, manageBarOpen }: Props) {
   const [gridColGap] = React.useState(16);
 
   const numberOfColumns = React.useMemo(() => {
-    return Math.floor(
-      (sidebarSize - gridColGap * 2) / (itemWidth + gridColGap)
-    );
+    return Math.floor((sidebarSize - gridColGap * 2) / (itemWidth + gridColGap));
   }, [sidebarSize, gridColGap, itemWidth]);
 
   const isShowDir = React.useMemo(() => {
@@ -40,8 +38,8 @@ function SidebarDir({ dirName, indent, sidebarSize, manageBarOpen }: Props) {
           dirName={dirName}
           style={
             !manageBarOpen
-              ? { top: "-1.8rem", transition: "top 0.5s ease" }
-              : { top: "0", transition: "top 0.2s ease" }
+              ? { top: '-1.8rem', transition: 'top 0.5s ease' }
+              : { top: '0', transition: 'top 0.2s ease' }
           }
         />
       )}

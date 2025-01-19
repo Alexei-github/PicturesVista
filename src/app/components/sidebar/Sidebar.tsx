@@ -1,12 +1,13 @@
-"use client";
-import React from "react";
-import sidebarStyles from "@/components/sidebar/sidebar.module.css";
-import SidebarDragLine from "@/components/sidebar/sidebarDragLine";
-import FileUploader from "@/components/filesLoad/filesUploader";
-import SidebarDir from "@/components/sidebar/sidebarOneDir";
-import { useStoredFiles } from "@/stores/storedFiles";
-import SortFnAscend from "@/lib/sortFn";
-import ManageBar from "@/components/sidebar/manageBar";
+'use client';
+import React from 'react';
+import sidebarStyles from '@/components/sidebar/sidebar.module.css';
+import SidebarDragLine from '@/components/sidebar/SidebarDragLine';
+import FileUploader from '@/components/filesLoad/FilesUploader';
+import SidebarDir from '@/components/sidebar/SidebarOneDir';
+import { useStoredFiles } from '@/stores/storedFiles';
+import SortFnAscend from '@/lib/sortFn';
+import ManageBar from '@/components/sidebar/ManageBar';
+import TextDisplay from '@/components/language/TextDisplay';
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -15,17 +16,13 @@ type Props = {
 };
 
 /**
- * Sidebar component whith adjustable width.
- * It will open once user hovers over left edge of the page and close once user moves cursor away.
- * Users have an option to pin sidebar so that it does not close on moving cuosor away.
+ * Sidebar component whith adjustable width. It will open once user hovers over left edge of the
+ * page and close once user moves cursor away. Users have an option to pin sidebar so that it does
+ * not close on moving cuosor away.
+ *
  * @returns Sidebar component
  */
-export default function Sidebar({
-  openSidebar,
-  pinnedOpen,
-  setPinnedOpen,
-  setOpenSidebar,
-}: Props) {
+export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpenSidebar }: Props) {
   const [preventDelayAction, setPreventDelayAction] = React.useState(true);
   const [resizeMargin] = React.useState(50);
   const [closedSize] = React.useState(3);
@@ -40,9 +37,12 @@ export default function Sidebar({
 
   React.useEffect(() => {
     if (!openSidebar) {
-      const timeoutClose = setTimeout(() => {
-        setCompletelyClosed(!openSidebar);
-      }, (closeDelayTime + openCloseTime) * 1000);
+      const timeoutClose = setTimeout(
+        () => {
+          setCompletelyClosed(!openSidebar);
+        },
+        (closeDelayTime + openCloseTime) * 1000,
+      );
       return () => {
         clearTimeout(timeoutClose);
       };
@@ -52,17 +52,15 @@ export default function Sidebar({
   }, [closeDelayTime, openCloseTime, openSidebar]);
 
   React.useEffect(
-    /**
-     * Setting size of the sidebar upon the opening page.
-     */
+    /** Setting size of the sidebar upon the opening page. */
     () => {
       const remSize: number = parseInt(
-        getComputedStyle(document.documentElement).fontSize.replace("px", ""),
-        10
+        getComputedStyle(document.documentElement).fontSize.replace('px', ''),
+        10,
       );
       setSidebarSize(remSize * 13);
     },
-    [closeDelayTime, openCloseTime]
+    [closeDelayTime, openCloseTime],
   );
 
   React.useEffect(() => {
@@ -78,40 +76,36 @@ export default function Sidebar({
     if (sideBarNav && openSidebar) {
       //?? check out later
       sideBarNav.addEventListener(
-        "touchstart",
+        'touchstart',
         (e: any) => {
           e.stopPropagation();
         },
         {
           passive: true,
           capture: true,
-        }
+        },
       );
       return sideBarNav.removeEventListener(
-        "touchstart",
+        'touchstart',
         (e: any) => {
           e.stopPropagation();
         },
         {
           capture: true,
-        }
+        },
       );
     }
   }, [refSideBarNav, openSidebar]);
 
-  const updateManagerBarOnChange = React.useCallback(
-    (updateManagerBarValue: boolean) => {
-      setOpenManageBar(updateManagerBarValue);
-    },
-    []
-  );
+  const updateManagerBarOnChange = React.useCallback((updateManagerBarValue: boolean) => {
+    setOpenManageBar(updateManagerBarValue);
+  }, []);
 
   return (
     <nav
       className={sidebarStyles.sidebar_div}
       style={
-        typeof document !== "undefined" &&
-        document.body.style.cursor === "col-resize"
+        typeof document !== 'undefined' && document.body.style.cursor === 'col-resize'
           ? {
               flex: `0 0 max(min(${
                 openSidebar ? sidebarSize : closedSize
@@ -133,7 +127,7 @@ export default function Sidebar({
         }
       }}
       onMouseLeave={() => {
-        if (!pinnedOpen && document.body.style.cursor !== "col-resize") {
+        if (!pinnedOpen && document.body.style.cursor !== 'col-resize') {
           setPreventDelayAction(false);
           setOpenSidebar(false);
         }
@@ -163,7 +157,7 @@ export default function Sidebar({
               Object.keys(loadedFilesDirs)
                 .sort(SortFnAscend)
                 .map((dir, idx_dir) => {
-                  const indent = dir.replace(/^\//, "").split("/").length - 1;
+                  const indent = dir.replace(/^\//, '').split('/').length - 1;
                   return (
                     <SidebarDir
                       key={`${dir}_${idx_dir}`}
@@ -177,20 +171,18 @@ export default function Sidebar({
             ) : (
               <p
                 style={{
-                  color: "white",
-                  margin: "auto auto",
-                  padding: "0.3rem",
+                  color: 'white',
+                  margin: 'auto auto',
+                  // padding: "s0.3rem",
+                  // height: "100%",
                 }}
               >
-                Upload images / folders via the buttons below.
+                <TextDisplay p_elementId="3" />
               </p>
             )}
             <FileUploader />
           </nav>
-          <SidebarDragLine
-            setSidebarSize={setSidebarSize}
-            resizeMargin={resizeMargin}
-          />
+          <SidebarDragLine setSidebarSize={setSidebarSize} resizeMargin={resizeMargin} />
         </>
       )}
     </nav>
