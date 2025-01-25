@@ -13,9 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@latest
+      - uses: actions/setup-node@v2
         with:
           node-version: '18'
           cache: 'npm'
@@ -29,7 +29,7 @@ jobs:
           CI: true
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@latest
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-deploy-role
           aws-region: ap-southeast-2
@@ -49,7 +49,7 @@ jobs:
 
       - name: Notify on failure
         if: failure()
-        uses: actions/github-script@latest
+        uses: actions/github-script@v6
         with:
           script: |
             github.rest.issues.create({
@@ -61,7 +61,7 @@ jobs:
 
       - name: Notify on success
         if: success()
-        uses: actions/github-script@latest
+        uses: actions/github-script@v6
         with:
           script: |
             github.rest.issues.create({
