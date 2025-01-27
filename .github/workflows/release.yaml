@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '20
           cache: 'npm'
 
       - name: Install dependencies
@@ -38,7 +38,7 @@ jobs:
       - name: Copy to S3
         run: |
           set -e  # Exit on error
-           aws s3 sync build/ s3://www.picsvista.com --delete || { echo "Sync failed"; exit 1; }
+           aws s3 sync .neext/ s3://www.picsvista.com --delete || { echo "Sync failed"; exit 1; }
 
       - name: Invalidate CloudFront
         env:
