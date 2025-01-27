@@ -38,7 +38,7 @@ jobs:
       - name: Copy to S3
         run: |
           set -e  # Exit on error
-           aws s3 sync .neext/ s3://www.picsvista.com --delete || { echo "Sync failed"; exit 1; }
+           aws s3 sync out/ s3://www.picsvista.com --delete || { echo "Sync failed"; exit 1; }
 
       - name: Invalidate CloudFront
         env:
