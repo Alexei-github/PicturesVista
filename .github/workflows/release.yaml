@@ -31,14 +31,14 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-deploy-role
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/Deployment
           aws-region: ap-southeast-2
           audience: sts.amazonaws.com
 
       - name: Copy to S3
         run: |
           set -e  # Exit on error
-           aws s3 sync out/ s3://www.picsvista.com --delete || { echo "Sync failed"; exit 1;}
+           aws s3 sync out/ s3://www.picsvista.com --delete || { echo "Sync failed"; exit 1; }
 
       - name: Invalidate CloudFront
         env:
