@@ -55,8 +55,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.name,
+              owner: "Alexei-github",
+              repo: "PicturesVista",
               title: 'Deployment Failed',
               body: `Deployment failed in run ${context.runId}`
             })
@@ -68,8 +68,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.name,
+              owner: "Alexei-github",
+              repo: "PicturesVista",
               title: 'Deployment Successful',
               body: `Deployment succeeded in run ${context.runId}`
             })
