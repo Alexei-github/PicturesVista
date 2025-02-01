@@ -77,6 +77,7 @@ export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpe
       //?? check out later
       sideBarNav.addEventListener(
         'touchstart',
+        // eslint-disable-next-line
         (e: any) => {
           e.stopPropagation();
         },
@@ -87,6 +88,7 @@ export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpe
       );
       return sideBarNav.removeEventListener(
         'touchstart',
+        // eslint-disable-next-line
         (e: any) => {
           e.stopPropagation();
         },

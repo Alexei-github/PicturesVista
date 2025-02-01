@@ -1,4 +1,4 @@
-import { LicenseWebpackPlugin } from "license-webpack-plugin";
+import { LicenseWebpackPlugin } from 'license-webpack-plugin';
 // import { createRequire } from "module";
 // const require = createRequire(import.meta.url);
 // import path from "path";
@@ -9,7 +9,7 @@ import { LicenseWebpackPlugin } from "license-webpack-plugin";
 const nextConfig = {
   // reactStrictMode: true,
   optimizeFonts: false,
-  output: "export",
+  output: 'export',
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -26,21 +26,21 @@ const nextConfig = {
   //     },
   //   },
   // },
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { dev }) => {
     // if (!isServer && !dev) {
     if (!dev) {
       config.plugins.push(
         new LicenseWebpackPlugin({
           perChunkOutput: false,
-          outputFilename: "3_pty_licenses.txt",
+          outputFilename: '3_pty_licenses.txt',
           stats: {
             warnings: true,
             errors: true,
           },
-          modulesDirectories: ["node_modules"],
+          modulesDirectories: ['node_modules'],
           licenseTextOverrides: {
             // 15/10/2024 https://www.npmjs.com/package/@tensorflow/tfjs-core
-            "@tensorflow/tfjs-core": `
+            '@tensorflow/tfjs-core': `
                 Licensed under the Apache License, Version 2.0 (the "License");
                 you may not use this file except in compliance with the License.
                 You may obtain a copy of the License at
@@ -78,7 +78,7 @@ const nextConfig = {
               SOFTWARE.
             `,
             // 15/10/2024 https://www.npmjs.com/package/@tensorflow/tfjs-backend-cpu
-            "@tensorflow/tfjs-backend-cpu": `
+            '@tensorflow/tfjs-backend-cpu': `
               Licensed under the Apache License, Version 2.0 (the "License");
               you may not use this file except in compliance with the License.
               You may obtain a copy of the License at
@@ -93,7 +93,7 @@ const nextConfig = {
             `,
 
             // 15/10/2024 https://www.npmjs.com/package/@tensorflow-models/coco-ssd
-            "@tensorflow-models/coco-ssd": `
+            '@tensorflow-models/coco-ssd': `
               Licensed under the Apache License, Version 2.0 (the "License");
               you may not use this file except in compliance with the License.
               You may obtain a copy of the License at
@@ -107,7 +107,7 @@ const nextConfig = {
               limitations under the License.
             `,
             // 15/10/2024 https://www.npmjs.com/package/@tensorflow/tfjs-converter
-            "@tensorflow/tfjs-converter": `
+            '@tensorflow/tfjs-converter': `
               Licensed under the Apache License, Version 2.0 (the "License");
               you may not use this file except in compliance with the License.
               You may obtain a copy of the License at
@@ -121,7 +121,7 @@ const nextConfig = {
               limitations under the License.
             `,
             // 15/10/2024 https://www.npmjs.com/package/@tensorflow/tfjs-backend-webgl
-            "@tensorflow/tfjs-backend-webgl": `
+            '@tensorflow/tfjs-backend-webgl': `
               Licensed under the Apache License, Version 2.0 (the "License");
               you may not use this file except in compliance with the License.
               You may obtain a copy of the License at
@@ -135,7 +135,7 @@ const nextConfig = {
               limitations under the License.
             `,
             // 15/10/2024 https://www.npmjs.com/package/@edge-runtime/cookies
-            "@edge-runtime/cookies": `
+            '@edge-runtime/cookies': `
               The MIT License (MIT)
 
               Copyright (c) 2021 Edge Runtime Team
@@ -159,7 +159,7 @@ const nextConfig = {
               SOFTWARE.
             `,
             // 15/10/2024 https://www.npmjs.com/package/ua-parser-js
-            "ua-parser-js": `
+            'ua-parser-js': `
               The MIT License (MIT)
 
               Copyright (c) 2012-2021 Funnel, Inc.
@@ -183,7 +183,7 @@ const nextConfig = {
               SOFTWARE.
             `,
 
-            "react-dom-builtin": `
+            'react-dom-builtin': `
               The MIT License (MIT)
 
               Copyright (c) Facebook, Inc.
@@ -206,7 +206,7 @@ const nextConfig = {
               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
               SOFTWARE.
             `,
-            "react-server-dom-webpack-builtin": `
+            'react-server-dom-webpack-builtin': `
               The MIT License (MIT)
 
               Copyright (c) Facebook, Inc.
@@ -229,7 +229,7 @@ const nextConfig = {
               OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
               SOFTWARE.
             `,
-            "react-builtin": `
+            'react-builtin': `
               The MIT License (MIT)
 
               Copyright (c) Facebook, Inc.
@@ -253,7 +253,7 @@ const nextConfig = {
               SOFTWARE.
             `,
 
-            "scheduler-builtin": `
+            'scheduler-builtin': `
               The MIT License (MIT)
 
               Copyright (c) Facebook, Inc.
@@ -277,7 +277,7 @@ const nextConfig = {
               SOFTWARE.
             `,
           },
-        })
+        }),
       );
     }
     return config;

@@ -1,7 +1,5 @@
-import {
-  FileWithHandle,
-  FileWithDirectoryAndFileHandle,
-} from "browser-fs-access";
+// eslint-disable-next-line
+import { FileWithHandle, FileWithDirectoryAndFileHandle } from 'browser-fs-access';
 
 declare global {
   type FileWithHandle = FileWithHandle;
@@ -11,7 +9,7 @@ declare global {
       [file: string]: FileWithHandle | FileWithDirectoryAndFileHandle;
     };
   };
-  type TextAreaType = "btn" | "textArea" | "popup"
+  type TextAreaType = 'btn' | 'textArea' | 'popup';
 }
 
 // https://stackoverflow.com/questions/59728371/typescript-d-ts-file-not-recognized

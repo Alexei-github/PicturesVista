@@ -19,24 +19,24 @@ const DirLoadButton = () => {
      * Loads images from click of a button event. Directory picker will open and user will be able
      * to select one directory.
      */
-    async (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
-    ) => {
-      try {
-        const imgs = await directoryOpen({
-          recursive: true,
-        });
-        const { processedFiles } = processFilesOldFS(imgs as FileWithDirectoryAndFileHandle[]);
+    async () =>
+      // e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
+      {
+        try {
+          const imgs = await directoryOpen({
+            recursive: true,
+          });
+          const { processedFiles } = processFilesOldFS(imgs as FileWithDirectoryAndFileHandle[]);
 
-        await storeFiles(processedFiles);
-      } catch (error) {
-        if (!(error instanceof DOMException && error.name === 'AbortError')) {
-          throw error;
-        } else {
-          console.log('Directory picker was closed');
+          await storeFiles(processedFiles);
+        } catch (error) {
+          if (!(error instanceof DOMException && error.name === 'AbortError')) {
+            throw error;
+          } else {
+            console.log('Directory picker was closed');
+          }
         }
-      }
-    },
+      },
     [storeFiles],
   );
   return (

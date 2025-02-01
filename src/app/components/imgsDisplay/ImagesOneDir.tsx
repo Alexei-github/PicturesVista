@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import OpenDirBtn from '@/components/sidebar/OpenDirBtn';
 import { useStoredFiles, useOpenDir } from '@/stores/storedFiles';
 import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
@@ -94,7 +93,7 @@ export default function ImagesOneDir({ dir, indent }: Props) {
         showDirResult &&
         Object.keys(imgsData)
           .sort(SortFnAscend)
-          .map((imgName: string, idx) => {
+          .map((imgName: string) => {
             return (
               <DisplayOneImg
                 id={`${dir}/${imgName}`}

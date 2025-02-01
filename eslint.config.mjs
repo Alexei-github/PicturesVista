@@ -6,11 +6,23 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+  { ignores: ['node_modules', '__tests__', '__mocks__', 'out', '.next'] },
+  {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+  },
+
   ...compat.config({
     extends: ['next/core-web-vitals', 'next/typescript', 'prettier'],
+    globals: {
+      React: 'readonly',
+    },
     rules: {
       semi: ['warn', 'always'],
+      // '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { args: 'after-used', argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   }),
 ];

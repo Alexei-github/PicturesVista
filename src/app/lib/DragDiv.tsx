@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type Props = {
   setMove: (deltaX: number, deltaY: number) => void;
@@ -9,6 +9,7 @@ type Props = {
 };
 /**
  * DragDiv component which allows user to adjust size of elements (click and drag)
+ *
  * @returns DragDiv component
  */
 export default function DragDiv({
@@ -21,21 +22,16 @@ export default function DragDiv({
   const [dragging, setDragging] = React.useState(false);
 
   const dragAction = React.useCallback(
-    (
-      e:
-        | React.MouseEvent<HTMLDivElement, MouseEvent>
-        | React.TouchEvent<HTMLDivElement>
-    ) => {
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
       setDragging(true);
       updateParent(true);
 
       let startX = 0;
       let startY = 0;
-      console.log(e.type === "dragstart");
-      if (e.type === "touchstart") {
+      if (e.type === 'touchstart') {
         startX = (e as React.TouchEvent<HTMLDivElement>).touches[0].clientX;
         startY = (e as React.TouchEvent<HTMLDivElement>).touches[0].clientY;
-      } else if (e.type === "mousedown") {
+      } else if (e.type === 'mousedown') {
         // startX = e.pageX;
         startX = (e as React.MouseEvent<HTMLDivElement, MouseEvent>).clientX;
         // startY = e.pageY;
@@ -45,7 +41,8 @@ export default function DragDiv({
       const actOnDrag =
         /**
          * Records change in position.
-         * @param e - maouse or touch event
+         *
+         * @param e - Maouse or touch event
          */
         (e: MouseEvent | TouchEvent) => {
           let x = 0;
@@ -63,22 +60,22 @@ export default function DragDiv({
 
       const mouseUp = () => {
         updateParent(false);
-        document.removeEventListener("mousemove", actOnDrag);
-        document.removeEventListener("mouseup", mouseUp);
-        document.removeEventListener("touchmove", actOnDrag);
-        document.removeEventListener("touchend", mouseUp);
+        document.removeEventListener('mousemove', actOnDrag);
+        document.removeEventListener('mouseup', mouseUp);
+        document.removeEventListener('touchmove', actOnDrag);
+        document.removeEventListener('touchend', mouseUp);
         setDragging(false);
       };
 
       if (e instanceof TouchEvent) {
-        document.addEventListener("touchmove", actOnDrag);
-        document.addEventListener("touchend", mouseUp);
+        document.addEventListener('touchmove', actOnDrag);
+        document.addEventListener('touchend', mouseUp);
       } else {
-        document.addEventListener("mousemove", actOnDrag);
-        document.addEventListener("mouseup", mouseUp);
+        document.addEventListener('mousemove', actOnDrag);
+        document.addEventListener('mouseup', mouseUp);
       }
     },
-    [setMove]
+    [setMove, updateParent],
   );
 
   return (
