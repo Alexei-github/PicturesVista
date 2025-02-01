@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 type UseStoredFiles = {
   loadedFilesDirs: LoadedFilesDirs;
-
+// eslint-disable-next-line
   storeLoadedFiles: (newImgsDirs: LoadedFilesDirs) => Promise<any>;
 };
 

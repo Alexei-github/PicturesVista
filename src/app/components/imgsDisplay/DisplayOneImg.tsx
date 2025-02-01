@@ -1,10 +1,9 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import BBox from "@/components/imgsDisplay/BBox";
-import { getImgNaturalSizeFn } from "@/components/imgsDisplay/getImgSize";
-import { useVision } from "@/stores/computerVisionStore";
-import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import BBox from '@/components/imgsDisplay/BBox';
+import { useVision } from '@/stores/computerVisionStore';
+import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
 
 type Props = {
   imgURL: string;
@@ -16,52 +15,46 @@ type Props = {
 
 //transparent one pixel to prevent next.js throwing error that src does not exist taken from here: https://css-tricks.com/snippets/html/base64-encode-of-1x1px-transparent-gif/
 const imgPlaceHolder =
-  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 // https://medialab.github.io/iwanthue/
 const distinctColors = [
-  "#d74f2a",
-  "#5066d7",
-  "#59b648",
-  "#a14ac3",
-  "#96b233",
-  "#9f76e8",
-  "#c0ab39",
-  "#d963c9",
-  "#52be7e",
-  "#d4408c",
-  "#3e7f47",
-  "#734fa6",
-  "#df952f",
-  "#7092e1",
-  "#9f7027",
-  "#b990dd",
-  "#6c6f29",
-  "#9d4e96",
-  "#9ab067",
-  "#d64059",
-  "#4ebcad",
-  "#a8452c",
-  "#4fa7d6",
-  "#e58054",
-  "#5365a5",
-  "#d4a468",
-  "#d585ba",
-  "#9f6242",
-  "#9f4766",
-  "#e3828d",
+  '#d74f2a',
+  '#5066d7',
+  '#59b648',
+  '#a14ac3',
+  '#96b233',
+  '#9f76e8',
+  '#c0ab39',
+  '#d963c9',
+  '#52be7e',
+  '#d4408c',
+  '#3e7f47',
+  '#734fa6',
+  '#df952f',
+  '#7092e1',
+  '#9f7027',
+  '#b990dd',
+  '#6c6f29',
+  '#9d4e96',
+  '#9ab067',
+  '#d64059',
+  '#4ebcad',
+  '#a8452c',
+  '#4fa7d6',
+  '#e58054',
+  '#5365a5',
+  '#d4a468',
+  '#d585ba',
+  '#9f6242',
+  '#9f4766',
+  '#e3828d',
 ];
 
 const distinctColorsLen = distinctColors.length;
 
-function DisplayOneImg({
-  imgURL: imgURL,
-  imgName,
-  imgCalculatedSize,
-  className,
-  id,
-}: Props) {
-  const { mobileNetModel, cocoSsd, computerVisionOn } = useVision();
+function DisplayOneImg({ imgURL: imgURL, imgName, imgCalculatedSize, className, id }: Props) {
+  const { mobileNetModel: _, cocoSsd, computerVisionOn } = useVision();
   const [imgLoaded, setImgLoaded] = React.useState(false);
   const [imgVisible, setImgVisible] = React.useState(false);
   const [detectedObjects, setDetectedObjects] = React.useState<
@@ -139,7 +132,7 @@ function DisplayOneImg({
                 newBBox = [0, 0, 0, 0];
               }
               return { bbox: newBBox, objClass, score };
-            }
+            },
           );
 
           setDetectedObjects(predictions);
@@ -150,9 +143,7 @@ function DisplayOneImg({
 
   React.useEffect(() => {
     if (imgRef.current) {
-      const observer = new IntersectionObserver(([entry]) =>
-        setImgVisible(entry.isIntersecting)
-      );
+      const observer = new IntersectionObserver(([entry]) => setImgVisible(entry.isIntersecting));
       observer.observe(imgRef.current);
       return () => {
         observer.disconnect();
@@ -164,7 +155,7 @@ function DisplayOneImg({
     (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
       setImgLoaded(e.currentTarget.complete);
     },
-    [setImgLoaded]
+    [setImgLoaded],
   );
   return (
     <>
@@ -177,10 +168,7 @@ function DisplayOneImg({
             alt={imgName}
             onLoad={onLoad}
             style={{
-              minWidth: `${Math.min(
-                imgCalculatedSize.width,
-                imgCalculatedSize.height
-              )}px`,
+              minWidth: `${Math.min(imgCalculatedSize.width, imgCalculatedSize.height)}px`,
               maxWidth: `${imgCalculatedSize.width}px`,
               maxHeight: `${imgCalculatedSize.height}px`,
             }}
@@ -201,7 +189,7 @@ function DisplayOneImg({
                   confidence={(score * 100).toFixed(1)}
                   color={
                     distinctColors[
-                      objClass.split("").reduce((total, cur) => {
+                      objClass.split('').reduce((total, cur) => {
                         return total + cur.charCodeAt(0);
                       }, 0) % distinctColorsLen
                     ]

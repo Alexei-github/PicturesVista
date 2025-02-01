@@ -10,7 +10,7 @@ export const useBrowserCanUse = create<UseBrowserCanUse>((set) => ({
   canAccessDirectory: false,
   setBrowserCanUse: () =>
     set((state: UseBrowserCanUse) => {
-      let browser = Bowser.getParser(window.navigator.userAgent);
+      const browser = Bowser.getParser(window.navigator.userAgent);
       const supportsDirLoad = browser.satisfies({
         // https://caniuse.com/input-file-directory
         desktop: {

@@ -9,10 +9,9 @@ import TextDisplay from '@/components/language/TextDisplay';
 const FilesLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
 
-  const onClickLoadImgs = React.useCallback(
-    async (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
-    ) => {
+  const onClickLoadImgs = React.useCallback(async () =>
+    // e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
+    {
       try {
         const imgs = await fileOpen({
           description: 'Image files',
@@ -33,9 +32,7 @@ const FilesLoadButton = () => {
           console.log('Image picker was closed');
         }
       }
-    },
-    [storeFiles],
-  );
+    }, [storeFiles]);
 
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadImgs}>

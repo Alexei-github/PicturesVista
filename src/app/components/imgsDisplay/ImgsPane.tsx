@@ -7,15 +7,13 @@ import useElementSizeObserver from '@/customHooks/useElementSizeObserver';
 import SortFnAscend from '@/lib/sortFn';
 import ImagesOneDir from '@/components/imgsDisplay/ImagesOneDir';
 import ScaleBtn from '@/components/imgsDisplay/ScaleBtn';
-import { useClickedFileName } from '@/stores/storedFiles';
 import TextDisplay from '@/components/language/TextDisplay';
 
 function ImgsPane() {
   const { loadedFilesDirs } = useStoredFiles();
   const { setImgsPaneSize } = useLayout();
-  const { clickedImg } = useClickedFileName();
   const [sizeObserverRef] = useElementSizeObserver<HTMLUListElement>(setImgsPaneSize);
-  const { imgsPaneSize, imgsPaneScaleFactor, setImgsPaneScaleFactor } = useLayout();
+  const { setImgsPaneScaleFactor } = useLayout();
 
   React.useEffect(() => {
     const paneElement = sizeObserverRef.current;
