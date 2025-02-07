@@ -1,14 +1,15 @@
 'use client';
 
-import React from 'react';
-import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
-import libStyles from '@/lib/lib.module.css';
-import languageStyles from '@/components/language/language.module.css';
-import Btn from '@/lib/buttons/btn';
+import useTranslateTableHeaderState_ch_2, {
+  TableHeaderRefType,
+} from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
-import useTranslateTableHeaderState_ch_2 from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
+import languageStyles from '@/components/language/language.module.css';
+import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
 import TextDisplay from '@/components/language/TextDisplay';
-import { TableHeaderRefType } from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
+import Btn from '@/lib/buttons/btn';
+import libStyles from '@/lib/lib.module.css';
+import React from 'react';
 
 /**
  * A React component that renders a table header for a language translation table.
@@ -40,14 +41,14 @@ const TranslateTableHeader = (
     p_processLangNameChange,
     p_fromLanguageName,
   }: Props,
-  ref?: React.ForwardedRef<TableHeaderRefType>,
+  ref?: React.ForwardedRef<TableHeaderRefType>
 ) => {
   const langChoiceRef = React.useRef<HTMLInputElement>(null);
 
   const { gs_1_selectedLanguage, gs_1_getTextForString } = useLanguageText_gs_1(
     'selectedLanguage',
     'getTextForString',
-    'selectedIdx', //"selectedIdx" is requested to rerender current componenet on its change
+    'selectedIdx' //"selectedIdx" is requested to rerender current componenet on its change
   );
 
   const {
@@ -82,7 +83,7 @@ const TranslateTableHeader = (
       p_updateTheFromLanguage(mockEvent);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   React.useEffect(
@@ -95,14 +96,14 @@ const TranslateTableHeader = (
         () => {
           p_processLangNameChange(ch_2_langName);
         },
-        p_reset ? 0 : 500,
+        p_reset ? 0 : 500
       );
 
       return () => {
         clearTimeout(timeout);
       };
     },
-    [ch_2_langName, p_processLangNameChange, p_reset],
+    [ch_2_langName, p_processLangNameChange, p_reset]
   );
 
   return (

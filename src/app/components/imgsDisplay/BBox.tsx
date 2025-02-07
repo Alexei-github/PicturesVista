@@ -1,6 +1,6 @@
-import React from "react";
-import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";
-import styled from "styled-components";
+import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   x: number;
@@ -12,15 +12,7 @@ type Props = {
   color: string;
 };
 
-const BBox = ({
-  x,
-  y,
-  width,
-  height,
-  objectName,
-  confidence,
-  color,
-}: Props) => {
+const BBox = ({ x, y, width, height, objectName, confidence, color }: Props) => {
   return (
     <StyledBtn
       tabIndex={0}
@@ -40,27 +32,16 @@ const BBox = ({
 const StyledBtn = styled.button<{ $c: string }>`
   --w: 4px;
   border: 2px dashed ${(p) => p.$c};
-  background: linear-gradient(
-        to right,
-        ${(p) => p.$c} var(--w),
-        transparent var(--w)
-      )
-      0 0,
-    linear-gradient(to right, ${(p) => p.$c} var(--w), transparent var(--w)) 0%
-      100%,
-    linear-gradient(to left, ${(p) => p.$c} var(--w), transparent var(--w)) 100%
-      0,
-    linear-gradient(to left, ${(p) => p.$c} var(--w), transparent var(--w)) 100%
-      100%,
-    linear-gradient(to bottom, ${(p) => p.$c} var(--w), transparent var(--w)) 0
-      0,
-    linear-gradient(to bottom, ${(p) => p.$c} var(--w), transparent var(--w))
-      100% 0,
-    linear-gradient(to top, ${(p) => p.$c} var(--w), transparent var(--w)) 0
-      100%,
+  background:
+    linear-gradient(to right, ${(p) => p.$c} var(--w), transparent var(--w)) 0 0,
+    linear-gradient(to right, ${(p) => p.$c} var(--w), transparent var(--w)) 0% 100%,
+    linear-gradient(to left, ${(p) => p.$c} var(--w), transparent var(--w)) 100% 0,
+    linear-gradient(to left, ${(p) => p.$c} var(--w), transparent var(--w)) 100% 100%,
+    linear-gradient(to bottom, ${(p) => p.$c} var(--w), transparent var(--w)) 0 0,
+    linear-gradient(to bottom, ${(p) => p.$c} var(--w), transparent var(--w)) 100% 0,
+    linear-gradient(to top, ${(p) => p.$c} var(--w), transparent var(--w)) 0 100%,
     // rgba(255, 255, 255, 0.1)
-    linear-gradient(to top, ${(p) => p.$c} var(--w), transparent var(--w)) 100%
-      100%;
+    linear-gradient(to top, ${(p) => p.$c} var(--w), transparent var(--w)) 100% 100%;
 
   background-repeat: no-repeat;
   background-origin: border-box;

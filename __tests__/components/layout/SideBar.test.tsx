@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import SideBar from '@/components/sidebar/Sidebar';
 import compStyles from '@/components/components.module.css';
+import SideBar from '@/components/sidebar/Sidebar';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 // describe("SideBar", () => {
 //   it("renders a PinButton and SidebarDragLine", () => {

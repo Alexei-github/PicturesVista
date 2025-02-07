@@ -1,5 +1,5 @@
-import React from 'react';
 import sidebarStyles from '@/components/sidebar/sidebar.module.css';
+import React from 'react';
 
 type Props = { pinned: boolean; setPinned: (pinned: boolean) => void };
 

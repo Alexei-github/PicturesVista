@@ -1,6 +1,6 @@
 export type LanguageText = {
-    [key: string] : string
-}
+  [key: string]: string;
+};
 export type LanguageUpdateValues = {
-    [key: string] : boolean
-}
+  [key: string]: boolean;
+};

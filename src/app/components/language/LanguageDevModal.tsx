@@ -1,10 +1,10 @@
 'use client';
-import React from 'react';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import languageStyles from '@/components/language/language.module.css';
-import Modal from '@/components/modal/Modal';
-import TranslationTableRow from '@/components/language/TranslationTableRow';
 import TranslateTableHeader from '@/components/language/TranslateTableHeader';
+import TranslationTableRow from '@/components/language/TranslationTableRow';
+import Modal from '@/components/modal/Modal';
+import React from 'react';
 import useLanguageDevState_ch_1 from './customHooks/ch_1_useLanguageDevState';
 
 /**

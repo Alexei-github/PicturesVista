@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { useStoredFiles } from '@/stores/storedFiles';
-import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
-import { useLayout } from '@/stores/layoutStore';
-import useElementSizeObserver from '@/customHooks/useElementSizeObserver';
-import SortFnAscend from '@/lib/sortFn';
 import ImagesOneDir from '@/components/imgsDisplay/ImagesOneDir';
+import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
 import ScaleBtn from '@/components/imgsDisplay/ScaleBtn';
 import TextDisplay from '@/components/language/TextDisplay';
+import useElementSizeObserver from '@/customHooks/useElementSizeObserver';
+import SortFnAscend from '@/lib/sortFn';
+import { useLayout } from '@/stores/layoutStore';
+import { useStoredFiles } from '@/stores/storedFiles';
 
 function ImgsPane() {
   const { loadedFilesDirs } = useStoredFiles();

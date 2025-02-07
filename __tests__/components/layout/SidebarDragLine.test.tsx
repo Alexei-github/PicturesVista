@@ -1,7 +1,7 @@
-import '@testing-library/jest-dom';
-import * as React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SidebarDragLine from '@/components/sidebar/SidebarDragLine';
+import '@testing-library/jest-dom';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import * as React from 'react';
 
 describe('SidebarDragLine', () => {
   const onClickAndDrag = jest.fn();
@@ -12,7 +12,7 @@ describe('SidebarDragLine', () => {
         setSidebarSize={onClickAndDrag}
         setEffectiveSidebarSize={onClickAndDrag}
         resizeMargin={50}
-      />,
+      />
     );
 
     expect(screen.getByRole('separator')).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe('SidebarDragLine', () => {
         setSidebarSize={onClickAndDrag}
         setEffectiveSidebarSize={onClickAndDrag}
         resizeMargin={50}
-      />,
+      />
     );
 
     // const dragLine = document.querySelectorAll('hr[class^="vertical_line"]')[0];

@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
-import Image from 'next/image';
 import BBox from '@/components/imgsDisplay/BBox';
-import { useVision } from '@/stores/computerVisionStore';
 import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
+import { useVision } from '@/stores/computerVisionStore';
+import Image from 'next/image';
+import React from 'react';
 
 type Props = {
   imgURL: string;
@@ -132,7 +132,7 @@ function DisplayOneImg({ imgURL: imgURL, imgName, imgCalculatedSize, className, 
                 newBBox = [0, 0, 0, 0];
               }
               return { bbox: newBBox, objClass, score };
-            },
+            }
           );
 
           setDetectedObjects(predictions);
@@ -155,7 +155,7 @@ function DisplayOneImg({ imgURL: imgURL, imgName, imgCalculatedSize, className, 
     (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
       setImgLoaded(e.currentTarget.complete);
     },
-    [setImgLoaded],
+    [setImgLoaded]
   );
   return (
     <>

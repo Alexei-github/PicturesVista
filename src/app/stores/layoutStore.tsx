@@ -1,15 +1,9 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type UseLayout = {
   imgsPaneSize: { width: number; height: number };
   imgsPaneScaleFactor: number;
-  setImgsPaneSize: ({
-    width,
-    height,
-  }: {
-    width: number;
-    height: number;
-  }) => void;
+  setImgsPaneSize: ({ width, height }: { width: number; height: number }) => void;
 
   setImgsPaneScaleFactor: (adjustment: number, minScaleFactor: number) => void;
 };

@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import languageStyles from '@/components/language/language.module.css';
+import React from 'react';
 
 type Props = {
   p_elementId: string;
@@ -23,7 +23,7 @@ const TextDisplay = ({ p_elementId }: Props) => {
       'editMode',
       'setSelectedIdx',
       'selectedIdx',
-      'currLangText', //"currLangText" is for rerender on its change
+      'currLangText' //"currLangText" is for rerender on its change
     );
 
   return (

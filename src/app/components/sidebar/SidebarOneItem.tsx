@@ -1,6 +1,6 @@
-import React from "react";
-import { useClickedFileName } from "@/stores/storedFiles";
-import imgsDisplayStyle from "@/components/imgsDisplay/imgsDisplay.module.css";
+import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
+import { useClickedFileName } from '@/stores/storedFiles';
+import React from 'react';
 
 type Props = {
   imgName: string;
@@ -12,14 +12,14 @@ function SidebarItem({ imgName, dirName, className }: Props) {
   const { setClickedImgName } = useClickedFileName();
 
   const onItemClick = React.useCallback(() => {
-    if (document.body.style.cursor !== "col-resize") {
+    if (document.body.style.cursor !== 'col-resize') {
       setClickedImgName(dirName, imgName);
     }
     const element = document.getElementById(`${dirName}/${imgName}`);
     if (element) {
       element.scrollIntoView({
         // behavior: "smooth",
-        block: "center",
+        block: 'center',
       });
       element.classList.add(imgsDisplayStyle.focused_img);
     }
@@ -34,12 +34,7 @@ function SidebarItem({ imgName, dirName, className }: Props) {
   }, [imgName, dirName]);
 
   return (
-    <li
-      tabIndex={0}
-      className={className}
-      onFocus={onItemClick}
-      onBlur={onBlur}
-    >
+    <li tabIndex={0} className={className} onFocus={onItemClick} onBlur={onBlur}>
       {imgName}
     </li>
   );

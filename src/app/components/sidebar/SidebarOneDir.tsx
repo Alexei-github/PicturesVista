@@ -1,12 +1,12 @@
 'use client';
-import React from 'react';
 import SidebarItem from '@/components/sidebar/SidebarOneItem';
 import sidebarStyles from '@/components/sidebar/sidebar.module.css';
-import styled from 'styled-components';
 import isShowDirFn from '@/lib/isShowDir';
+import React from 'react';
+import styled from 'styled-components';
 
-import { useStoredFiles, useOpenDir } from '@/stores/storedFiles';
 import SortFnAscend from '@/lib/sortFn';
+import { useOpenDir, useStoredFiles } from '@/stores/storedFiles';
 
 import OpenDirBtn from '@/components/sidebar/OpenDirBtn';
 

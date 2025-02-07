@@ -75,7 +75,7 @@ export default function DragDiv({
         document.addEventListener('mouseup', mouseUp);
       }
     },
-    [setMove, updateParent],
+    [setMove, updateParent]
   );
 
   return (

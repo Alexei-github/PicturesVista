@@ -1,10 +1,10 @@
 'use client';
-import React from 'react';
-import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
-import languageStyles from '@/components/language/language.module.css';
 import LanguageEditTransalte from '@/components/language/LanguageEditTranslate';
+import LanguageSelectorUser from '@/components/language/LanguageSelectorUser';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import languageStyles from '@/components/language/language.module.css';
 import { DEFAULT_LANGUAGE } from '@/components/language/lib/constants';
+import React from 'react';
 
 /**
  * A component that renders a language selector and if edit mode is enabled, an edit translate

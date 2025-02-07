@@ -1,14 +1,12 @@
-/**
- * @jest-environment jsdom
- */
-import { render, screen } from "@testing-library/react";
-import Home from "@/page";
+/** @jest-environment jsdom */
+import Home from '@/page';
+import { render, screen } from '@testing-library/react';
 
-describe("Home", () => {
-  it("renders a heading", () => {
+describe('Home', () => {
+  it('renders a heading', () => {
     render(<Home />);
 
-    const heading = screen.getByRole("heading", {
+    const heading = screen.getByRole('heading', {
       name: /PicturesVista/i,
     });
 

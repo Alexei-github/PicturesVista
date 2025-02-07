@@ -1,5 +1,5 @@
-import { fileSave } from 'browser-fs-access';
 import { LanguageText, LanguageUpdateValues } from '@/components/language/types';
+import { fileSave } from 'browser-fs-access';
 
 /**
  * Saves the updated translation changes to a JSON file using `browser-fs-access`.

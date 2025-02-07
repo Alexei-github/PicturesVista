@@ -1,8 +1,8 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type UseStoredFiles = {
   loadedFilesDirs: LoadedFilesDirs;
-// eslint-disable-next-line
+  // eslint-disable-next-line
   storeLoadedFiles: (newImgsDirs: LoadedFilesDirs) => Promise<any>;
 };
 
@@ -37,7 +37,7 @@ type LastClickedFileName = {
 };
 
 export const useClickedFileName = create<LastClickedFileName>((set) => ({
-  clickedImg: { dir: "", name: "" },
+  clickedImg: { dir: '', name: '' },
 
   setClickedImgName: (imgDir: string, imgName: string) => {
     set((state) => {

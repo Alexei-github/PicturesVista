@@ -59,7 +59,7 @@ export default function useTranslateTableHeaderState_ch_2({
         console.log('read error');
       }
     },
-    [p_onFileLoad],
+    [p_onFileLoad]
   );
 
   const refFunction = React.useCallback(
@@ -119,7 +119,7 @@ export default function useTranslateTableHeaderState_ch_2({
       editLanguageName,
       selectedFileName,
       disableLangInput,
-    ],
+    ]
   );
 
   const inputMethodChanged = React.useCallback(
@@ -152,7 +152,7 @@ export default function useTranslateTableHeaderState_ch_2({
       }
       e.target.value = 'lang';
     },
-    [p_turnResetOn, p_langChoiceRef],
+    [p_turnResetOn, p_langChoiceRef]
   );
 
   const clickOnEditLangName = React.useCallback(
@@ -161,7 +161,7 @@ export default function useTranslateTableHeaderState_ch_2({
       setEditLanguageName(true);
       setDisableLangInput(false);
     },
-    [setEditLanguageName, setDisableLangInput],
+    [setEditLanguageName, setDisableLangInput]
   );
 
   const onChangeLangName = React.useCallback(
@@ -173,7 +173,7 @@ export default function useTranslateTableHeaderState_ch_2({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setLangName(e.target.value);
     },
-    [setLangName],
+    [setLangName]
   );
 
   return {

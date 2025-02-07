@@ -1,6 +1,6 @@
-import React from "react";
-import SortFnAscend from "@/lib/sortFn";
-import { useStoredFiles } from "@/stores/storedFiles";
+import SortFnAscend from '@/lib/sortFn';
+import { useStoredFiles } from '@/stores/storedFiles';
+import React from 'react';
 
 const useStoreFilesCustomHook = () => {
   // const [loadedImgs, setLoadedImgs] = React.useState<LoadedFilesDirs>({
@@ -10,29 +10,20 @@ const useStoreFilesCustomHook = () => {
   const { loadedFilesDirs, storeLoadedFiles } = useStoredFiles();
 
   const findIfDirAlreadyStored = React.useCallback(
-    async (
-      newDir: string,
-      existingDirsWORoot: string[],
-      newImgsDirs: LoadedFilesDirs
-    ) => {
-      const sameDirExistingEntryPromises: Promise<string | undefined>[] =
-        existingDirsWORoot.map(async (dir) => {
+    async (newDir: string, existingDirsWORoot: string[], newImgsDirs: LoadedFilesDirs) => {
+      const sameDirExistingEntryPromises: Promise<string | undefined>[] = existingDirsWORoot.map(
+        async (dir) => {
           if (dir.endsWith(newDir) || newDir.endsWith(dir)) {
             if (
-              JSON.stringify(
-                Object.keys(newImgsDirs[newDir]).sort(SortFnAscend)
-              ) ===
-              JSON.stringify(
-                Object.keys(loadedFilesDirs[dir]).sort(SortFnAscend)
-              )
+              JSON.stringify(Object.keys(newImgsDirs[newDir]).sort(SortFnAscend)) ===
+              JSON.stringify(Object.keys(loadedFilesDirs[dir]).sort(SortFnAscend))
             ) {
               return dir;
             }
           }
-        });
-      return (await Promise.all(sameDirExistingEntryPromises)).find(
-        (dir) => dir
+        }
       );
+      return (await Promise.all(sameDirExistingEntryPromises)).find((dir) => dir);
     },
     [loadedFilesDirs]
   );
@@ -42,17 +33,14 @@ const useStoreFilesCustomHook = () => {
      * Checks whether newly loaded images and directories were loaded earlier and takes appropritae
      * actions to load new images/directories. It identifies children or parents of newly loaded
      * directories and merges them appropriately.
-     * @param newImgsDirs - newly loaded images
+     *
+     * @param newImgsDirs - Newly loaded images
      */
     async (newImgsDirs: LoadedFilesDirs) => {
       const imgsToStore = { ...loadedFilesDirs };
 
-      const existingDirsWORoot = Object.keys(loadedFilesDirs).filter(
-        (path) => path !== "/"
-      );
-      const newDirsWORoot = Object.keys(newImgsDirs).filter(
-        (path) => path !== "/"
-      );
+      const existingDirsWORoot = Object.keys(loadedFilesDirs).filter((path) => path !== '/');
+      const newDirsWORoot = Object.keys(newImgsDirs).filter((path) => path !== '/');
       for (const newDir of newDirsWORoot) {
         const sameDirExistingEntry = await findIfDirAlreadyStored(
           newDir,
@@ -74,14 +62,14 @@ const useStoreFilesCustomHook = () => {
 
       // store separately loaded images (i.e. images not inside directories)
       // prevent image name collision by ignoring images with names idential to already loaded images
-      if (newImgsDirs["/"]) {
-        const imgsInRoot = { ...loadedFilesDirs["/"] };
-        for (const img in newImgsDirs["/"]) {
+      if (newImgsDirs['/']) {
+        const imgsInRoot = { ...loadedFilesDirs['/'] };
+        for (const img in newImgsDirs['/']) {
           if (!imgsInRoot[img]) {
-            imgsInRoot[img] = newImgsDirs["/"][img];
+            imgsInRoot[img] = newImgsDirs['/'][img];
           }
         }
-        imgsToStore["/"] = imgsInRoot;
+        imgsToStore['/'] = imgsInRoot;
       }
       storeLoadedFiles(imgsToStore);
     },

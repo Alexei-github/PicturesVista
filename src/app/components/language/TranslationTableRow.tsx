@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import languageStyles from '@/components/language/language.module.css';
+import React from 'react';
 
 /**
  * A React component that renders a single row of a table for editing language translations.
@@ -30,7 +30,7 @@ const TranslationTableRow = ({
 }: Props) => {
   const { gs_1_selectedIdx, gs_1_setSelectedIdx } = useLanguageText_gs_1(
     'selectedIdx',
-    'setSelectedIdx',
+    'setSelectedIdx'
   );
 
   return (

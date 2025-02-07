@@ -1,7 +1,7 @@
-import React from 'react';
+import LoadCVModels from '@/components/computerVision/ComputerVision';
 import PinButton from '@/components/sidebar/PinButton';
 import sidebarStyles from '@/components/sidebar/sidebar.module.css';
-import LoadCVModels from '@/components/computerVision/ComputerVision';
+import React from 'react';
 type Props = {
   pinnedOpen: boolean;
   openManageBar: boolean;

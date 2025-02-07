@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
+import React from 'react';
 
 /**
  * A component that renders a dropdown menu for selecting the user's preferred language.
@@ -26,7 +26,7 @@ const LanguageSelectorUser = ({
 }: Props) => {
   const { gs_1_availableLanguages, gs_1_setLanguage } = useLanguageText_gs_1(
     'availableLanguages',
-    'setLanguage',
+    'setLanguage'
   );
 
   const [selectTagId] = React.useState(React.useId());
@@ -35,7 +35,7 @@ const LanguageSelectorUser = ({
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       gs_1_setLanguage(e.target.value);
     },
-    [gs_1_setLanguage],
+    [gs_1_setLanguage]
   );
 
   return (

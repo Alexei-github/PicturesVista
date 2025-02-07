@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { FileWithHandle, FileWithDirectoryAndFileHandle } from 'browser-fs-access';
+import { FileWithDirectoryAndFileHandle, FileWithHandle } from 'browser-fs-access';
 
 declare global {
   type FileWithHandle = FileWithHandle;

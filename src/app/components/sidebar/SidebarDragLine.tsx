@@ -1,5 +1,5 @@
-import React from 'react';
 import sidebarStyles from '@/components/sidebar/sidebar.module.css';
+import React from 'react';
 
 type Props = {
   setSidebarSize: (size: number) => void;
@@ -34,7 +34,7 @@ export default function SidebarDragLine({ setSidebarSize, resizeMargin, classNam
       const size = Math.min(Math.max(x, resizeMargin), window.innerWidth - resizeMargin);
       setSidebarSize(size);
     },
-    [setSidebarSize, resizeMargin],
+    [setSidebarSize, resizeMargin]
   );
 
   const setDragingCurosorOnBody = React.useCallback(
@@ -42,7 +42,7 @@ export default function SidebarDragLine({ setSidebarSize, resizeMargin, classNam
     () => {
       document.body.style.cursor = 'col-resize';
     },
-    [],
+    []
   );
 
   const removeDragingCurosorOnBody = React.useCallback(
@@ -50,7 +50,7 @@ export default function SidebarDragLine({ setSidebarSize, resizeMargin, classNam
     () => {
       document.body.style.removeProperty('cursor');
     },
-    [],
+    []
   );
 
   const mouseUp = React.useCallback(
@@ -60,7 +60,7 @@ export default function SidebarDragLine({ setSidebarSize, resizeMargin, classNam
       setTouchEvent(false);
       removeDragingCurosorOnBody();
     },
-    [removeDragingCurosorOnBody],
+    [removeDragingCurosorOnBody]
   );
 
   React.useEffect(
@@ -86,7 +86,7 @@ export default function SidebarDragLine({ setSidebarSize, resizeMargin, classNam
         };
       }
     },
-    [dragging, touchEvent, recordSizeOfSideBar, mouseUp],
+    [dragging, touchEvent, recordSizeOfSideBar, mouseUp]
   );
 
   return (

@@ -1,9 +1,9 @@
-import React from 'react';
-import { directoryOpen } from 'browser-fs-access';
-import useStoreFilesCustomHook from '@/customHooks/useStoreFiles';
 import compStyles from '@/components/components.module.css';
 import { processFilesOldFS } from '@/components/filesLoad/processFilesOldFS';
 import TextDisplay from '@/components/language/TextDisplay';
+import useStoreFilesCustomHook from '@/customHooks/useStoreFiles';
+import { directoryOpen } from 'browser-fs-access';
+import React from 'react';
 
 const DirLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
@@ -37,7 +37,7 @@ const DirLoadButton = () => {
           }
         }
       },
-    [storeFiles],
+    [storeFiles]
   );
   return (
     <button className={compStyles.btn_opn_files} onClick={onClickLoadDir}>

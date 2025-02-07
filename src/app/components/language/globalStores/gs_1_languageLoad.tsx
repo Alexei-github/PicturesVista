@@ -1,7 +1,7 @@
-import { create } from 'zustand';
+import exportStore from '@/components/language/globalStores/storeExportFn';
 import availableLanguages from '@/components/language/lib/text/languagesRegistry.json';
 import { LanguageText } from '@/components/language/types';
-import exportStore from '@/components/language/globalStores/storeExportFn';
+import { create } from 'zustand';
 
 const STORE_ID = 'gs_1_' as const;
 

@@ -1,13 +1,9 @@
-import React from "react";
-import btnStyle from "@/lib/buttons/btns.module.css";
+import btnStyle from '@/lib/buttons/btns.module.css';
+import React from 'react';
 
-const Btn = ({
-  className,
-  children,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+const Btn = ({ className, children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <button className={btnStyle.btn_main + " " + className} {...props}>
+    <button className={btnStyle.btn_main + ' ' + className} {...props}>
       {children}
     </button>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function useElementSizeObserver<T extends HTMLElement>(
   setSizeInStore: ({ width, height }: { width: number; height: number }) => void

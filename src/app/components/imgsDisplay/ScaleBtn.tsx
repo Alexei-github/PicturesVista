@@ -1,6 +1,6 @@
-import React from "react";
-import { useLayout } from "@/stores/layoutStore";
-import imgsDisplayStyles from "@/components/imgsDisplay/imgsDisplay.module.css";
+import imgsDisplayStyles from '@/components/imgsDisplay/imgsDisplay.module.css';
+import { useLayout } from '@/stores/layoutStore';
+import React from 'react';
 
 type Props = { minScale: number };
 
@@ -16,20 +16,11 @@ export default function ScaleBtn({ minScale }: Props) {
   }, [minScale, setImgsPaneScaleFactor]);
 
   return (
-    <div
-      className={imgsDisplayStyles.buton_scale_size}
-      data-tooltip="Ctrl+Scroll"
-    >
-      <button
-        className={imgsDisplayStyles.half_buton_scale_size}
-        onClick={decrementScaleFactor}
-      >
+    <div className={imgsDisplayStyles.buton_scale_size} data-tooltip="Ctrl+Scroll">
+      <button className={imgsDisplayStyles.half_buton_scale_size} onClick={decrementScaleFactor}>
         +
       </button>
-      <button
-        className={imgsDisplayStyles.half_buton_scale_size}
-        onClick={incrementScaleFactor}
-      >
+      <button className={imgsDisplayStyles.half_buton_scale_size} onClick={incrementScaleFactor}>
         -
       </button>
     </div>

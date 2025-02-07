@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import Bowser from "bowser";
+import Bowser from 'bowser';
+import { create } from 'zustand';
 
 type UseBrowserCanUse = {
   canAccessDirectory: boolean;
@@ -14,11 +14,11 @@ export const useBrowserCanUse = create<UseBrowserCanUse>((set) => ({
       const supportsDirLoad = browser.satisfies({
         // https://caniuse.com/input-file-directory
         desktop: {
-          chrome: ">30",
-          edge: ">14",
-          safari: ">11.1",
-          firefox: ">50",
-          opera: ">17",
+          chrome: '>30',
+          edge: '>14',
+          safari: '>11.1',
+          firefox: '>50',
+          opera: '>17',
         },
       });
 

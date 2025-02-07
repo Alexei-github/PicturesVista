@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
 import modalStyles from '@/components/modal/modal.module.css';
 import DragDiv from '@/lib/DragDiv';
+import { useCallback, useState } from 'react';
 
 type Props = {
   //   isOpen: boolean;
@@ -32,7 +32,7 @@ const Modal = ({ onClose, sizeScale, children }: Props): React.ReactNode => {
       setSize(newSize);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [drag],
+    [drag]
   );
 
   const setMove = useCallback(
@@ -44,7 +44,7 @@ const Modal = ({ onClose, sizeScale, children }: Props): React.ReactNode => {
       setPosition(newPosition);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [drag],
+    [drag]
   );
 
   const close = useCallback(() => {

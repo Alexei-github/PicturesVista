@@ -15,7 +15,7 @@ export function getImgNaturalSizeFn(imgURL: string) {
       // URL.revokeObjectURL(imgURL);
     };
     img.onerror = () => {
-      reject(new Error("Failed to load image from Blob"));
+      reject(new Error('Failed to load image from Blob'));
       // URL.revokeObjectURL(imgURL);
     };
   });

@@ -1,10 +1,10 @@
-import React from 'react';
-import { fileOpen } from 'browser-fs-access';
 import useStoreFilesCustomHook from '@/customHooks/useStoreFiles';
+import { fileOpen } from 'browser-fs-access';
+import React from 'react';
 
 import compStyles from '@/components/components.module.css';
-import { ACCEPTED_IMGS_TYPES } from '@/lib/acceptedImgsTypes';
 import TextDisplay from '@/components/language/TextDisplay';
+import { ACCEPTED_IMGS_TYPES } from '@/lib/acceptedImgsTypes';
 
 const FilesLoadButton = () => {
   const storeFiles = useStoreFilesCustomHook();
@@ -22,7 +22,7 @@ const FilesLoadButton = () => {
 
         await storeFiles({
           '/': Object.fromEntries(
-            (Array.isArray(imgs) ? imgs : [imgs]).map((img) => [img.name, img]),
+            (Array.isArray(imgs) ? imgs : [imgs]).map((img) => [img.name, img])
           ),
         });
       } catch (error) {

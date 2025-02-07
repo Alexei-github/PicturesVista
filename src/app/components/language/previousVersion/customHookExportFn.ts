@@ -17,7 +17,7 @@ export function exportCustomHook<
       Object.entries(originHookReturnValues).map(([key, value]) => [
         typeof key === 'string' ? key + hookId : key,
         value,
-      ]),
+      ])
     ) as UpdatedHookReturnType;
   };
 }
@@ -28,6 +28,6 @@ export default function transformHookKeys<T extends Record<string, any>>(obj: T,
     [K in keyof T as `${typeof prefix}${string & K}`]: T[K];
   };
   return Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [`${prefix}${key}`, value]),
+    Object.entries(obj).map(([key, value]) => [`${prefix}${key}`, value])
   ) as UpdatedHookReturnType;
 }

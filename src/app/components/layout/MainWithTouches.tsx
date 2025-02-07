@@ -1,16 +1,16 @@
 'use client';
-import React from 'react';
+import styles from '@/components/components.module.css';
+import ImgsPane from '@/components/imgsDisplay/ImgsPane';
 import Sidebar from '@/components/sidebar/Sidebar';
 import { useBrowserCanUse } from '@/stores/browserDetect';
-import ImgsPane from '@/components/imgsDisplay/ImgsPane';
-import styles from '@/components/components.module.css';
+import React from 'react';
 
 const MainWithTouches = (
   {
     // children,
   }: Readonly<{
     children?: React.ReactNode;
-  }>,
+  }>
 ) => {
   const [openSidebar, setOpenSidebar] = React.useState(true);
   const [pinnedOpen, setPinnedOpen] = React.useState(true);
@@ -32,7 +32,7 @@ const MainWithTouches = (
         },
         {
           passive: false,
-        },
+        }
       );
       return main.removeEventListener('touchstart', (e) => e.preventDefault());
     }

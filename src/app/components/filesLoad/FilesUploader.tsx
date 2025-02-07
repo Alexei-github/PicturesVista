@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
 import compStyles from '@/components/components.module.css';
-import dynamic from 'next/dynamic';
 import FilesLoadButton from '@/components/filesLoad/FilesLoadButton';
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 const LoadDirButton = dynamic(() => import('@/components/filesLoad/DirLoadButton'), {
   ssr: false,

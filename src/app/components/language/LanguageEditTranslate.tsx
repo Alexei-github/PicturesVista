@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
-import Btn from '@/lib/buttons/btn';
 import LanguageDevModal from '@/components/language/LanguageDevModal';
+import Btn from '@/lib/buttons/btn';
+import React from 'react';
 
 /**
  * Component to render a button for language edit translate, which opens a modal with the

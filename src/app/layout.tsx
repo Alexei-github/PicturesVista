@@ -1,9 +1,9 @@
+import MainWithTouches from '@/components/layout/MainWithTouches';
+import Navbar from '@/components/layout/Navbar';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import Navbar from '@/components/layout/Navbar';
-import MainWithTouches from '@/components/layout/MainWithTouches';
 import React from 'react';
+import './globals.css';
 
 import styles from './page.module.css';
 const inter = Inter({ subsets: ['latin'] });

@@ -1,13 +1,13 @@
-import React from 'react';
-import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import { TableHeaderRefType } from '@/components/language/customHooks/ch_2_useTranslateTableHeaderState';
-import { LanguageText, LanguageUpdateValues } from '@/components/language/types';
 import f_1_saveTranslationChanges from '@/components/language/functions/f_1_saveTranslationChnages';
+import useLanguageText_gs_1 from '@/components/language/globalStores/gs_1_languageLoad';
 import {
-  UNSAVED_TRANSLATION_LOCAL_STORAGE,
   LOCAL_STORAGE_DEBOUNCE_TIME,
   SYNC_DEBOUNCE_TIME,
+  UNSAVED_TRANSLATION_LOCAL_STORAGE,
 } from '@/components/language/lib/constants';
+import { LanguageText, LanguageUpdateValues } from '@/components/language/types';
+import React from 'react';
 
 /**
  * Custom hook to manage the state of the language translation modal.
@@ -53,7 +53,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
     'allIdsSet',
     'setLanguage',
     'selectedLanguage',
-    'selectedIdx',
+    'selectedIdx'
   );
 
   const [displayingInitCopy, setDisplayingInitCopy] = React.useState(false);
@@ -87,7 +87,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         });
       }
     },
-    [gs_1_selectedIdx],
+    [gs_1_selectedIdx]
   );
 
   // /**
@@ -114,7 +114,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         setDisplayingInitCopy(false);
       }
     },
-    [gs_1_getLanguage, languageInitCopy],
+    [gs_1_getLanguage, languageInitCopy]
   );
 
   React.useEffect(
@@ -142,7 +142,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         setReset(unsavedTranslationState.reset);
       }
     },
-    [headerRef],
+    [headerRef]
   );
 
   React.useEffect(
@@ -167,7 +167,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         };
       }
     },
-    [rerenderComponet, syncChangesOn, newTranslation, gs_1_selectedLanguage, gs_1_setLanguage],
+    [rerenderComponet, syncChangesOn, newTranslation, gs_1_selectedLanguage, gs_1_setLanguage]
   );
 
   React.useEffect(
@@ -203,7 +203,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
 
           localStorage.setItem(
             UNSAVED_TRANSLATION_LOCAL_STORAGE,
-            JSON.stringify(unsavedTranslationState),
+            JSON.stringify(unsavedTranslationState)
           );
         }
       }, LOCAL_STORAGE_DEBOUNCE_TIME);
@@ -221,7 +221,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
       unsavedUpdate,
       updatedValues,
       reset,
-    ],
+    ]
   );
 
   React.useEffect(
@@ -236,7 +236,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         gs_1_setLanguage(gs_1_selectedLanguage);
       }
     },
-    [syncChangesOn, gs_1_selectedLanguage, gs_1_setLanguage],
+    [syncChangesOn, gs_1_selectedLanguage, gs_1_setLanguage]
   );
 
   const processLangNameChange = React.useCallback(
@@ -290,7 +290,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
       reset,
       newTranslation,
       displayingInitCopy,
-    ],
+    ]
   );
 
   const onFileLoad = React.useCallback(
@@ -333,7 +333,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         }
       }
     },
-    [gs_1_availableLanguages, gs_1_getLanguage, newTranslation, displayingInitCopy],
+    [gs_1_availableLanguages, gs_1_getLanguage, newTranslation, displayingInitCopy]
   );
 
   const translateOnChange = React.useCallback(
@@ -367,7 +367,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
 
       setRerenderComponent(`${key}-${e.target.value}`);
     },
-    [newTranslation, languageInitCopy, updatedValues, unsavedUpdate, latestSave],
+    [newTranslation, languageInitCopy, updatedValues, unsavedUpdate, latestSave]
   );
 
   const saveChanges = React.useCallback(
@@ -393,7 +393,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
         setUnsavedUpdate({});
       }
     },
-    [newTranslation, updatedValues, gs_1_allIdsSet],
+    [newTranslation, updatedValues, gs_1_allIdsSet]
   );
 
   const toggleSync = React.useCallback(
@@ -404,7 +404,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
     (): void => {
       setSyncChangesOn((value) => !value);
     },
-    [],
+    []
   );
 
   const turnResetOn = React.useCallback(
@@ -415,7 +415,7 @@ export default function useLanguageDevState_ch_1(): ReturnType {
     () => {
       setReset(true);
     },
-    [],
+    []
   );
 
   return {

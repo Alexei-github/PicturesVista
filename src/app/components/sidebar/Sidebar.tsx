@@ -1,13 +1,13 @@
 'use client';
-import React from 'react';
+import FileUploader from '@/components/filesLoad/FilesUploader';
+import TextDisplay from '@/components/language/TextDisplay';
+import ManageBar from '@/components/sidebar/ManageBar';
 import sidebarStyles from '@/components/sidebar/sidebar.module.css';
 import SidebarDragLine from '@/components/sidebar/SidebarDragLine';
-import FileUploader from '@/components/filesLoad/FilesUploader';
 import SidebarDir from '@/components/sidebar/SidebarOneDir';
-import { useStoredFiles } from '@/stores/storedFiles';
 import SortFnAscend from '@/lib/sortFn';
-import ManageBar from '@/components/sidebar/ManageBar';
-import TextDisplay from '@/components/language/TextDisplay';
+import { useStoredFiles } from '@/stores/storedFiles';
+import React from 'react';
 type Props = {
   openSidebar: boolean;
   pinnedOpen: boolean;
@@ -41,7 +41,7 @@ export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpe
         () => {
           setCompletelyClosed(!openSidebar);
         },
-        (closeDelayTime + openCloseTime) * 1000,
+        (closeDelayTime + openCloseTime) * 1000
       );
       return () => {
         clearTimeout(timeoutClose);
@@ -56,11 +56,11 @@ export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpe
     () => {
       const remSize: number = parseInt(
         getComputedStyle(document.documentElement).fontSize.replace('px', ''),
-        10,
+        10
       );
       setSidebarSize(remSize * 13);
     },
-    [closeDelayTime, openCloseTime],
+    [closeDelayTime, openCloseTime]
   );
 
   React.useEffect(() => {
@@ -84,7 +84,7 @@ export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpe
         {
           passive: true,
           capture: true,
-        },
+        }
       );
       return sideBarNav.removeEventListener(
         'touchstart',
@@ -94,7 +94,7 @@ export default function Sidebar({ openSidebar, pinnedOpen, setPinnedOpen, setOpe
         },
         {
           capture: true,
-        },
+        }
       );
     }
   }, [refSideBarNav, openSidebar]);

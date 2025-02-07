@@ -18,11 +18,11 @@
 
 export async function loadCoocSSDFn(load: boolean) {
   if (load) {
-    await import("@tensorflow/tfjs-backend-webgl");
+    await import('@tensorflow/tfjs-backend-webgl');
 
-    await import("@tensorflow/tfjs-backend-cpu");
-    const cocoSSD = await (await import("@tensorflow-models/coco-ssd")).load();
-    console.log("cocoSsdLoaded");
+    await import('@tensorflow/tfjs-backend-cpu');
+    const cocoSSD = await (await import('@tensorflow-models/coco-ssd')).load();
+    console.log('cocoSsdLoaded');
     return cocoSSD;
   }
 }

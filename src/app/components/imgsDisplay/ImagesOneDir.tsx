@@ -1,11 +1,10 @@
-import React from 'react';
-import OpenDirBtn from '@/components/sidebar/OpenDirBtn';
-import { useStoredFiles, useOpenDir } from '@/stores/storedFiles';
+import { calculateImgSides, getImgNaturalSizeFn } from '@/components/imgsDisplay/getImgSize';
 import imgsDisplayStyle from '@/components/imgsDisplay/imgsDisplay.module.css';
-import { useLayout } from '@/stores/layoutStore';
-import { calculateImgSides } from '@/components/imgsDisplay/getImgSize';
+import OpenDirBtn from '@/components/sidebar/OpenDirBtn';
 import SortFnAscend from '@/lib/sortFn';
-import { getImgNaturalSizeFn } from '@/components/imgsDisplay/getImgSize';
+import { useLayout } from '@/stores/layoutStore';
+import { useOpenDir, useStoredFiles } from '@/stores/storedFiles';
+import React from 'react';
 
 import isShowDirFn from '@/lib/isShowDir';
 
@@ -75,10 +74,10 @@ export default function ImagesOneDir({ dir, indent }: Props) {
         imgHeight,
         imgsPaneScaleFactor,
         imgsPaneSize.height,
-        imgsPaneSize.width,
+        imgsPaneSize.width
       );
     },
-    [imgsPaneScaleFactor, imgsPaneSize],
+    [imgsPaneScaleFactor, imgsPaneSize]
   );
 
   return (
@@ -102,7 +101,7 @@ export default function ImagesOneDir({ dir, indent }: Props) {
                 imgName={imgName}
                 imgCalculatedSize={calculateImgSize(
                   imgsData[imgName].imgNaturalSize.width,
-                  imgsData[imgName].imgNaturalSize.height,
+                  imgsData[imgName].imgNaturalSize.height
                 )}
                 className={imgsDisplayStyle.one_img}
               />

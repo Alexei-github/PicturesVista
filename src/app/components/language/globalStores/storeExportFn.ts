@@ -1,4 +1,4 @@
-import { UseBoundStore, StoreApi } from 'zustand';
+import { StoreApi, UseBoundStore } from 'zustand';
 
 /**
  * Helper function which prepares function to export slices from zustand store in a way that is less
@@ -13,7 +13,7 @@ import { UseBoundStore, StoreApi } from 'zustand';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function exportStore<StoreInterface extends Record<string, any>, S extends string>(
   store: UseBoundStore<StoreApi<StoreInterface>>,
-  storeId: S,
+  storeId: S
 ) {
   return function <T extends (keyof StoreInterface & string)[]>(
     ...requestedItems: CheckUnique<T> extends T ? T : CheckUnique<T>
